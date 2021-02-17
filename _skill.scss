@@ -1,0 +1,92 @@
+// <!-- Skill section -->
+.skills{
+    .title::after{
+        content: "what i know";
+    }
+    .skills-content{
+        .column{
+            width: calc(50% - 30px);
+        }
+
+        .left{
+            .text{
+                font-size: 20px;
+                font-weight: 600;
+                margin-bottom: 600;
+            }
+            p{
+                text-align: justify;
+            }
+            a{
+                display: inline-block;
+                background: crimson;
+                color: #fff;
+                font-size: 18px;
+                font-weight: 500;
+                padding: 8px 16px;
+                margin-top: 20px;
+                border-radius: 6px;
+                border: 2px solid crimson;
+                transition: all 0.3s ease;
+                &:hover{
+                    color: crimson;
+                    background: none;
+                }
+            }
+        }
+
+        .right{
+            .bars{
+                margin-bottom: 15px;
+            }
+            .info{
+                display: flex;
+                align-items: center;
+                margin-bottom: 5px;
+                justify-content: space-between;
+            }
+            span{
+                font-weight: 500;
+                font-size: 18px;
+            }
+            .line{
+                height: 5px;
+                width: 100%;
+                background-color: lightgray;
+                position: relative;
+                &::before{
+                    content: "";
+                    position: absolute;
+                    height: 100%;
+                    left: 0;
+                    top: 0;
+                    background-color: crimson;
+                }
+    
+            }
+        }
+    }
+}
+
+.skills-content .right{
+    .html::before{
+        content: "";
+        width: 90%;
+    }
+    .css::before{
+        content: "";
+        width: 70%;
+    }
+    .js::before{
+        content: "";
+        width: 80%;
+    }
+    .python::before{
+        content: "";
+        width: 90%;
+    }
+    .mysql::before{
+        content: "";
+        width: 60%;
+    }
+}

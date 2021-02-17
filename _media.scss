@@ -1,0 +1,144 @@
+// responsive media query
+@media(max-width: 1300px){
+    .home .max-width{
+        margin-left: 0px;
+    }
+}
+@media(max-width: 1104px){
+   .about .about-content .left img{
+       height: 350px;
+       width: 350px;
+   }
+}
+@media(max-width: 991px){
+    .max-width{
+        padding: 0 50px;
+    }
+}
+
+@media(max-width: 947px){
+
+    .menu-btn{
+        display: block;
+        z-index: 999;
+
+        i:active:before{
+            content: "\f00d";
+        }
+    }
+    .navbar .menu{
+        position: fixed;
+        height: 100vh;
+        width: 100%;
+        right: -100%;
+        top: 0;
+        background-color: rgba($color: #111, $alpha: .9);
+        text-align: center;
+        padding-top: 80px;
+        transition: all .3s ease-in;
+
+        &.active{
+            right: 0;
+        }
+        li{
+            display: block;
+            a{
+                display: inline-block;
+                margin: 20px 0;
+                font-size: 25px;
+            }
+        }
+    }
+
+    .home .home-content{
+        .text-2{
+            font-size: 70px;
+        }
+        .text-3{
+            font-size: 35px;
+        }
+        a{
+            font-size: 23px;
+            padding: 10px 30px;
+        }
+    }
+    .max-width{
+        max-width: 800px;
+    }
+    .about .about-content{
+        .column{
+            width: 100%; 
+        } 
+        .left{
+            display: flex;
+            justify-content: center;
+            margin: 0 auto 60px;
+        }
+        .right{
+            flex: 100%;
+            display: flex;
+            flex-direction: column;
+            .drop-down{
+                align-self: center;
+                margin: 0 auto;
+            }
+        }
+    }
+    .services .serv-content .card{
+        width: calc(50% - 10px);
+        margin-bottom: 20px;
+    }
+    .skills .skills-content .column{
+        width: 100%;
+        margin-bottom: 35px;
+    }
+}
+@media(max-width: 765px){
+    .max-width{
+        padding: 0 13px;
+    }
+    .contact .contact-content .column{
+        width: unset;
+        width: 100% !important;
+        margin-bottom: 20px;
+        background-color: aqua;
+        &+.right .button #emailBtn{
+            span{
+                display: none;
+            }
+        }
+    }
+}
+
+@media(max-width: 690px){
+    .max-width{
+        padding: 0 23px;
+    }
+    .home .home-content{
+        .text-2{
+            font-size: 60px;
+        }
+        .text-3{
+            font-size: 35px;
+        }
+        a{
+            font-size: 20px;
+        }
+    }
+    .skills .skills-content .column,
+    .services .serv-content .card{
+        width: 100%;
+    }
+
+}
+
+@media(max-width: 500px){
+    .home .home-content{
+        .text-2{
+            font-size: 50px;
+        }
+        .text-3{
+            font-size: 27px;
+        }
+    }
+}

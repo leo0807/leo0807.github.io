@@ -42,7 +42,6 @@
                     border-radius: 6px;
                     border: 2px solid crimson;
                     text-align: center;
-                    // box-shadow: -3px -3px 5px rgba($color: crimson, $alpha: .9);
                     transition: $animate;
                     &+.resume{
                         visibility: hidden;
@@ -61,8 +60,8 @@
                     text-align: center;
                     width: 13rem;
                     a{
-                        // color: #fff;
-                        // background-color: crimson;
+                        color: #fff;
+                        background-color: crimson;
                         text-align: center;
                         font-size: 1rem;
                         font-weight: 500;

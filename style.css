@@ -644,6 +644,8 @@ section .title::after {
 }
 
 .about .about-content .right .drop-down .resume a {
+  color: #fff;
+  background-color: crimson;
   text-align: center;
   font-size: 1rem;
   font-weight: 500;
@@ -674,7 +676,7 @@ section .title::after {
 }
 
 .contact .contact-content .column {
-  width: 50%;
+  width: calc(50% - 10px);
 }
 
 .contact .contact-content .left p {

@@ -1,0 +1,74 @@
+.navbar{
+    .player{
+        color: white;
+        width: 30%;
+        height: 100%;
+        border: 2px solid #fff;
+        border-radius: 5px;
+        background-image: url('/images/music.jpg');
+        background-position: center center;
+        object-fit: cover;
+        .volume{
+            cursor: pointer;
+        }
+        #player--control__process{
+            width: 60%;
+            margin: 0 auto;
+        }
+        .player--disk{
+            width: 80px;
+            height: 80px;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            float: left;
+            padding: 5px;
+            margin-left: 8px;
+            margin-bottom: 8px;
+            position: relative;
+            background-image: url('/images/IMG_4328.JPG');
+            background-size: cover;
+            object-fit: cover;
+            &:hover{
+                transform: rotate(360deg);
+                            transition: all 1s ease-in-out;
+
+            }
+            &::after{
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                border-radius: 50%;
+                border: 2px solid rebeccapurple;
+            }
+            &::before{
+                content: '';
+                position: absolute;
+                height: 1rem;
+                width: 1rem;
+                background-color: #fff;
+                border-radius: 50%;
+                top: 31px;
+                left: 31px;
+            }
+        }
+        .player--control{
+            display: flex;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            em{
+                padding: 10px;
+                margin: 0 20px;
+                border-radius: 8px;
+                cursor: pointer;
+                &:hover{
+                    background-color: rgba(rgb(44, 40, 40), .8);
+                    transition: all .4s ease-in-out;
+                }
+            }
+        }
+    }
+}

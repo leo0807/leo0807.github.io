@@ -1,22 +1,29 @@
+
 const playerButton = document.getElementById('play--button');
 const volumeButton = document.getElementById('player--volume');
 const volumeInput = document.getElementById('player--control__volume');
 const musicProgress = document.getElementById('player--control__process');
 
+// 音乐信息 按钮
 const songTitle = document.getElementById('player--info__title');
 const songInfo = document.getElementById('player--info__song');
 const songTime = document.getElementById('player--info__time');
+
+// 播放按钮
+const prev = document.getElementById('prev--button');
+const next = document.getElementById('next--button');
+
+// disk
+const disk = document.getElementById('disk');
 
 // 声音按钮调控
 volumeButton.addEventListener('click', function () {
 
     let curVolume = volumeInput.value;
-    console.log(volumeButton.classList);
     volumeButton.classList.toggle('fa-volume-up');
     volumeButton.classList.toggle('fa-volume-mute');
     volumeInput.value = '0';
     // if (curVolume === '0' || curVolume === '100') {
-    //     console.log(curVolume, 1);
     //     volumeButton.classList.toggle('fa-volume-mute');
     //     volumeButton.classList.toggle('fa-volume-up');
     // } else {
@@ -25,14 +32,6 @@ volumeButton.addEventListener('click', function () {
     // }
 });
 
-
-
-window.onload = playSong;
-// 播放音乐
-let songSrc = '';
-let song = new Audio();
-let songDuration = 0;
-let isPlaying = false;
 const songList = [
     {
         src: '/music/Gymnopédies.mp3',
@@ -53,20 +52,59 @@ const songList = [
         singer: 'Coldplay',
     },
 ];
+
+// 页面加载完成后启动函数
+window.onload = playSong;
+
+// 全局变量存储， 进度和音量设置
+let prevVolumeSet = volumeInput.value;
+let preMusicSet = musicProgress.value;
+
+// 播放音乐
+let song = new Audio();
+let songDuration = 0;
+let isPlaying = false;
+songTitle.innerText = songList[0].title;
+songInfo.innerText = songList[0].singer;
+
+let index = 0;
+next.addEventListener('click', function () {
+    index++;
+    if (index >= songList.length - 1) {
+        index = 0;
+    }
+    playSong();
+    playerButton.click();
+});
+
+prev.addEventListener('click', function () {
+    index--;
+    if (index < 0) {
+        index = songList.length - 1;
+    }
+    playSong();
+    playerButton.click();
+});
+
 function playSong() {
-    song.src = songList[0].src;
+    song.src = songList[index].src;
+    songDuration = song.duration;
+    songTime.innerText = `${formatSecondsAsTime(song.currentTime)}/${formatSecondsAsTime(songDuration)}`;
+    disk.style.backgroundImage = songList[index].img;
     // 改变暂停按钮和播放按钮
     playerButton.addEventListener('click', function () {
         playerButton.classList.toggle('fa-play');
         playerButton.classList.toggle('fa-pause');
 
         if (!isPlaying) {
+            console.log(index);
             song.play();
             isPlaying = true;
             songDuration = song.duration;
+
             musicProgress.max = songDuration;
-            songTitle.innerText = songList[0].title;
-            songInfo.innerText = songList[0].singer;
+            songTitle.innerText = songList[index].title;
+            songInfo.innerText = songList[index].singer;
         } else {
             song.pause();
             isPlaying = false;
@@ -79,24 +117,30 @@ function playSong() {
         musicProgress.value = curTime;
 
         songTime.innerText = `${formatSecondsAsTime(curTime)}/${formatSecondsAsTime(songDuration)}`;
-        // song.currentTime = Number(musicProgress.value) / songDuration;
-        // console.log(song.currentTime);
     });
 
-    musicProgress.onchange = function () {
+    // 当前音乐播放完毕
+    song.addEventListener('ended', function () {
+        song.currentTime = 0;
+        song.pause();
+        isPlaying = false;
+        musicProgress.value = 0;
+        playerButton.classList.contains('fa-pause') && playerButton.classList.remove('fa-pause');
+        playerButton.classList.add('fa-play');
+    });
+
+    musicProgress.addEventListener('change', function () {
         song.currentTime = Number(musicProgress.value);
-        console.log(typeof song.currentTime, formatSecondsAsTime(song.currentTime));
 
         songTime.innerText = `${formatSecondsAsTime(song.currentTime)}/${formatSecondsAsTime(songDuration)}`;
         if (song.currentTime === songDuration) {
             playerButton.classList.toggle('fa-pause');
         }
-    };
+    });
 
 
     // 根据音量变化 改变icon
     volumeInput.onchange = function () {
-        console.log(volumeInput.value);
         let classes = volumeButton.classList;
         if (volumeInput.value > '80') {
             classes.contains('fa-volume-mute') && classes.remove('fa-volume-mute');
@@ -123,11 +167,15 @@ function playSong() {
             if (classes.contains('fa-volume-mute')) {
                 classes.contains('fa-volume-mute') && classes.remove('fa-volume-mute');
                 classes.add('fa-volume-up');
+                volumeInput.value = prevVolumeSet;
+                song.volume = Number(prevVolumeSet / 100);
             } else {
                 classes.contains('fa-volume-up') && classes.remove('fa-volume-up');
                 classes.contains('fa-volume-down') && classes.remove('fa-volume-down');
                 classes.add('fa-volume-mute');
+                prevVolumeSet = volumeInput.value;
                 volumeInput.value = '0';
+                song.volume = 0;
             }
 
         }
@@ -135,8 +183,7 @@ function playSong() {
 }
 
 function formatSecondsAsTime(time) {
-    let sec = new Number();
-    let min = new Number();
+    let sec, min;
     sec = Math.floor(time);
     min = Math.floor(sec / 60);
     min = min >= 10 ? min : '0' + min;
@@ -144,4 +191,4 @@ function formatSecondsAsTime(time) {
     sec = sec >= 10 ? sec : '0' + sec;
     return min + ':' + sec;
 }
-console.log(formatSecondsAsTime(1000));
+

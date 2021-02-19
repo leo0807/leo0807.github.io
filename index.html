@@ -6,6 +6,7 @@
     <title>Junxu</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/98a8db92d8.js" crossorigin="anonymous"></script>
+    <link href="/fontawesome-free-5.15.2-web/css/all.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.11/typed.min.js"></script>
     <link rel="icon" type="image/x-icon" href="icon/J.ico" />
@@ -22,26 +23,29 @@
         <div class="max-width">
             <div class="logo"><a href="#">Junxu<span> Zhang</span></a></div>
             <div class="player">
-                <p>singer</p>
-                <p>song</p>
-                <div class="player--disk">
-                    <div class="player--disk__inner">
+
+                
+                <div class="player--info">
+                    <div class="player--info__left"></div>
+                    <div class="player--info__right">
+                        <p id="player--info__title">singer</p>
+                        <p id="player--info__song">song info</p>
+                        <p id="player--info__time">track/time</p>
+                        <input id="player--control__process" type="range" value="0" min="0" max="100">  
+                        
+                        <div class="player--info__control">
+                            <em class="fas fa-step-backward"></em>
+                            <em id="play--button" class="fas fa-play"></em>
+                            <em class="fas fa-step-forward"></em>
+                            <div class="player--info__volume">
+                                <em id="player--volume" class="fas fa-volume-up volume"></em>
+                                <input id="player--control__volume" type="range" value="100" min="0" max="100">
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <input id="player--control__process" type="range" value="0" min="0">
-                <div class="player--control">
-                    <em class="fas fa-step-backward"></em>
-                    <em class="fas fa-play"></em>
-                    <em class="fas fa-pause"></em>
-                    <em class="fas fa-step-forward"></em>
-                </div>
-                
 
 
-                <em class="fas fa-volume-up volume"></em>
-                <em class="fas fa-volume-down volume"></em>
-                <em class="fas fa-volume-mute volume"></em>
-                <input id="player--volume" type="range" value="0">
             </div>
             <ul class="menu">
                 <li><a href="#home" class="menu-btn">Home</a></li>
@@ -313,5 +317,6 @@
         <span>Created By <a href="">Junxu</a> | <span class="far fa-copyright"></span> 2020 All rights reserved.</span>
     </footer>
     <script src="script.js"></script>
+    <script src="music.js"></script>
 </body>
 </html>

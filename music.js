@@ -70,8 +70,7 @@ songInfo.innerText = songList[0].singer;
 
 let index = 0;
 next.addEventListener('click', function () {
-    console.log(disk.classList);
-    console.log(disk.style.backgroundImage, typeof disk.style.backgroundImage, 1111);
+
     ++index;
     if (index >= songList.length - 1) {
         index = 0;
@@ -86,11 +85,13 @@ prev.addEventListener('click', function () {
     if (index < 0) {
         index = songList.length - 1;
     }
+    isPlaying = false;
     playSong();
-    // playerButton.click();
+    playerButton.click();
 });
 
 function playSong() {
+    console.log(index);
     song.src = songList[index].src;
     getDuration(song.src)
         .then(function (length) {
@@ -107,7 +108,7 @@ function playSong() {
             songDuration = song.duration;
 
             musicProgress.max = songDuration;
-            disk.src = songList[1].img;
+            disk.src = songList[index].img;
             songTitle.innerText = songList[index].title;
             songInfo.innerText = songList[index].singer;
         } else {
@@ -187,6 +188,7 @@ function playSong() {
     };
 }
 
+// 将时间格式化
 function formatSecondsAsTime(time) {
     let sec, min;
     sec = Math.floor(time);
@@ -199,6 +201,7 @@ function formatSecondsAsTime(time) {
 
 
 
+// 获取 audio Object的 duration
 function getDuration(src) {
     return new Promise(function (resolve) {
         var audio = new Audio();

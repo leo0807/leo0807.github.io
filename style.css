@@ -943,6 +943,7 @@ footer span a:hover {
   display: -ms-flexbox;
   display: flex;
   background: url("images/linda-xu-09eoscPYdHU-unsplash.jpg") no-repeat center;
+  background-size: contain;
   -o-object-fit: cover;
      object-fit: cover;
   height: 100vh;

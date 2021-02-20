@@ -3,8 +3,7 @@
 .home{
     display: flex;
     background: url("images/linda-xu-09eoscPYdHU-unsplash.jpg") no-repeat center;
-    // background: url("images/IMG_4328.JPG") no-repeat center;
-    // background: url("images/nate-watson-ArnSNszzd1M-unsplash.jpg") no-repeat center;
+    background-size: contain;
     object-fit: cover;
     // background-color: #111;
     height: 100vh;

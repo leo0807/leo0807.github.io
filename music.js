@@ -15,6 +15,7 @@ const next = document.getElementById('next--button');
 
 // disk
 const disk = document.getElementById('disk');
+const diskp = document.querySelector('.player');
 
 // 声音按钮调控
 volumeButton.addEventListener('click', function () {
@@ -69,40 +70,44 @@ songInfo.innerText = songList[0].singer;
 
 let index = 0;
 next.addEventListener('click', function () {
-    index++;
+    console.log(disk.classList);
+    console.log(disk.style.backgroundImage, typeof disk.style.backgroundImage, 1111);
+    ++index;
     if (index >= songList.length - 1) {
         index = 0;
     }
+
     playSong();
     playerButton.click();
 });
 
 prev.addEventListener('click', function () {
-    index--;
+    --index;
     if (index < 0) {
         index = songList.length - 1;
     }
     playSong();
-    playerButton.click();
+    // playerButton.click();
 });
 
 function playSong() {
     song.src = songList[index].src;
-    songDuration = song.duration;
-    songTime.innerText = `${formatSecondsAsTime(song.currentTime)}/${formatSecondsAsTime(songDuration)}`;
-    disk.style.backgroundImage = songList[index].img;
+    getDuration(song.src)
+        .then(function (length) {
+            songTime.innerText = `${formatSecondsAsTime(song.currentTime)}/${formatSecondsAsTime(length)}`;
+        });
     // 改变暂停按钮和播放按钮
     playerButton.addEventListener('click', function () {
         playerButton.classList.toggle('fa-play');
         playerButton.classList.toggle('fa-pause');
 
         if (!isPlaying) {
-            console.log(index);
             song.play();
             isPlaying = true;
             songDuration = song.duration;
 
             musicProgress.max = songDuration;
+            disk.src = songList[1].img;
             songTitle.innerText = songList[index].title;
             songInfo.innerText = songList[index].singer;
         } else {
@@ -192,3 +197,14 @@ function formatSecondsAsTime(time) {
     return min + ':' + sec;
 }
 
+
+
+function getDuration(src) {
+    return new Promise(function (resolve) {
+        var audio = new Audio();
+        audio.addEventListener("loadedmetadata", function () {
+            resolve(audio.duration);
+        });
+        audio.src = src;
+    });
+}

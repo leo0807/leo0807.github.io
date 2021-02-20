@@ -1000,6 +1000,10 @@ footer span a:hover {
   font-weight: 500;
 }
 
+.home .home-content .right {
+  float: right;
+}
+
 .navbar .player {
   color: white;
   width: 24%;

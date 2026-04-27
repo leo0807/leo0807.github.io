@@ -1,0 +1,762 @@
+:root {
+  color-scheme: dark;
+  --bg: #07111f;
+  --bg-deep: #040911;
+  --surface: rgba(10, 18, 32, 0.72);
+  --surface-border: rgba(255, 255, 255, 0.12);
+  --text: #f6efe3;
+  --muted: rgba(246, 239, 227, 0.74);
+  --accent: #f36a4f;
+  --accent-soft: #f2b15d;
+  --cool: #8fc2ff;
+  --shadow: 0 28px 90px rgba(0, 0, 0, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top, rgba(243, 106, 79, 0.18), transparent 28%),
+    radial-gradient(circle at left, rgba(143, 194, 255, 0.14), transparent 32%),
+    linear-gradient(180deg, var(--bg) 0%, #081321 40%, var(--bg-deep) 100%);
+  font-family:
+    "Sora",
+    "Avenir Next",
+    "Segoe UI",
+    system-ui,
+    sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.page-shell,
+.subpage-shell {
+  position: relative;
+  min-height: 100vh;
+}
+
+.content-shell,
+.subpage-shell {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 24px 0 84px;
+}
+
+.surface {
+  position: relative;
+  background: linear-gradient(180deg, rgba(10, 18, 32, 0.8), rgba(10, 18, 32, 0.6));
+  border: 1px solid var(--surface-border);
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow);
+  border-radius: 28px;
+  overflow: hidden;
+  animation: rise-in 760ms ease both;
+}
+
+.surface::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 32%);
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 22px;
+  margin-bottom: 26px;
+  border-radius: 999px;
+}
+
+.brand {
+  font-family:
+    "Space Grotesk",
+    "Avenir Next Condensed",
+    "Segoe UI",
+    sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.topbar-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  color: var(--muted);
+}
+
+.language-switch {
+  border-radius: 999px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.hero-stack {
+  position: relative;
+  padding-top: 10px;
+}
+
+.hero-stack::before {
+  content: '';
+  position: absolute;
+  inset: 8px 18% auto 8%;
+  height: 280px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(243, 106, 79, 0.16), transparent 66%);
+  filter: blur(18px);
+  pointer-events: none;
+  animation: pulse-glow 8s ease-in-out infinite;
+}
+
+.hero-grid,
+.two-column,
+.project-grid,
+.contact-grid,
+.music-layout,
+.about-layout,
+.project-detail {
+  display: grid;
+  gap: 24px;
+}
+
+.hero-grid {
+  grid-template-columns: 1.18fr 0.82fr;
+  align-items: end;
+  min-height: calc(100vh - 160px);
+}
+
+.hero-copy,
+.hero-profile,
+.about-card,
+.stack-card,
+.music-card,
+.contact-card,
+.subpage-hero,
+.project-card,
+.project-detail,
+.empty-state {
+  padding: 32px;
+}
+
+.eyebrow,
+.section-heading__eyebrow,
+.label {
+  margin: 0;
+  color: #ffb38f;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.82rem;
+}
+
+.hero-copy h1,
+.section-heading h2,
+.hero-profile h2,
+.project-detail h1,
+.empty-state h1 {
+  margin: 0;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  font-family:
+    "Space Grotesk",
+    "Avenir Next Condensed",
+    "Segoe UI",
+    sans-serif;
+}
+
+.hero-copy h1 {
+  font-size: clamp(3rem, 8vw, 6.6rem);
+  max-width: 10ch;
+}
+
+.hero-copy h1 span {
+  color: rgba(246, 239, 227, 0.72);
+  display: inline-block;
+  animation: text-breathe 6s ease-in-out infinite;
+}
+
+.hero-copy {
+  isolation: isolate;
+}
+
+.hero-copy::before {
+  content: '';
+  position: absolute;
+  inset: auto -10% -18% auto;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(143, 194, 255, 0.18), transparent 68%);
+  filter: blur(16px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.lead,
+.muted,
+.project-card p,
+.hero-profile p,
+.music-note,
+.project-detail p,
+.detail-sections p {
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.lead {
+  font-size: 1.04rem;
+}
+
+.lead.compact {
+  max-width: 62ch;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 13px 20px;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.button:hover,
+.project-card:hover,
+.contact-tile:hover {
+  transform: translateY(-2px);
+}
+
+.button-primary {
+  color: #140a07;
+  background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+  font-weight: 700;
+}
+
+.button-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.hero-profile img,
+.about-layout img,
+.project-card img,
+.project-detail__media img,
+.music-cover {
+  width: 100%;
+  object-fit: cover;
+}
+
+.hero-profile {
+  display: grid;
+  gap: 20px;
+  transform-origin: center bottom;
+  animation: float-in 1.05s ease both;
+}
+
+.hero-profile img {
+  aspect-ratio: 4 / 5;
+  border-radius: 22px;
+  animation: scene-drift 12s ease-in-out infinite;
+}
+
+.hero-profile h2 {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  margin: 0 0 12px;
+}
+
+.two-column {
+  grid-template-columns: 1.08fr 0.92fr;
+  margin-top: 30px;
+}
+
+.about-layout {
+  grid-template-columns: 240px 1fr;
+  align-items: center;
+}
+
+.about-layout img {
+  aspect-ratio: 4 / 5;
+  border-radius: 24px;
+}
+
+.pill-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 22px 0 0;
+}
+
+.pill {
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.projects-block,
+.music-card,
+.contact-card {
+  margin-top: 42px;
+}
+
+.music-card--sticky {
+  position: sticky;
+  top: 16px;
+  z-index: 4;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.section-heading h2 {
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  max-width: 16ch;
+}
+
+.text-link {
+  color: var(--cool);
+}
+
+.project-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.project-grid--interactive .project-card {
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background-color 220ms ease;
+}
+
+.project-card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  transform: translateY(0);
+  will-change: transform;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 28%),
+    radial-gradient(circle at top right, rgba(143, 194, 255, 0.18), transparent 46%);
+  opacity: 0;
+  transition: opacity 220ms ease;
+  pointer-events: none;
+}
+
+.project-card--active {
+  transform: translateY(-6px) scale(1.01);
+  border-color: rgba(243, 106, 79, 0.42);
+  box-shadow: 0 32px 100px rgba(243, 106, 79, 0.18);
+}
+
+.project-card--active::before,
+.project-card:hover::before,
+.project-card:focus-within::before {
+  opacity: 1;
+}
+
+.project-card img {
+  aspect-ratio: 16 / 10;
+  border-radius: 20px;
+}
+
+.project-card__copy {
+  padding-top: 18px;
+}
+
+.project-card__copy h3 {
+  margin: 8px 0;
+  font-size: 1.45rem;
+  font-family:
+    "Space Grotesk",
+    "Avenir Next Condensed",
+    "Segoe UI",
+    sans-serif;
+}
+
+.project-tag {
+  color: var(--cool);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.76rem;
+}
+
+.music-layout {
+  grid-template-columns: 96px 1fr auto;
+  gap: 18px;
+  align-items: center;
+}
+
+.music-layout--compact {
+  align-items: center;
+}
+
+.music-cover {
+  aspect-ratio: 1;
+  border-radius: 18px;
+}
+
+.music-card h3 {
+  margin: 0;
+  font-size: clamp(1.25rem, 2vw, 2rem);
+  font-family:
+    "Space Grotesk",
+    "Avenir Next Condensed",
+    "Segoe UI",
+    sans-serif;
+}
+
+.music-copy {
+  display: grid;
+  gap: 8px;
+}
+
+.music-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.button-chip {
+  padding: 10px 14px;
+}
+
+.music-footer {
+  margin-top: 14px;
+}
+
+.progress-stack {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.progress-stack input[type='range'] {
+  width: 100%;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+.progress-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--cool), var(--accent-soft));
+}
+
+.contact-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 22px;
+}
+
+.contact-tile {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.project-detail {
+  grid-template-columns: 0.95fr 1.05fr;
+  align-items: start;
+}
+
+.project-mdx {
+  display: grid;
+  gap: 18px;
+  margin-top: 30px;
+}
+
+.project-mdx h2 {
+  margin: 0;
+  font-size: 1.28rem;
+  font-family:
+    "Space Grotesk",
+    "Avenir Next Condensed",
+    "Segoe UI",
+    sans-serif;
+}
+
+.project-mdx p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.project-mdx ul,
+.project-mdx ol {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.project-mdx a {
+  color: var(--cool);
+}
+
+.project-detail__media img {
+  border-radius: 22px;
+  aspect-ratio: 4 / 3;
+}
+
+.project-detail h1 {
+  font-size: clamp(2.5rem, 4vw, 4.6rem);
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.detail-sections {
+  display: grid;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.detail-sections h2 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+  font-family:
+    "Space Grotesk",
+    "Avenir Next Condensed",
+    "Segoe UI",
+    sans-serif;
+}
+
+.subpage-hero {
+  margin-bottom: 26px;
+}
+
+.empty-state {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+
+.scene-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.two-column,
+.projects-block,
+.contact-card,
+.subpage-hero,
+.project-detail {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 760px;
+}
+
+.projects-block {
+  contain-intrinsic-size: 1px 920px;
+}
+
+.contact-card {
+  contain-intrinsic-size: 1px 560px;
+}
+
+.scene-shell::before,
+.scene-shell::after {
+  content: '';
+  position: absolute;
+  inset: auto;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.scene-shell::before {
+  left: -8vw;
+  top: 12vh;
+  width: 28vw;
+  height: 28vw;
+  background: radial-gradient(circle, rgba(243, 106, 79, 0.18), transparent 70%);
+  filter: blur(18px);
+  animation: scene-drift 14s ease-in-out infinite;
+}
+
+.scene-shell::after {
+  right: -10vw;
+  bottom: 4vh;
+  width: 32vw;
+  height: 32vw;
+  background: radial-gradient(circle, rgba(143, 194, 255, 0.18), transparent 72%);
+  filter: blur(22px);
+  animation: scene-drift 16s ease-in-out infinite reverse;
+}
+
+@media (max-width: 1080px) {
+  .hero-grid,
+  .two-column,
+  .project-grid,
+  .contact-grid,
+  .music-layout,
+  .about-layout,
+  .project-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-grid {
+    min-height: auto;
+  }
+
+  .section-heading {
+    flex-direction: column;
+    align-items: start;
+  }
+}
+
+@media (max-width: 720px) {
+  .content-shell,
+  .subpage-shell {
+    width: min(100% - 20px, 1180px);
+    padding-top: 16px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: start;
+    border-radius: 28px;
+  }
+
+  .hero-copy,
+  .hero-profile,
+  .about-card,
+  .stack-card,
+  .music-card,
+  .contact-card,
+  .subpage-hero,
+  .project-card,
+  .project-detail,
+  .empty-state {
+    padding: 24px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.6rem, 14vw, 4rem);
+  }
+}
+
+@keyframes float-in {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes rise-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes text-breathe {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    transform: scale(0.96);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+@keyframes scene-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}

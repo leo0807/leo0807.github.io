@@ -700,6 +700,55 @@ img {
   margin-top: 22px;
 }
 
+.resume-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(1, 5, 10, 0.72);
+  backdrop-filter: blur(14px);
+}
+
+.resume-modal__panel {
+  width: min(980px, 100%);
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(10, 18, 32, 0.96), rgba(10, 18, 32, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 40px 140px rgba(0, 0, 0, 0.45);
+}
+
+.resume-modal__header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.resume-modal__header h2 {
+  margin: 4px 0 0;
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+}
+
+.resume-modal__frame {
+  width: 100%;
+  height: min(78vh, 860px);
+  border: 0;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.resume-modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
 .contact-tile {
   display: grid;
   gap: 10px;
@@ -1001,6 +1050,31 @@ html[data-locale='zh'] .topbar-links {
 
   .hero-copy h1 {
     font-size: clamp(2.6rem, 14vw, 4rem);
+  }
+
+  .resume-modal {
+    padding: 10px;
+  }
+
+  .resume-modal__panel {
+    padding: 12px;
+    border-radius: 22px;
+  }
+
+  .resume-modal__header {
+    flex-direction: column;
+  }
+
+  .resume-modal__frame {
+    height: 68vh;
+  }
+
+  .resume-modal__actions {
+    justify-content: stretch;
+  }
+
+  .resume-modal__actions .button {
+    width: 100%;
   }
 }
 

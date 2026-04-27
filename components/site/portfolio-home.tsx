@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { HeroScene } from '@/components/scene/hero-scene';
 import { MusicPlayer } from '@/components/site/music-player';
@@ -30,10 +30,24 @@ export function PortfolioHome({
   featuredProjects,
 }: PortfolioHomeProps) {
   const [activeSlug, setActiveSlug] = useState<string>(featuredProjects[0]?.slug ?? projects[0]?.slug ?? '');
+  const [resumePreview, setResumePreview] = useState<'english' | 'chinese' | null>(null);
 
   const activeProject = useMemo(() => {
     return projects.find((project) => project.slug === activeSlug) ?? null;
   }, [activeSlug, projects]);
+
+  useEffect(() => {
+    if (!resumePreview) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [resumePreview]);
+
+  const resumePreviewSrc = resumePreview === 'english' ? '/pdf/english.PDF' : '/pdf/chinese.pdf';
 
   return (
     <main className="page-shell">
@@ -68,12 +82,12 @@ export function PortfolioHome({
                 <Link className="button button-primary" href={localizedPath(locale, '/projects/')}>
                   {content.hero.projects}
                 </Link>
-                <a className="button button-secondary" href="/pdf/english.PDF" target="_blank" rel="noreferrer">
+                <button type="button" className="button button-secondary" onClick={() => setResumePreview('english')}>
                   {content.hero.resumeEnglish}
-                </a>
-                <a className="button button-secondary" href="/pdf/chinese.pdf" target="_blank" rel="noreferrer">
+                </button>
+                <button type="button" className="button button-secondary" onClick={() => setResumePreview('chinese')}>
                   {content.hero.resumeChinese}
-                </a>
+                </button>
               </div>
             </div>
 
@@ -194,6 +208,37 @@ export function PortfolioHome({
           </div>
         </section>
       </div>
+
+      {resumePreview ? (
+        <div
+          className="resume-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label={resumePreview === 'english' ? content.hero.resumeEnglish : content.hero.resumeChinese}
+          onClick={() => setResumePreview(null)}
+        >
+          <div className="resume-modal__panel" onClick={(event) => event.stopPropagation()}>
+            <div className="resume-modal__header">
+              <div>
+                <p className="eyebrow">{resumePreview === 'english' ? content.hero.resumeEnglish : content.hero.resumeChinese}</p>
+                <h2>{resumePreview === 'english' ? content.hero.resumeEnglish : content.hero.resumeChinese}</h2>
+              </div>
+              <button type="button" className="button button-secondary" onClick={() => setResumePreview(null)}>
+                Close
+              </button>
+            </div>
+            <iframe className="resume-modal__frame" src={resumePreviewSrc} title="Resume preview" />
+            <div className="resume-modal__actions">
+              <a className="button button-primary" href={resumePreviewSrc} target="_blank" rel="noreferrer">
+                Open in new tab
+              </a>
+              <a className="button button-secondary" href={resumePreviewSrc} download>
+                Download
+              </a>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }

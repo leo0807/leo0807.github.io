@@ -113,6 +113,7 @@ export type SiteContent = {
     play: string;
     pause: string;
     next: string;
+    volume: string;
   };
   strengths: string[];
   contactLinks: Array<{ label: string; href: string; helper?: string }>;
@@ -333,6 +334,7 @@ const siteContent: Record<Locale, SiteContent> = {
       play: 'Play',
       pause: 'Pause',
       next: 'Next',
+      volume: 'Volume',
     },
     strengths: sharedStrengths,
     contactLinks: sharedLinks,
@@ -475,6 +477,7 @@ const siteContent: Record<Locale, SiteContent> = {
       play: '播放',
       pause: '暂停',
       next: '下一首',
+      volume: '音量',
     },
     strengths: [
       'Next.js App Router',

@@ -40,6 +40,15 @@ export type SiteContent = {
     title: string;
     lead: string;
   };
+  signals: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    cards: Array<{
+      title: string;
+      body: string;
+    }>;
+  };
   featured: {
     eyebrow: string;
     title: string;
@@ -92,7 +101,7 @@ export type SiteConfig = {
 
 export const siteConfig: SiteConfig = {
   name: 'Junxu Zhang',
-  title: 'Junxu Zhang | 3D Portfolio',
+  title: 'Junxu Zhang | AI Engineering Portfolio',
   description:
     'A bilingual Next.js and React Three Fiber portfolio for Junxu Zhang, a software engineer at COMAC, featuring immersive 3D presentation, project detail pages, and scalable content architecture.',
   url: 'https://leo0807.github.io',
@@ -102,11 +111,12 @@ export const siteConfig: SiteConfig = {
   updatedAt: '2026-04-28',
   keywords: [
     'Junxu Zhang',
-    'Frontend Developer',
-    'Next.js Portfolio',
+    'AI Engineer',
+    'Full-Stack AI Engineer',
+    'LLM Applications',
     'React Three Fiber',
-    'Three.js Portfolio',
-    'Web Developer',
+    'RAG',
+    'Multi-Agent Systems',
   ],
   tracks: [
     {
@@ -132,7 +142,7 @@ export const siteConfig: SiteConfig = {
 
 const sharedLinks = [
   { label: 'GitHub', href: 'https://github.com/leo0807' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/junxu-zhang-38bb04185/', helper: 'COMAC software engineer' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/junxu-zhang-38bb04185/', helper: 'Full-stack AI engineer' },
   { label: 'WeChat', href: 'https://weixin.qq.com/', helper: 'CallMeLeo1' },
 ];
 
@@ -155,7 +165,7 @@ const sharedStrengths = [
 const siteContent: Record<Locale, SiteContent> = {
   en: {
     name: 'Junxu Zhang',
-    title: 'Junxu Zhang | 3D Portfolio',
+    title: 'Junxu Zhang | AI Engineering Portfolio',
     description:
       'A bilingual Next.js and React Three Fiber portfolio for Junxu Zhang, a software engineer at COMAC, with immersive 3D presentation, project detail pages, and an expandable content system.',
     nav: {
@@ -168,30 +178,50 @@ const siteContent: Record<Locale, SiteContent> = {
     },
     hero: {
       eyebrow: 'Next.js + R3F Portfolio',
-      title: ['Spatial storytelling for the web,', 'designed to grow with new work.'],
+      title: ['AI systems that ship,', 'with product-grade interfaces.'],
       lead:
-        'This portfolio is rebuilt on the Next.js App Router so the homepage, project pages, metadata, and future content additions all share one extensible architecture instead of living inside a single static file.',
+        'This portfolio is rebuilt on the Next.js App Router so the homepage, project pages, metadata, and future content additions all share one extensible architecture instead of living inside a single static file. The visual language now leans toward AI product engineering rather than a generic frontend showcase.',
       projects: 'View Projects',
-      resumeEnglish: 'Resume EN',
+      resumeEnglish: 'Latest Resume',
       resumeChinese: '中文简历',
       currentFocusLabel: 'LinkedIn Snapshot',
-      currentFocusTitle: 'Software engineer at COMAC with frontend and backend experience.',
+      currentFocusTitle: 'Full-stack AI engineer focused on LLM applications, RAG, and agent systems.',
       currentFocusBody:
-        'Based in Perth, Western Australia, and educated at the University of Melbourne (2018-2020). I enjoy combining modern React architecture with motion, 3D, and content systems that can scale beyond a single landing page.',
+        'Based in Perth, Western Australia, and educated at the University of Melbourne (2018-2020). At COMAC, I work on production LLM systems, model routing, retrieval pipelines, and multi-agent workflows.',
     },
     about: {
       eyebrow: 'About',
-      title: 'From a self-taught portfolio to a system that can evolve.',
+      title: 'From a self-taught portfolio to an AI engineering studio.',
       paragraphs: [
-        'The previous site expressed experimentation and enthusiasm. This version keeps the same identity and media, but reorganizes everything around a stronger content model, better SEO, project-specific routes, and a more cinematic visual language. It now also reflects the public LinkedIn profile details, including current work at COMAC and study at the University of Melbourne.',
-        'The result is a portfolio that works as both a polished landing page and a maintainable codebase for future case studies, writing, and new showcase work.',
+        'The previous site expressed experimentation and enthusiasm. This version keeps the same identity and media, but reorganizes everything around a stronger content model, better SEO, project-specific routes, and a more cinematic visual language. It now also reflects the public LinkedIn profile details, including work on LLM systems at COMAC and study at the University of Melbourne.',
+        'The result is a portfolio that works as both a polished landing page and a maintainable codebase for future case studies, writing, and AI showcases.',
       ],
     },
     stack: {
       eyebrow: 'Stack',
-      title: 'Architecture chosen for growth, not just for one screen.',
+      title: 'Architecture chosen for growth, inference, and shipping.',
       lead:
-        'App Router for structure, static export for easy deployment, React Three Fiber for 3D presentation, and typed content objects for future project additions.',
+        'App Router for structure, static export for easy deployment, React Three Fiber for 3D presentation, MDX for content, and typed content objects for future project additions.',
+    },
+    signals: {
+      eyebrow: 'AI Systems',
+      title: 'Recent work now reads like an engineering portfolio, not just a visual gallery.',
+      lead:
+        'These capabilities echo the latest resume and make the homepage feel closer to a modern AI engineering surface.',
+      cards: [
+        {
+          title: 'RAG Knowledge Systems',
+          body: 'Hybrid retrieval, embedding strategy tuning, Chinese technical text handling, and production internal Q&A pipelines.',
+        },
+        {
+          title: 'Multi-Agent Workflows',
+          body: 'LangGraph state machines, tool routing, self-healing loops, and streamed reasoning with SSE.',
+        },
+        {
+          title: 'Model Routing & Observability',
+          body: 'Task classification, DeepSeek / Qwen dispatch, private deployment options, and Langfuse / OpenTelemetry tracing.',
+        },
+      ],
     },
     featured: {
       eyebrow: 'Featured Work',
@@ -213,7 +243,7 @@ const siteContent: Record<Locale, SiteContent> = {
     },
     contact: {
       eyebrow: 'Contact',
-      title: "Let's build something clear, memorable, and ambitious.",
+      title: "Let's build something sharp, intelligent, and ambitious.",
       lead: 'The contact channels from the original site are preserved, but now presented inside a cleaner information structure.',
       location: 'Location',
       locationValue: 'Perth, Western Australia',
@@ -232,7 +262,7 @@ const siteContent: Record<Locale, SiteContent> = {
   },
   zh: {
     name: 'Junxu Zhang',
-    title: 'Junxu Zhang | 3D 作品集',
+    title: 'Junxu Zhang | AI 工程作品集',
     description:
       '一个支持中英双语的 Next.js + React Three Fiber 个人作品集，展示张俊旭在 COMAC 的软件工程工作、沉浸式 3D 首页、项目详情页与可扩展内容体系。',
     nav: {
@@ -245,30 +275,50 @@ const siteContent: Record<Locale, SiteContent> = {
     },
     hero: {
       eyebrow: 'Next.js + R3F 作品集',
-      title: ['为网页打造空间化叙事，', '为持续增长的内容预留余地。'],
+      title: ['AI 系统能稳定交付，', '界面也要像产品一样有气质。'],
       lead:
-        '这个作品集基于 Next.js App Router 重构，首页、项目页、SEO 元数据和后续新增内容都共享同一套可扩展架构，而不再被塞进单一静态文件里。',
+        '这个作品集基于 Next.js App Router 重构，首页、项目页、SEO 元数据和后续新增内容都共享同一套可扩展架构，而不再被塞进单一静态文件里。现在的视觉语言更偏向 AI 工程与产品化展示。',
       projects: '查看项目',
-      resumeEnglish: '英文简历',
+      resumeEnglish: '最新简历',
       resumeChinese: '中文简历',
       currentFocusLabel: 'LinkedIn 概览',
-      currentFocusTitle: 'COMAC 的软件工程师，同时具备前端和后端经验。',
+      currentFocusTitle: '专注 LLM 应用、RAG 和多智能体系统的全栈 AI 工程师。',
       currentFocusBody:
-        '我目前在澳大利亚珀斯生活，毕业于墨尔本大学（2018-2020）。我喜欢把现代 React 架构、动效、3D 与可扩展内容系统结合起来，让一个作品集可以继续成长，而不是停在单页展示。',
+        '我目前在澳大利亚珀斯生活，毕业于墨尔本大学（2018-2020）。在 COMAC，我主要做生产级 LLM 系统、模型路由、检索管线和多智能体工作流。',
     },
     about: {
       eyebrow: '关于',
-      title: '从自学作品集，升级成一个可以继续演化的系统。',
+      title: '从自学作品集，升级成一个 AI 工程展示台。',
       paragraphs: [
-        '旧站更多是在表达尝试与热情；新版本保留了原来的身份与素材，但把它们重新组织到更清晰的内容模型、更完善的 SEO、项目详情路由和更具电影感的视觉语言里，同时也把 LinkedIn 里公开可见的履历信息整合了进来。',
-        '现在这个作品集既能作为一个完成度更高的首页，也能作为以后继续扩展案例、写作和新项目展示的稳定代码底座。',
+        '旧站更多是在表达尝试与热情；新版本保留了原来的身份与素材，但把它们重新组织到更清晰的内容模型、更完善的 SEO、项目详情路由和更具产品感的视觉语言里，同时也把 LinkedIn 里公开可见的履历信息整合了进来。',
+        '现在这个作品集既能作为一个完成度更高的首页，也能作为以后继续扩展案例、写作和 AI 项目展示的稳定代码底座。',
       ],
     },
     stack: {
       eyebrow: '技术栈',
-      title: '这套架构追求的是成长性，而不是只服务于一个页面。',
+      title: '这套架构追求的是成长性、推理能力和交付效率。',
       lead:
-        '用 App Router 做结构组织，用静态导出适配 GitHub Pages，用 React Three Fiber 承载 3D 表现，用类型化内容对象为后续新增项目留好接口。',
+        '用 App Router 做结构组织，用静态导出适配 GitHub Pages，用 React Three Fiber 承载 3D 表现，用 MDX 和类型化内容对象为后续新增项目留好接口。',
+    },
+    signals: {
+      eyebrow: 'AI 系统',
+      title: '最新简历里的能力，现在被做成了可视化的首页模块。',
+      lead:
+        '这些模块会让主页更像技术展示，而不只是一个作品集封面。',
+      cards: [
+        {
+          title: 'RAG 知识系统',
+          body: '混合检索、嵌入策略调优、中文技术文档处理，以及生产内网问答链路。',
+        },
+        {
+          title: '多智能体工作流',
+          body: 'LangGraph 状态机、工具路由、自愈循环，以及通过 SSE 输出的推理步骤。',
+        },
+        {
+          title: '模型路由与可观测性',
+          body: '任务分类、DeepSeek / Qwen 派发、私有化部署方案，以及 Langfuse / OpenTelemetry 追踪。',
+        },
+      ],
     },
     featured: {
       eyebrow: '精选项目',

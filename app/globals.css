@@ -1,14 +1,14 @@
 :root {
   color-scheme: dark;
-  --bg: #07111f;
-  --bg-deep: #040911;
+  --bg: #06111e;
+  --bg-deep: #03070d;
   --surface: rgba(10, 18, 32, 0.72);
   --surface-border: rgba(255, 255, 255, 0.12);
   --text: #f6efe3;
   --muted: rgba(246, 239, 227, 0.74);
-  --accent: #f36a4f;
-  --accent-soft: #f2b15d;
-  --cool: #8fc2ff;
+  --accent: #7d86ff;
+  --accent-soft: #57d9ff;
+  --cool: #93f2d0;
   --shadow: 0 28px 90px rgba(0, 0, 0, 0.28);
 }
 
@@ -26,8 +26,8 @@ body {
   overflow-x: hidden;
   color: var(--text);
   background:
-    radial-gradient(circle at top, rgba(243, 106, 79, 0.18), transparent 28%),
-    radial-gradient(circle at left, rgba(143, 194, 255, 0.14), transparent 32%),
+    radial-gradient(circle at top, rgba(125, 134, 255, 0.18), transparent 28%),
+    radial-gradient(circle at left, rgba(87, 217, 255, 0.14), transparent 32%),
     linear-gradient(180deg, var(--bg) 0%, #081321 40%, var(--bg-deep) 100%);
   font-family:
     "Sora",
@@ -134,7 +134,7 @@ img {
   inset: 8px 18% auto 8%;
   height: 280px;
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(243, 106, 79, 0.16), transparent 66%);
+  background: radial-gradient(circle, rgba(125, 134, 255, 0.16), transparent 66%);
   filter: blur(18px);
   pointer-events: none;
   animation: pulse-glow 8s ease-in-out infinite;
@@ -217,7 +217,7 @@ img {
   width: 260px;
   height: 260px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(143, 194, 255, 0.18), transparent 68%);
+  background: radial-gradient(circle, rgba(87, 217, 255, 0.18), transparent 68%);
   filter: blur(16px);
   pointer-events: none;
   z-index: -1;
@@ -342,8 +342,12 @@ img {
 
 .music-card--sticky {
   position: sticky;
-  top: 16px;
+  top: 12px;
   z-index: 4;
+  width: min(680px, 100%);
+  margin: 0 auto 18px;
+  padding: 14px 18px;
+  border-radius: 22px;
 }
 
 .section-heading {
@@ -365,6 +369,61 @@ img {
 
 .project-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.signal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.signal-card {
+  display: grid;
+  gap: 12px;
+  min-height: 180px;
+  padding: 22px;
+}
+
+.signal-card h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-family:
+    "Space Grotesk",
+    "Avenir Next Condensed",
+    "Segoe UI",
+    sans-serif;
+}
+
+.signal-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.signal-index {
+  color: var(--cool);
+  letter-spacing: 0.18em;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.signal-card--1 {
+  background:
+    linear-gradient(180deg, rgba(125, 134, 255, 0.14), rgba(10, 18, 32, 0.58)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 30%);
+}
+
+.signal-card--2 {
+  background:
+    linear-gradient(180deg, rgba(87, 217, 255, 0.12), rgba(10, 18, 32, 0.58)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 30%);
+}
+
+.signal-card--3 {
+  background:
+    linear-gradient(180deg, rgba(147, 242, 208, 0.12), rgba(10, 18, 32, 0.58)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 30%);
 }
 
 .project-grid--interactive .project-card {
@@ -434,8 +493,8 @@ img {
 }
 
 .music-layout {
-  grid-template-columns: 96px 1fr auto;
-  gap: 18px;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  gap: 12px;
   align-items: center;
 }
 
@@ -444,13 +503,15 @@ img {
 }
 
 .music-cover {
+  width: 56px;
+  height: 56px;
   aspect-ratio: 1;
-  border-radius: 18px;
+  border-radius: 14px;
 }
 
 .music-card h3 {
   margin: 0;
-  font-size: clamp(1.25rem, 2vw, 2rem);
+  font-size: clamp(1rem, 1.45vw, 1.25rem);
   font-family:
     "Space Grotesk",
     "Avenir Next Condensed",
@@ -475,7 +536,7 @@ img {
 }
 
 .music-footer {
-  margin-top: 14px;
+  margin-top: 8px;
 }
 
 .progress-stack {
@@ -638,7 +699,7 @@ img {
   top: 12vh;
   width: 28vw;
   height: 28vw;
-  background: radial-gradient(circle, rgba(243, 106, 79, 0.18), transparent 70%);
+  background: radial-gradient(circle, rgba(125, 134, 255, 0.18), transparent 70%);
   filter: blur(18px);
   animation: scene-drift 14s ease-in-out infinite;
 }
@@ -648,7 +709,7 @@ img {
   bottom: 4vh;
   width: 32vw;
   height: 32vw;
-  background: radial-gradient(circle, rgba(143, 194, 255, 0.18), transparent 72%);
+  background: radial-gradient(circle, rgba(87, 217, 255, 0.18), transparent 72%);
   filter: blur(22px);
   animation: scene-drift 16s ease-in-out infinite reverse;
 }
@@ -656,6 +717,7 @@ img {
 @media (max-width: 1080px) {
   .hero-grid,
   .two-column,
+  .signal-grid,
   .project-grid,
   .contact-grid,
   .music-layout,

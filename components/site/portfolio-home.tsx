@@ -111,6 +111,20 @@ export function PortfolioHome({
         </section>
 
         <section className="projects-block">
+          <SectionHeading eyebrow={content.signals.eyebrow} title={content.signals.title} />
+          <p className="muted compact">{content.signals.lead}</p>
+          <div className="signal-grid">
+            {content.signals.cards.map((signal, index) => (
+              <article key={signal.title} className={`surface signal-card signal-card--${index + 1}`}>
+                <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
+                <h3>{signal.title}</h3>
+                <p>{signal.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="projects-block">
           <SectionHeading
             eyebrow={content.featured.eyebrow}
             title={content.featured.title}

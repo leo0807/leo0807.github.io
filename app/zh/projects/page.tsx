@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { JsonLd } from '@/components/site/json-ld';
-import { ProjectIndexPage } from '@/components/site/project-pages';
+import { ProjectBrowser } from '@/components/site/project-browser';
 import { getProjects } from '@/content/projects';
 import { getSiteContent, siteConfig } from '@/content/site';
 
@@ -32,7 +32,7 @@ export default async function ProjectsPage() {
           url: `${siteConfig.url}/zh/projects/`,
         }}
       />
-      <ProjectIndexPage locale={locale} siteConfig={siteConfig} content={content} projects={projects} />
+      <ProjectBrowser locale={locale} content={content} projects={projects} />
     </>
   );
 }

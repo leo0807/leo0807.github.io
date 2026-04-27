@@ -36,6 +36,16 @@ export type SiteContent = {
     title: string;
     paragraphs: [string, string];
   };
+  timeline: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    items: Array<{
+      period: string;
+      title: string;
+      body: string;
+    }>;
+  };
   stack: {
     eyebrow: string;
     title: string;
@@ -83,6 +93,15 @@ export type SiteContent = {
     lead: string;
     location: string;
     locationValue: string;
+  };
+  contactCta: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    primaryLabel: string;
+    primaryHref: string;
+    secondaryLabel: string;
+    secondaryHref: string;
   };
   music: {
     eyebrow: string;
@@ -211,6 +230,28 @@ const siteContent: Record<Locale, SiteContent> = {
         'The result is a portfolio that works as both a polished landing page and a maintainable codebase for future case studies, writing, and AI showcases.',
       ],
     },
+    timeline: {
+      eyebrow: 'Timeline',
+      title: 'A compact career story that explains how the work evolved.',
+      lead: 'This section turns the portfolio into a clearer narrative instead of only a gallery of outputs.',
+      items: [
+        {
+          period: '2024 - Present',
+          title: 'COMAC: production AI systems',
+          body: 'Working on LLM application flows, retrieval pipelines, model routing, and agent-oriented workflows with a product mindset.',
+        },
+        {
+          period: '2018 - 2020',
+          title: 'University of Melbourne',
+          body: 'Formal study that strengthened the engineering foundation behind the current portfolio and AI work.',
+        },
+        {
+          period: 'Ongoing',
+          title: 'Portfolio + writing + visual systems',
+          body: 'Continuously rebuilding this site, documenting the stack, and turning the portfolio into a live engineering notebook.',
+        },
+      ],
+    },
     stack: {
       eyebrow: 'Stack',
       title: 'Architecture chosen for growth, inference, and shipping.',
@@ -273,6 +314,15 @@ const siteContent: Record<Locale, SiteContent> = {
       location: 'Location',
       locationValue: 'Perth, Western Australia',
     },
+    contactCta: {
+      eyebrow: 'Collaboration',
+      title: 'If the work feels aligned, let’s continue the conversation.',
+      lead: 'Use the channels below to reach me quickly. I usually respond fastest through LinkedIn or WeChat.',
+      primaryLabel: 'LinkedIn',
+      primaryHref: 'https://www.linkedin.com/in/junxu-zhang-38bb04185/',
+      secondaryLabel: 'WeChat',
+      secondaryHref: 'https://weixin.qq.com/',
+    },
     music: {
       eyebrow: 'Soundtrack',
       title: 'Audio assets preserved from the original portfolio',
@@ -320,6 +370,28 @@ const siteContent: Record<Locale, SiteContent> = {
       paragraphs: [
         '旧站更多是在表达尝试与热情；新版本保留了原来的身份与素材，但把它们重新组织到更清晰的内容模型、更完善的 SEO、项目详情路由和更具产品感的视觉语言里，同时也把 LinkedIn 里公开可见的履历信息整合了进来。',
         '现在这个作品集既能作为一个完成度更高的首页，也能作为以后继续扩展案例、写作和 AI 项目展示的稳定代码底座。',
+      ],
+    },
+    timeline: {
+      eyebrow: '时间线',
+      title: '一条能讲清成长路径的职业脉络。',
+      lead: '有了这部分，作品集不只是展示结果，也能讲清楚你的发展过程。',
+      items: [
+        {
+          period: '2024 - 现在',
+          title: 'COMAC：生产级 AI 系统',
+          body: '主要做 LLM 应用链路、检索管线、模型路由和面向智能体的工作流，强调可交付与可维护。',
+        },
+        {
+          period: '2018 - 2020',
+          title: '墨尔本大学',
+          body: '系统化的学习为后面的工程实践提供了更稳的基础。',
+        },
+        {
+          period: '持续进行中',
+          title: '作品集 + 写作 + 视觉系统',
+          body: '持续重构这个站点，记录技术思考，并把作品集做成一个可以持续增长的工程笔记。',
+        },
       ],
     },
     stack: {
@@ -383,6 +455,15 @@ const siteContent: Record<Locale, SiteContent> = {
       lead: '保留了旧站的联系方式，但用更清楚的信息层级重新组织了一遍。',
       location: '所在地',
       locationValue: '澳大利亚珀斯',
+    },
+    contactCta: {
+      eyebrow: '合作',
+      title: '如果方向对了，我们可以继续往下聊。',
+      lead: '下面这些渠道是最快的联系路径，通常我会优先看 LinkedIn 和微信。',
+      primaryLabel: '领英',
+      primaryHref: 'https://www.linkedin.com/in/junxu-zhang-38bb04185/',
+      secondaryLabel: '微信',
+      secondaryHref: 'https://weixin.qq.com/',
     },
     music: {
       eyebrow: '背景音乐',

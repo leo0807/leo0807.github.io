@@ -19,6 +19,11 @@ export type ProjectFrontmatter = {
   focus: string;
   featured?: boolean;
   tech: string[];
+  metrics?: Array<{
+    label: string;
+    value: string;
+    detail: string;
+  }>;
 };
 
 export type Project = ProjectFrontmatter & {

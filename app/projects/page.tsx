@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { JsonLd } from '@/components/site/json-ld';
+import { ProjectBrowser } from '@/components/site/project-browser';
 import { getProjects } from '@/content/projects';
-import { ProjectIndexPage } from '@/components/site/project-pages';
 import { getSiteContent, siteConfig } from '@/content/site';
 import { defaultLocale } from '@/lib/i18n';
 const content = getSiteContent(defaultLocale);
@@ -31,7 +31,7 @@ export default async function ProjectsPage() {
           url: `${siteConfig.url}/projects/`,
         }}
       />
-      <ProjectIndexPage locale={defaultLocale} siteConfig={siteConfig} content={content} projects={projects} />
+      <ProjectBrowser locale={defaultLocale} content={content} projects={projects} />
     </>
   );
 }

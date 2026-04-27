@@ -142,6 +142,7 @@ img {
   margin-bottom: 14px;
   border-radius: 999px;
   position: relative;
+  overflow: visible;
 }
 
 .brand {
@@ -405,6 +406,10 @@ img {
   margin-bottom: 20px;
 }
 
+.section-heading--stacked {
+  align-items: start;
+}
+
 .section-heading h2 {
   font-size: clamp(2.2rem, 4vw, 4rem);
   max-width: 16ch;
@@ -416,6 +421,76 @@ img {
 
 .project-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.timeline-grid,
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.timeline-card,
+.metric-card {
+  display: grid;
+  gap: 10px;
+  padding: 22px;
+}
+
+.timeline-card h3,
+.metric-card strong {
+  margin: 0;
+  font-size: 1.25rem;
+  font-family:
+    "Space Grotesk",
+    "Avenir Next Condensed",
+    "Segoe UI",
+    sans-serif;
+}
+
+.metric-card strong {
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.timeline-card p,
+.metric-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.filter-bar {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.search-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: rgba(246, 239, 227, 0.48);
+}
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pill--active {
+  background: linear-gradient(135deg, rgba(125, 134, 255, 0.28), rgba(87, 217, 255, 0.2));
+  border-color: rgba(143, 194, 255, 0.4);
 }
 
 .blog-grid,
@@ -617,11 +692,16 @@ img {
   transition:
     transform 180ms ease,
     filter 180ms ease,
-    opacity 180ms ease;
+    opacity 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .music-cd:hover {
-  transform: scale(1.16);
+  transform: scale(1.22);
+  box-shadow:
+    0 0 0 1px rgba(143, 194, 255, 0.5),
+    0 0 0 8px rgba(125, 134, 255, 0.12),
+    0 14px 28px rgba(0, 0, 0, 0.32);
 }
 
 .music-cd:focus-visible {
@@ -683,6 +763,16 @@ img {
   animation-duration: 5.5s;
 }
 
+.music-cd:hover .music-cd__disc {
+  filter: saturate(1.2) brightness(1.06);
+}
+
+.music-cd:hover .music-cd__label {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.46),
+    0 0 14px rgba(143, 194, 255, 0.46);
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -697,6 +787,10 @@ img {
 
 .contact-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 22px;
+}
+
+.contact-card--cta .button-row {
   margin-top: 22px;
 }
 
@@ -970,6 +1064,8 @@ html[data-locale='zh'] .topbar-links {
   .two-column,
   .blog-grid,
   .blog-strip,
+  .timeline-grid,
+  .metric-grid,
   .signal-grid,
   .project-grid,
   .contact-grid,
@@ -985,6 +1081,11 @@ html[data-locale='zh'] .topbar-links {
 
   .blog-grid,
   .blog-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-grid,
+  .metric-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1033,6 +1134,10 @@ html[data-locale='zh'] .topbar-links {
 
   .music-cd {
     margin-left: 0;
+  }
+
+  .filter-pills {
+    gap: 8px;
   }
 
   .hero-copy,

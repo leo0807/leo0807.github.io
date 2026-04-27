@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { BlogIndexPage } from '@/components/site/blog-pages';
+import { BlogBrowser } from '@/components/site/blog-browser';
 import { JsonLd } from '@/components/site/json-ld';
 import { getBlogPosts } from '@/content/blogs';
 import { getSiteContent, siteConfig } from '@/content/site';
@@ -32,7 +32,7 @@ export default async function BlogPage() {
           url: `${siteConfig.url}/zh/blog/`,
         }}
       />
-      <BlogIndexPage locale={locale} content={content} posts={posts} />
+      <BlogBrowser locale={locale} content={content} posts={posts} />
     </>
   );
 }

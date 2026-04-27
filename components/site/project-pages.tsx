@@ -70,6 +70,17 @@ export function ProjectDetailPage({ locale, siteConfig, content, project }: Proj
               <p>{project.focus}</p>
             </div>
           </div>
+          {project.metrics?.length ? (
+            <div className="metric-grid">
+              {project.metrics.map((metric) => (
+                <article key={metric.label} className="surface metric-card">
+                  <span className="label">{metric.label}</span>
+                  <strong>{metric.value}</strong>
+                  <p>{metric.detail}</p>
+                </article>
+              ))}
+            </div>
+          ) : null}
           <div className="pill-grid">
             {project.tech.map((item) => (
               <span key={item} className="pill">

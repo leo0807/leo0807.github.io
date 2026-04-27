@@ -128,6 +128,20 @@ export function PortfolioHome({
         </section>
 
         <section className="projects-block">
+          <SectionHeading eyebrow={content.timeline.eyebrow} title={content.timeline.title} />
+          <p className="muted compact">{content.timeline.lead}</p>
+          <div className="timeline-grid">
+            {content.timeline.items.map((item) => (
+              <article key={item.period + item.title} className="surface timeline-card">
+                <span className="signal-index">{item.period}</span>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="projects-block">
           <SectionHeading eyebrow={content.signals.eyebrow} title={content.signals.title} />
           <p className="muted compact">{content.signals.lead}</p>
           <div className="signal-grid">
@@ -188,6 +202,22 @@ export function PortfolioHome({
                 onBlur={() => setActiveSlug(featuredProjects[0]?.slug ?? projects[0]?.slug ?? '')}
               />
             ))}
+          </div>
+        </section>
+
+        <section className="surface contact-card contact-card--cta">
+          <SectionHeading eyebrow={content.contactCta.eyebrow} title={content.contactCta.title} />
+          <p className="muted">{content.contactCta.lead}</p>
+          <div className="button-row">
+            <a className="button button-primary" href={content.contactCta.primaryHref} target="_blank" rel="noreferrer">
+              {content.contactCta.primaryLabel}
+            </a>
+            <a className="button button-secondary" href={content.contactCta.secondaryHref} target="_blank" rel="noreferrer">
+              {content.contactCta.secondaryLabel}
+            </a>
+            <Link className="button button-secondary" href={localizedPath(locale, '/blog/')}>
+              {content.blogIndex.action}
+            </Link>
           </div>
         </section>
 

@@ -137,9 +137,9 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  padding: 16px 20px;
-  margin-bottom: 18px;
+  gap: 14px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
   border-radius: 999px;
 }
 
@@ -152,22 +152,27 @@ img {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .topbar-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
+  align-items: center;
+  gap: 12px 16px;
   color: var(--muted);
   justify-content: flex-end;
+  line-height: 1;
 }
 
 .language-switch {
   border-radius: 999px;
-  padding: 8px 14px;
+  padding: 6px 12px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--text);
   background: rgba(255, 255, 255, 0.04);
+  line-height: 1;
 }
 
 .hero-stack {
@@ -817,11 +822,11 @@ html[data-locale='zh'] .hero-copy h1 span {
 }
 
 html[data-locale='zh'] .topbar {
-  gap: 14px;
+  gap: 12px;
 }
 
 html[data-locale='zh'] .topbar-links {
-  gap: 14px;
+  gap: 10px 14px;
 }
 
 @media (max-width: 1080px) {
@@ -854,9 +859,30 @@ html[data-locale='zh'] .topbar-links {
   }
 
   .topbar {
-    flex-direction: column;
-    align-items: start;
-    border-radius: 28px;
+    flex-wrap: wrap;
+    align-items: center;
+    border-radius: 24px;
+    padding: 12px 14px;
+  }
+
+  .brand {
+    font-size: 0.98rem;
+    letter-spacing: 0.09em;
+  }
+
+  .topbar-links {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 10px 12px;
+  }
+
+  .topbar-links > a {
+    font-size: 0.96rem;
+  }
+
+  .language-switch {
+    margin-left: auto;
+    padding: 6px 10px;
   }
 
   .music-card--sticky {

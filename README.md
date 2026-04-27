@@ -79,3 +79,4 @@ The project is configured for GitHub Pages as a static export. The build output 
 - The original media assets were preserved and reorganized into the new structure.
 - The 3D and content layers are designed to stay maintainable as the portfolio grows.
 - The site is bilingual by design, so new work can be added in both languages without changing the route architecture.
+- The English resume download is regenerated from `Junxu_Zhang.docx` and stored at `public/pdf/english.PDF`.

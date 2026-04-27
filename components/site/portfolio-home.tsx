@@ -152,13 +152,13 @@ export function PortfolioHome({
         <section id="contact" className="surface contact-card">
           <SectionHeading eyebrow={content.contact.eyebrow} title={content.contact.title} />
           <p className="muted">{content.contact.lead}</p>
-            <div className="contact-grid">
-              {content.contactLinks.map((link) => (
-                <a key={link.label} className="contact-tile" href={link.href} target="_blank" rel="noreferrer">
-                  <strong>{link.label}</strong>
-                  <span>{link.helper ?? link.href.replace('https://', '')}</span>
-                </a>
-              ))}
+          <div className="contact-grid">
+            {content.contactLinks.map((link) => (
+              <a key={link.label} className="contact-tile" href={link.href} target="_blank" rel="noreferrer">
+                <strong>{link.label}</strong>
+                <span>{link.helper ?? link.href.replace('https://', '')}</span>
+              </a>
+            ))}
             <div className="contact-tile">
               <strong>{content.contact.location}</strong>
               <span>{content.contact.locationValue}</span>

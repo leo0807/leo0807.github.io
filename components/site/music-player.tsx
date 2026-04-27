@@ -79,9 +79,11 @@ export function MusicPlayer({ tracks, copy }: { tracks: Track[]; copy: SiteConte
         <div className="music-copy">
           <p className="eyebrow">{copy.eyebrow}</p>
           <h3 id="soundtrack-title">{copy.title}</h3>
-          <p className="muted">
-            {track.artist} · {track.title}
-          </p>
+          <div className="music-inline-meta">
+            <span>{track.artist}</span>
+            <span aria-hidden="true">·</span>
+            <span>{track.title}</span>
+          </div>
         </div>
         <div className="music-controls">
           <button
@@ -110,10 +112,12 @@ export function MusicPlayer({ tracks, copy }: { tracks: Track[]; copy: SiteConte
         </div>
       </div>
       <div className="music-footer">
-        <label className="progress-stack">
-          <span className="muted">
+        <div className="music-footer__row">
+          <span className="music-time">
             {formatTime(progress)} / {formatTime(duration)}
           </span>
+        </div>
+        <label className="progress-stack">
           <input
             type="range"
             min={0}
@@ -131,7 +135,6 @@ export function MusicPlayer({ tracks, copy }: { tracks: Track[]; copy: SiteConte
         <div className="progress-bar">
           <span style={{ width: `${progressPercent}%` }} />
         </div>
-        <p className="music-note">{copy.note}</p>
       </div>
       <audio ref={audioRef} preload="metadata" />
     </section>

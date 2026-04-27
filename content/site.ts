@@ -275,7 +275,7 @@ const siteContent: Record<Locale, SiteContent> = {
     },
     hero: {
       eyebrow: 'Next.js + R3F 作品集',
-      title: ['AI 系统能稳定交付，', '界面也要像产品一样有气质。'],
+      title: ['AI系统稳定交付，', '界面也要像产品。'],
       lead:
         '这个作品集基于 Next.js App Router 重构，首页、项目页、SEO 元数据和后续新增内容都共享同一套可扩展架构，而不再被塞进单一静态文件里。现在的视觉语言更偏向 AI 工程与产品化展示。',
       projects: '查看项目',

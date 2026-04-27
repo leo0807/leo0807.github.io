@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
+import { HtmlLanguageSync } from '@/components/site/html-language-sync';
 import { siteConfig } from '@/content/site';
 
 export const metadata: Metadata = {
@@ -48,7 +49,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <HtmlLanguageSync />
+        {children}
+      </body>
     </html>
   );
 }

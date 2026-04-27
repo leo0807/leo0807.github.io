@@ -106,6 +106,84 @@ function CoreSculpture({ activeSlug }: { activeSlug?: string | null }) {
   );
 }
 
+function SignalOrbit({ activeSlug }: { activeSlug?: string | null }) {
+  const orbit = useRef<THREE.Group>(null);
+  const ring = useRef<THREE.Mesh>(null);
+
+  useFrame((state, delta) => {
+    if (orbit.current) {
+      orbit.current.rotation.z += delta * 0.22;
+      orbit.current.rotation.x = THREE.MathUtils.lerp(
+        orbit.current.rotation.x,
+        state.pointer.y * 0.14 + (activeSlug ? 0.16 : 0.08),
+        0.04,
+      );
+      orbit.current.rotation.y = THREE.MathUtils.lerp(
+        orbit.current.rotation.y,
+        -state.pointer.x * 0.18 + (activeSlug ? 0.24 : 0.12),
+        0.04,
+      );
+    }
+
+    if (ring.current) {
+      ring.current.rotation.z += delta * (activeSlug ? 0.28 : 0.18);
+      ring.current.scale.lerp(new THREE.Vector3(activeSlug ? 1.08 : 1, activeSlug ? 1.08 : 1, 1), 0.06);
+    }
+  });
+
+  return (
+    <group ref={orbit} position={[0, -0.1, -0.5]}>
+      <mesh ref={ring} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[2.8, 0.03, 18, 120]} />
+        <meshStandardMaterial color={activeSlug ? '#8fe6ff' : '#6bb8ff'} emissive={activeSlug ? '#12354b' : '#091724'} emissiveIntensity={1.2} />
+      </mesh>
+      <mesh rotation={[Math.PI / 2, 0, Math.PI / 2]}>
+        <torusGeometry args={[1.9, 0.018, 12, 96]} />
+        <meshStandardMaterial color={activeSlug ? '#d7ffe8' : '#bdebdc'} emissive={activeSlug ? '#174b33' : '#0b1e18'} emissiveIntensity={0.9} />
+      </mesh>
+      <mesh position={[0, 0.18, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[3.55, 3.72, 64]} />
+        <meshBasicMaterial color="#a6c6ff" transparent opacity={0.28} side={THREE.DoubleSide} />
+      </mesh>
+    </group>
+  );
+}
+
+function PointerOrb({ activeSlug }: { activeSlug?: string | null }) {
+  const orb = useRef<THREE.Mesh>(null);
+  const light = useRef<THREE.PointLight>(null);
+  const target = useMemo(() => new THREE.Vector3(), []);
+
+  useFrame((state, delta) => {
+    if (!orb.current || !light.current) return;
+
+    target.set(state.pointer.x * 3.2, state.pointer.y * 1.5, 2.8);
+    orb.current.position.lerp(target, 0.08);
+    orb.current.scale.lerp(new THREE.Vector3(activeSlug ? 0.28 : 0.22, activeSlug ? 0.28 : 0.22, activeSlug ? 0.28 : 0.22), 0.08);
+    orb.current.rotation.y += delta * 0.5;
+    light.current.position.lerp(target, 0.1);
+    light.current.intensity = activeSlug ? 2.5 : 1.75;
+  });
+
+  return (
+    <group>
+      <pointLight ref={light} color={activeSlug ? '#8fe6ff' : '#5ebdff'} intensity={1.8} distance={9} />
+      <mesh ref={orb}>
+        <icosahedronGeometry args={[1, 1]} />
+        <meshStandardMaterial
+          color={activeSlug ? '#d1fff1' : '#a7e8ff'}
+          emissive={activeSlug ? '#234e44' : '#15324a'}
+          emissiveIntensity={1}
+          roughness={0.2}
+          metalness={0.7}
+          transparent
+          opacity={0.9}
+        />
+      </mesh>
+    </group>
+  );
+}
+
 function ParticleHalo({ activeSlug }: { activeSlug?: string | null }) {
   const points = useRef<THREE.Points>(null);
   const particles = useMemo(() => {
@@ -168,8 +246,11 @@ export function HeroScene({ projects, activeProject }: { projects: Project[]; ac
         <pointLight position={[-4, -2, -2]} intensity={activeSlug ? 1.8 : 1.3} color={activeSlug ? '#8ec9ff' : '#5ebdff'} />
         <Suspense fallback={null}>
           <ParticleHalo activeSlug={activeSlug} />
+          <SignalOrbit activeSlug={activeSlug} />
           <CoreSculpture activeSlug={activeSlug} />
+          <PointerOrb activeSlug={activeSlug} />
           <ProjectPanels projects={projects} activeSlug={activeSlug} />
+          <gridHelper args={[22, 22, '#233a5c', '#132236']} position={[0, -2.35, -1.8]} />
         </Suspense>
         <OrbitControls
           enableZoom={false}

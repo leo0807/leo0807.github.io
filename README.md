@@ -6,6 +6,7 @@ A bilingual, static-exportable portfolio built with **Next.js App Router**, **Re
 
 - A visually rich homepage with a lightweight 3D scene.
 - Dedicated project routes with per-project metadata.
+- A blog system driven by MDX for long-form notes and technical writing.
 - A bilingual content system for English and Chinese.
 - A sticky mini music module preserved from the original site.
 - GitHub Pages-friendly static export and asset optimization.
@@ -18,6 +19,7 @@ A bilingual, static-exportable portfolio built with **Next.js App Router**, **Re
 - **@react-three/drei**: helper primitives for camera, float, texture loading, and controls.
 - **@react-three/postprocessing**: bloom, depth of field, noise, and vignette for the hero scene.
 - **MDX content pipeline**: each project lives in its own document under `content/projects/<locale>/`.
+- **MDX blog pipeline**: blog posts live under `content/blogs/<locale>/` and generate `/blog` and `/zh/blog` routes.
 - **Bilingual routing**: English routes live at `/`, Chinese routes live under `/zh/`.
 - **SEO tooling**: metadata, Open Graph, Twitter cards, JSON-LD, `robots.txt`, and `sitemap.xml`.
 - **Deployment**: static export plus GitHub Actions for GitHub Pages.
@@ -31,9 +33,11 @@ flowchart TD
   A --> C["components/scene"]
   A --> D["content/site.ts"]
   A --> E["content/projects/<locale>/*.mdx"]
+  A --> L["content/blogs/<locale>/*.mdx"]
   A --> F["lib/i18n.ts"]
   D --> G["Shared metadata + UI copy"]
   E --> H["Project pages and summaries"]
+  L --> M["Blog pages and summaries"]
   C --> I["R3F + postprocessing"]
   B --> J["Homepage, project index, sticky music"]
   A --> K["Static export (GitHub Pages)"]
@@ -47,6 +51,13 @@ Adding a new project is intentionally low-friction:
 2. Update the frontmatter fields: `slug`, `title`, `summary`, `seoDescription`, `image`, `liveUrl`, `role`, `focus`, and `tech`.
 3. Add the body copy below the frontmatter.
 4. Rebuild. The new project automatically appears in the homepage, project index, sitemap, and both locale routes.
+
+Adding a new blog post follows the same pattern:
+
+1. Copy an existing file in `content/blogs/en/` and `content/blogs/zh/`.
+2. Update the frontmatter fields: `slug`, `title`, `tag`, `summary`, `seoDescription`, `cover`, `date`, and `readingTime`.
+3. Write the post body in MDX.
+4. Rebuild. The new article automatically appears on the homepage preview, blog index, sitemap, and both locale routes.
 
 ## Performance Notes
 

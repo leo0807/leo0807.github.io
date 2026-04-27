@@ -13,6 +13,7 @@ export type SiteContent = {
   description: string;
   nav: {
     projects: string;
+    blog: string;
     stack: string;
     contact: string;
     language: string;
@@ -58,6 +59,16 @@ export type SiteContent = {
     eyebrow: string;
     title: string;
     lead: string;
+  };
+  blogIndex: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    action: string;
+  };
+  blogDetail: {
+    back: string;
+    readMore: string;
   };
   projectDetail: {
     visit: string;
@@ -172,6 +183,7 @@ const siteContent: Record<Locale, SiteContent> = {
       'A bilingual Next.js and React Three Fiber portfolio for Junxu Zhang, a software engineer at COMAC, with immersive 3D presentation, project detail pages, and an expandable content system.',
     nav: {
       projects: 'Projects',
+      blog: 'Blog',
       stack: 'Stack',
       contact: 'Contact',
       language: '中文',
@@ -236,6 +248,17 @@ const siteContent: Record<Locale, SiteContent> = {
       lead:
         'Each project is now powered by Markdown content and structured metadata, so expanding into deeper writeups or a content workflow later is straightforward.',
     },
+    blogIndex: {
+      eyebrow: 'Blog',
+      title: 'A place to write, explain, and keep adding depth to the portfolio.',
+      lead:
+        'Blog posts use MDX, so you can write long-form notes, technical breakdowns, and bilingual articles without changing the app structure.',
+      action: 'Read all posts',
+    },
+    blogDetail: {
+      back: 'Back to Blog',
+      readMore: 'Read more',
+    },
     projectDetail: {
       visit: 'Visit Project',
       source: 'Source',
@@ -271,6 +294,7 @@ const siteContent: Record<Locale, SiteContent> = {
       '一个支持中英双语的 Next.js + React Three Fiber 个人作品集，展示张俊旭在 COMAC 的软件工程工作、沉浸式 3D 首页、项目详情页与可扩展内容体系。',
     nav: {
       projects: '项目',
+      blog: '博客',
       stack: '技术栈',
       contact: '联系',
       language: 'EN',
@@ -334,6 +358,17 @@ const siteContent: Record<Locale, SiteContent> = {
       title: '按路由组织的项目库，适合后续继续补案例。',
       lead:
         '每个项目现在都由 Markdown 内容和结构化元数据驱动，后面要继续扩展长文案例、项目说明或内容工作流都会轻松很多。',
+    },
+    blogIndex: {
+      eyebrow: '博客',
+      title: '一个可以持续写作、解释和补充深度内容的地方。',
+      lead:
+        '博客内容采用 MDX 编写，你可以很自然地补技术笔记、实现拆解和双语文章，而不需要改动整体架构。',
+      action: '查看全部文章',
+    },
+    blogDetail: {
+      back: '返回博客',
+      readMore: '继续阅读',
     },
     projectDetail: {
       visit: '访问项目',

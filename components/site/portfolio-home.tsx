@@ -6,6 +6,7 @@ import { HeroScene } from '@/components/scene/hero-scene';
 import { MusicPlayer } from '@/components/site/music-player';
 import { ProjectCard } from '@/components/site/project-card';
 import { SectionHeading } from '@/components/site/section-heading';
+import type { BlogPost } from '@/content/blogs';
 import type { Project } from '@/content/projects';
 import type { Locale } from '@/lib/i18n';
 import { localizedPath } from '@/lib/i18n';
@@ -16,6 +17,7 @@ type PortfolioHomeProps = {
   siteConfig: SiteConfig;
   content: SiteContent;
   projects: Project[];
+  featuredBlogPosts: BlogPost[];
   featuredProjects: Project[];
 };
 
@@ -24,6 +26,7 @@ export function PortfolioHome({
   siteConfig,
   content,
   projects,
+  featuredBlogPosts,
   featuredProjects,
 }: PortfolioHomeProps) {
   const [activeSlug, setActiveSlug] = useState<string>(featuredProjects[0]?.slug ?? projects[0]?.slug ?? '');
@@ -44,6 +47,7 @@ export function PortfolioHome({
             </Link>
             <div className="topbar-links">
               <Link href={localizedPath(locale, '/projects/')}>{content.nav.projects}</Link>
+              <Link href={localizedPath(locale, '/blog/')}>{content.nav.blog}</Link>
               <a href="#stack">{content.nav.stack}</a>
               <a href="#contact">{content.nav.contact}</a>
               <Link className="language-switch" href={localizedPath(locale === 'en' ? 'zh' : 'en', '/')}>
@@ -124,6 +128,31 @@ export function PortfolioHome({
                 <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
                 <h3>{signal.title}</h3>
                 <p>{signal.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="projects-block">
+          <SectionHeading
+            eyebrow={content.blogIndex.eyebrow}
+            title={content.blogIndex.title}
+            action={
+              <Link className="text-link" href={localizedPath(locale, '/blog/')}>
+                {content.blogIndex.action}
+              </Link>
+            }
+          />
+          <p className="muted compact">{content.blogIndex.lead}</p>
+          <div className="blog-strip">
+            {featuredBlogPosts.map((post, index) => (
+              <article key={post.slug} className="surface blog-strip__card">
+                <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
+                <h3>{post.title}</h3>
+                <p>{post.summary}</p>
+                <Link className="text-link" href={localizedPath(locale, '/blog/')}>
+                  {content.blogIndex.action}
+                </Link>
               </article>
             ))}
           </div>

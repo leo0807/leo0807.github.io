@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PortfolioHome } from '@/components/site/portfolio-home';
 import { JsonLd } from '@/components/site/json-ld';
+import { getFeaturedBlogPosts } from '@/content/blogs';
 import { getFeaturedProjects, getProjects } from '@/content/projects';
 import { getSiteContent, siteConfig } from '@/content/site';
 
@@ -20,7 +21,11 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [projects, featuredProjects] = await Promise.all([getProjects(locale), getFeaturedProjects(locale)]);
+  const [projects, featuredProjects, featuredBlogPosts] = await Promise.all([
+    getProjects(locale),
+    getFeaturedProjects(locale),
+    getFeaturedBlogPosts(locale),
+  ]);
 
   return (
     <>
@@ -40,6 +45,7 @@ export default async function HomePage() {
         siteConfig={siteConfig}
         content={content}
         projects={projects}
+        featuredBlogPosts={featuredBlogPosts}
         featuredProjects={featuredProjects}
       />
     </>

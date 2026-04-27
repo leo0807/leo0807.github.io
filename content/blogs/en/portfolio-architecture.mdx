@@ -1,0 +1,28 @@
+---
+order: 1
+slug: portfolio-architecture
+title: Designing a portfolio that behaves like a product
+tag: Writing
+summary: A short note on how the portfolio is structured around content, routes, and expressive visuals.
+seoDescription: How the portfolio uses MDX, Next.js App Router, and 3D presentation to scale content.
+cover: /optimized/images/hero.jpg
+date: 2026-04-28
+readingTime: 4 min read
+featured: true
+---
+
+The goal of this portfolio is not only to show projects. It also needs to support future writing, case studies, and content that can grow without turning into a maintenance burden.
+
+That is why the site is built around typed content objects, route-based pages, and MDX documents for long-form writing. The homepage is intentionally a high-signal summary, while the blog becomes the place where I can explain design decisions, implementation details, and technical learnings in more depth.
+
+## Why MDX
+
+MDX gives me the freedom to write with headings, lists, links, and code blocks while still keeping everything in the same codebase. It is lightweight, portable, and easy to scale when the next article arrives.
+
+## What this unlocks
+
+- Project writeups that can go deeper than the homepage
+- Thought pieces about AI engineering, UI systems, or workflows
+- Bilingual publishing without changing the overall app structure
+
+The result is a portfolio that feels more like a living engineering notebook than a static splash page.

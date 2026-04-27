@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PortfolioHome } from '@/components/site/portfolio-home';
 import { JsonLd } from '@/components/site/json-ld';
+import { getFeaturedBlogPosts } from '@/content/blogs';
 import { getFeaturedProjects, getProjects } from '@/content/projects';
 import { getSiteContent, siteConfig } from '@/content/site';
 import { defaultLocale } from '@/lib/i18n';
@@ -24,6 +25,7 @@ export default async function HomePage() {
     getProjects(defaultLocale),
     getFeaturedProjects(defaultLocale),
   ]);
+  const featuredBlogPosts = await getFeaturedBlogPosts(defaultLocale);
 
   return (
     <>
@@ -43,6 +45,7 @@ export default async function HomePage() {
         siteConfig={siteConfig}
         content={content}
         projects={projects}
+        featuredBlogPosts={featuredBlogPosts}
         featuredProjects={featuredProjects}
       />
     </>

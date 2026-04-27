@@ -417,6 +417,68 @@ img {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.blog-grid,
+.blog-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.blog-strip {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.blog-card,
+.blog-strip__card {
+  overflow: hidden;
+}
+
+.blog-card__link {
+  display: grid;
+  gap: 16px;
+  height: 100%;
+}
+
+.blog-card img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.blog-card__copy,
+.blog-strip__card {
+  display: grid;
+  gap: 10px;
+}
+
+.blog-card__copy h2,
+.blog-strip__card h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-family:
+    "Space Grotesk",
+    "Avenir Next Condensed",
+    "Segoe UI",
+    sans-serif;
+}
+
+.blog-card__copy p,
+.blog-strip__card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.blog-card__meta,
+.blog-detail__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
 .signal-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -693,6 +755,10 @@ img {
   align-items: start;
 }
 
+.blog-detail .project-detail__media img {
+  aspect-ratio: 4 / 5;
+}
+
 .project-mdx {
   display: grid;
   gap: 18px;
@@ -894,6 +960,8 @@ html[data-locale='zh'] .topbar-links {
 @media (max-width: 1080px) {
   .hero-grid,
   .two-column,
+  .blog-grid,
+  .blog-strip,
   .signal-grid,
   .project-grid,
   .contact-grid,
@@ -905,6 +973,11 @@ html[data-locale='zh'] .topbar-links {
 
   .hero-grid {
     min-height: auto;
+  }
+
+  .blog-grid,
+  .blog-strip {
+    grid-template-columns: 1fr;
   }
 
   .section-heading {

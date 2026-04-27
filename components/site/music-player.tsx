@@ -15,7 +15,17 @@ function formatTime(seconds: number) {
   return `${mins}:${secs}`;
 }
 
-export function MusicPlayer({ tracks, copy }: { tracks: Track[]; copy: SiteContent['music'] }) {
+export function MusicPlayer({
+  tracks,
+  copy,
+  expanded,
+  onToggleExpanded,
+}: {
+  tracks: Track[];
+  copy: SiteContent['music'];
+  expanded: boolean;
+  onToggleExpanded: () => void;
+}) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [trackIndex, setTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -73,70 +83,90 @@ export function MusicPlayer({ tracks, copy }: { tracks: Track[]; copy: SiteConte
   }, [tracks.length]);
 
   return (
-    <section className="surface music-card music-card--sticky" aria-labelledby="soundtrack-title">
-      <div className="music-layout music-layout--compact">
-        <img className="music-cover" src={track.cover} alt={track.title} loading="eager" decoding="async" />
-        <div className="music-copy">
-          <p className="eyebrow">{copy.eyebrow}</p>
-          <h3 id="soundtrack-title">{copy.title}</h3>
-          <div className="music-inline-meta">
-            <span>{track.artist}</span>
-            <span aria-hidden="true">·</span>
-            <span>{track.title}</span>
+    <div className={`music-shell ${expanded ? 'music-shell--expanded' : ''}`}>
+      <button
+        type="button"
+        className="music-trigger"
+        aria-expanded={expanded}
+        aria-controls="soundtrack-player"
+        onClick={onToggleExpanded}
+      >
+        <img className="music-cover" src={track.cover} alt="" aria-hidden="true" loading="eager" decoding="async" />
+        <span className="music-trigger__copy">
+          <span className="music-trigger__eyebrow">{copy.eyebrow}</span>
+          <span className="music-trigger__title">{track.title}</span>
+        </span>
+        <span className="music-trigger__action">{expanded ? copy.collapse : copy.expand}</span>
+      </button>
+
+      {expanded ? (
+        <section className="surface music-card music-card--popover" id="soundtrack-player" aria-labelledby="soundtrack-title">
+          <div className="music-layout music-layout--expanded">
+            <img className="music-cover" src={track.cover} alt={track.title} loading="eager" decoding="async" />
+            <div className="music-copy">
+              <p className="eyebrow">{copy.eyebrow}</p>
+              <h3 id="soundtrack-title">{copy.title}</h3>
+              <div className="music-inline-meta">
+                <span>{track.artist}</span>
+                <span aria-hidden="true">·</span>
+                <span>{track.title}</span>
+              </div>
+            </div>
+            <div className="music-controls">
+              <button
+                type="button"
+                className="button button-secondary button-chip"
+                onClick={() => setTrackIndex((current) => (current - 1 + tracks.length) % tracks.length)}
+              >
+                {copy.prev}
+              </button>
+              <button
+                type="button"
+                className="button button-primary button-chip"
+                onClick={() => {
+                  setIsPlaying((current) => !current);
+                }}
+              >
+                {isPlaying ? copy.pause : copy.play}
+              </button>
+              <button
+                type="button"
+                className="button button-secondary button-chip"
+                onClick={() => setTrackIndex((current) => (current + 1) % tracks.length)}
+              >
+                {copy.next}
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="music-controls">
-          <button
-            type="button"
-            className="button button-secondary button-chip"
-            onClick={() => setTrackIndex((current) => (current - 1 + tracks.length) % tracks.length)}
-          >
-            {copy.prev}
-          </button>
-          <button
-            type="button"
-            className="button button-primary button-chip"
-            onClick={() => {
-              setIsPlaying((current) => !current);
-            }}
-          >
-            {isPlaying ? copy.pause : copy.play}
-          </button>
-          <button
-            type="button"
-            className="button button-secondary button-chip"
-            onClick={() => setTrackIndex((current) => (current + 1) % tracks.length)}
-          >
-            {copy.next}
-          </button>
-        </div>
-      </div>
-      <div className="music-footer">
-        <div className="music-footer__row">
-          <span className="music-time">
-            {formatTime(progress)} / {formatTime(duration)}
-          </span>
-        </div>
-        <label className="progress-stack">
-          <input
-            type="range"
-            min={0}
-            max={duration || 0}
-            value={progress}
-            onChange={(event) => {
-              const nextProgress = Number(event.target.value);
-              setProgress(nextProgress);
-              if (audioRef.current) {
-                audioRef.current.currentTime = nextProgress;
-              }
-            }}
-          />
-        </label>
-        <div className="progress-bar">
-          <span style={{ width: `${progressPercent}%` }} />
-        </div>
-      </div>
+          <div className="music-footer">
+            <div className="music-footer__row">
+              <span className="music-time">
+                {formatTime(progress)} / {formatTime(duration)}
+              </span>
+              <p className="music-note">{copy.note}</p>
+            </div>
+            <label className="progress-stack">
+              <input
+                type="range"
+                min={0}
+                max={duration || 0}
+                value={progress}
+                onChange={(event) => {
+                  const nextProgress = Number(event.target.value);
+                  setProgress(nextProgress);
+                  if (audioRef.current) {
+                    audioRef.current.currentTime = nextProgress;
+                  }
+                }}
+              />
+            </label>
+            <div className="progress-bar">
+              <span style={{ width: `${progressPercent}%` }} />
+            </div>
+          </div>
+        </section>
+      ) : null}
       <audio ref={audioRef} preload="metadata" />
-    </section>
+    </div>
   );
 }

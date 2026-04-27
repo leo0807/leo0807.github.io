@@ -27,6 +27,7 @@ export function PortfolioHome({
   featuredProjects,
 }: PortfolioHomeProps) {
   const [activeSlug, setActiveSlug] = useState<string>(featuredProjects[0]?.slug ?? projects[0]?.slug ?? '');
+  const [musicExpanded, setMusicExpanded] = useState(false);
 
   const activeProject = useMemo(() => {
     return projects.find((project) => project.slug === activeSlug) ?? null;
@@ -49,9 +50,13 @@ export function PortfolioHome({
                 {locale === 'en' ? content.nav.language : content.nav.language}
               </Link>
             </div>
+            <MusicPlayer
+              tracks={siteConfig.tracks}
+              copy={content.music}
+              expanded={musicExpanded}
+              onToggleExpanded={() => setMusicExpanded((current) => !current)}
+            />
           </nav>
-
-          <MusicPlayer tracks={siteConfig.tracks} copy={content.music} />
 
           <section className="hero-grid">
             <div className="surface hero-copy">

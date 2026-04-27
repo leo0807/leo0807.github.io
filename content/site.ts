@@ -77,6 +77,8 @@ export type SiteContent = {
     eyebrow: string;
     title: string;
     note: string;
+    expand: string;
+    collapse: string;
     prev: string;
     play: string;
     pause: string;
@@ -252,6 +254,8 @@ const siteContent: Record<Locale, SiteContent> = {
       eyebrow: 'Soundtrack',
       title: 'Audio assets preserved from the original portfolio',
       note: 'This keeps the original playlist as a small personal signature inside the new build.',
+      expand: 'Open player',
+      collapse: 'Collapse player',
       prev: 'Prev',
       play: 'Play',
       pause: 'Pause',
@@ -349,6 +353,8 @@ const siteContent: Record<Locale, SiteContent> = {
       eyebrow: '背景音乐',
       title: '保留原站里的音乐素材',
       note: '把原来的播放列表留在新站里，作为一个很小但有个人印记的细节。',
+      expand: '展开播放器',
+      collapse: '收起播放器',
       prev: '上一首',
       play: '播放',
       pause: '暂停',

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
 import { HtmlLanguageSync } from '@/components/site/html-language-sync';
+import { ScrollToTop } from '@/components/site/scroll-to-top';
 import { siteConfig } from '@/content/site';
 
 export const metadata: Metadata = {
@@ -51,6 +52,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <HtmlLanguageSync />
+        <ScrollToTop />
         {children}
       </body>
     </html>

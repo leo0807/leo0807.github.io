@@ -29,15 +29,24 @@ export function PortfolioHome({
   featuredBlogPosts,
   featuredProjects,
 }: PortfolioHomeProps) {
-  const [activeSlug, setActiveSlug] = useState<string>(featuredProjects[0]?.slug ?? projects[0]?.slug ?? '');
+  const safeFeaturedProjects = featuredProjects ?? [];
+  const safeFeaturedBlogPosts = featuredBlogPosts ?? [];
+  const presentationModes = content.presentation?.modes ?? [];
+  const terminalLines = content.showcase?.terminal?.lines ?? [];
+  const showcaseVizStats = content.showcase?.viz?.stats ?? [];
+  const safeStrengths = content.strengths ?? [];
+  const safeTimelineItems = content.timeline.items ?? [];
+  const safeSignalCards = content.signals.cards ?? [];
+
+  const [activeSlug, setActiveSlug] = useState<string>(safeFeaturedProjects[0]?.slug ?? projects[0]?.slug ?? '');
   const [resumePreview, setResumePreview] = useState<'english' | 'chinese' | null>(null);
   const [presentationMode, setPresentationMode] = useState<'editorial' | 'viz' | 'terminal'>('editorial');
-  const vizProjects = featuredProjects.slice(0, 3);
+  const vizProjects = safeFeaturedProjects.slice(0, 3);
 
   const activeProject = useMemo(() => {
     return projects.find((project) => project.slug === activeSlug) ?? null;
   }, [activeSlug, projects]);
-  const terminalText = content.showcase.terminal.lines
+  const terminalText = terminalLines
     .map((line, index) => `${String(index + 1).padStart(2, '0')}  ${line}`)
     .join('\n');
   const editorialTelemetry = {
@@ -48,8 +57,8 @@ export function PortfolioHome({
   const vizTelemetry = {
     label: 'Live metrics',
     stats: [
-      { label: 'Projects', value: String(featuredProjects.length) },
-      { label: 'Posts', value: String(featuredBlogPosts.length) },
+      { label: 'Projects', value: String(safeFeaturedProjects.length) },
+      { label: 'Posts', value: String(safeFeaturedBlogPosts.length) },
       { label: 'Tracks', value: String(siteConfig.tracks.length) },
     ],
     note: 'Click a project chip to retune the scene and surface a different case study.',
@@ -57,7 +66,7 @@ export function PortfolioHome({
   const terminalTelemetry = {
     label: 'Session log',
     title: 'portfolio@local',
-    lines: ['mode=terminal', `project=${activeProject?.slug ?? 'none'}`, `tracks=${siteConfig.tracks.length}`, `posts=${featuredBlogPosts.length}`],
+    lines: ['mode=terminal', `project=${activeProject?.slug ?? 'none'}`, `tracks=${siteConfig.tracks.length}`, `posts=${safeFeaturedBlogPosts.length}`],
   };
 
   useEffect(() => {
@@ -101,7 +110,7 @@ export function PortfolioHome({
               <p className="muted">{content.presentation.lead}</p>
             </div>
             <div className="presentation-bar__controls" role="tablist" aria-label={content.presentation.eyebrow}>
-              {content.presentation.modes.map((mode) => (
+              {presentationModes.map((mode) => (
                 <button
                   key={mode.id}
                   type="button"
@@ -225,7 +234,7 @@ export function PortfolioHome({
               <h3>{content.showcase.viz.title}</h3>
               <p>{content.showcase.viz.body}</p>
               <div className="viz-stats">
-                {(content.showcase.viz.stats ?? []).map((stat, index) => (
+                {showcaseVizStats.map((stat, index) => (
                   <div key={stat.label} className="viz-stat">
                     <span className="viz-stat__label">{stat.label}</span>
                     <strong>{stat.value}</strong>
@@ -265,7 +274,7 @@ export function PortfolioHome({
           <article id="stack" className="surface stack-card">
             <SectionHeading eyebrow={content.stack.eyebrow} title={content.stack.title} />
             <div className="pill-grid">
-              {(content.strengths ?? []).map((item) => (
+              {safeStrengths.map((item) => (
                 <span key={item} className="pill">
                   {item}
                 </span>
@@ -279,7 +288,7 @@ export function PortfolioHome({
           <SectionHeading eyebrow={content.timeline.eyebrow} title={content.timeline.title} />
           <p className="muted compact">{content.timeline.lead}</p>
           <div className="timeline-grid">
-            {(content.timeline.items ?? []).map((item) => (
+            {safeTimelineItems.map((item) => (
               <article key={item.period + item.title} className="surface timeline-card">
                 <span className="signal-index">{item.period}</span>
                 <h3>{item.title}</h3>
@@ -293,7 +302,7 @@ export function PortfolioHome({
           <SectionHeading eyebrow={content.signals.eyebrow} title={content.signals.title} />
           <p className="muted compact">{content.signals.lead}</p>
           <div className="signal-grid">
-            {(content.signals.cards ?? []).map((signal, index) => (
+            {safeSignalCards.map((signal, index) => (
               <article key={signal.title} className={`surface signal-card signal-card--${index + 1}`}>
                 <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
                 <h3>{signal.title}</h3>
@@ -315,7 +324,7 @@ export function PortfolioHome({
           />
           <p className="muted compact">{content.blogIndex.lead}</p>
           <div className="blog-strip">
-            {(featuredBlogPosts ?? []).map((post, index) => (
+            {safeFeaturedBlogPosts.map((post, index) => (
               <article key={post.slug} className="surface blog-strip__card">
                 <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
                 <h3>{post.title}</h3>
@@ -339,7 +348,7 @@ export function PortfolioHome({
             }
           />
           <div className="project-grid project-grid--interactive">
-            {(featuredProjects ?? []).map((project) => (
+            {safeFeaturedProjects.map((project) => (
               <ProjectCard
                 key={project.slug}
                 project={project}
@@ -347,7 +356,7 @@ export function PortfolioHome({
                 active={project.slug === activeSlug}
                 onHover={() => setActiveSlug(project.slug)}
                 onFocus={() => setActiveSlug(project.slug)}
-                onBlur={() => setActiveSlug(featuredProjects[0]?.slug ?? projects[0]?.slug ?? '')}
+                onBlur={() => setActiveSlug(safeFeaturedProjects[0]?.slug ?? projects[0]?.slug ?? '')}
               />
             ))}
           </div>

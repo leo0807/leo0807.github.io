@@ -426,6 +426,240 @@ function ScanBeam({ displayMode, activeSlug }: { displayMode: DisplayMode; activ
   );
 }
 
+function CoderRoom({ displayMode, pointer }: { displayMode: DisplayMode; pointer: RefObject<Pointer> }) {
+  const room = useRef<THREE.Group>(null);
+  const coder = useRef<THREE.Group>(null);
+  const armL = useRef<THREE.Mesh>(null);
+  const armR = useRef<THREE.Mesh>(null);
+  const handL = useRef<THREE.Mesh>(null);
+  const handR = useRef<THREE.Mesh>(null);
+  const monitor = useRef<THREE.Mesh>(null);
+  const keys = useRef<THREE.Group>(null);
+
+  useFrame((state, delta) => {
+    if (room.current) {
+      room.current.rotation.y = THREE.MathUtils.lerp(room.current.rotation.y, pointer.current.x * 0.08, 0.03);
+      room.current.rotation.x = THREE.MathUtils.lerp(room.current.rotation.x, pointer.current.y * 0.04, 0.03);
+    }
+
+    if (coder.current) {
+      coder.current.position.y = Math.sin(state.clock.elapsedTime * 2.4) * 0.03;
+    }
+
+    const typingPulse = 0.08 + Math.sin(state.clock.elapsedTime * 10) * 0.03;
+    if (armL.current) {
+      armL.current.rotation.z = THREE.MathUtils.lerp(armL.current.rotation.z, -0.95 + typingPulse, 0.08);
+    }
+    if (armR.current) {
+      armR.current.rotation.z = THREE.MathUtils.lerp(armR.current.rotation.z, 0.86 - typingPulse, 0.08);
+    }
+    if (handL.current) {
+      handL.current.rotation.x = Math.sin(state.clock.elapsedTime * 9) * 0.18;
+    }
+    if (handR.current) {
+      handR.current.rotation.x = Math.cos(state.clock.elapsedTime * 8.5) * 0.18;
+    }
+    if (monitor.current) {
+      monitor.current.rotation.y = THREE.MathUtils.lerp(monitor.current.rotation.y, pointer.current.x * 0.06, 0.03);
+      monitor.current.rotation.x = THREE.MathUtils.lerp(monitor.current.rotation.x, -0.05 + pointer.current.y * 0.02, 0.03);
+    }
+    if (keys.current) {
+      keys.current.children.forEach((child, index) => {
+        if (child instanceof THREE.Mesh) {
+          child.scale.y = 1 + Math.abs(Math.sin(state.clock.elapsedTime * 8 + index * 0.5)) * 0.16;
+        }
+      });
+    }
+  });
+
+  const keyRows = [
+    [-0.84, -0.92, 0.02],
+    [-0.66, -0.92, 0.02],
+    [-0.48, -0.92, 0.02],
+    [-0.3, -0.92, 0.02],
+    [-0.12, -0.92, 0.02],
+    [0.06, -0.92, 0.02],
+    [0.24, -0.92, 0.02],
+    [0.42, -0.92, 0.02],
+    [0.6, -0.92, 0.02],
+    [-0.84, -1.1, 0.02],
+    [-0.66, -1.1, 0.02],
+    [-0.48, -1.1, 0.02],
+    [-0.3, -1.1, 0.02],
+    [-0.12, -1.1, 0.02],
+    [0.06, -1.1, 0.02],
+    [0.24, -1.1, 0.02],
+    [0.42, -1.1, 0.02],
+    [0.6, -1.1, 0.02],
+  ] as const;
+
+  return (
+    <group ref={room} position={[0, -0.15, -0.9]}>
+      <mesh position={[0, -1.95, -1.2]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[11, 9, 1, 1]} />
+        <meshStandardMaterial color={displayMode === 'terminal' ? '#0b1520' : '#121826'} roughness={0.95} metalness={0.05} />
+      </mesh>
+      <mesh position={[0, 1.8, -4.1]}>
+        <planeGeometry args={[11, 6.4]} />
+        <meshStandardMaterial color={displayMode === 'viz' ? '#101c30' : '#0b1220'} roughness={0.92} metalness={0.04} />
+      </mesh>
+      <mesh position={[-5.2, 0.4, -1.9]} rotation={[0, Math.PI / 2, 0]}>
+        <planeGeometry args={[6.2, 4.9]} />
+        <meshStandardMaterial color="#0d1524" roughness={0.96} metalness={0.04} />
+      </mesh>
+      <mesh position={[5.2, 0.4, -1.9]} rotation={[0, -Math.PI / 2, 0]}>
+        <planeGeometry args={[6.2, 4.9]} />
+        <meshStandardMaterial color="#0d1524" roughness={0.96} metalness={0.04} />
+      </mesh>
+
+      <mesh position={[0, -1.0, -0.2]}>
+        <boxGeometry args={[5.8, 0.16, 2.6]} />
+        <meshStandardMaterial color={displayMode === 'terminal' ? '#152634' : '#1b2331'} roughness={0.78} metalness={0.1} />
+      </mesh>
+      <mesh position={[0, -0.8, -0.95]}>
+        <boxGeometry args={[4.4, 1.0, 0.22]} />
+        <meshStandardMaterial color="#121922" roughness={0.68} metalness={0.18} />
+      </mesh>
+      <mesh position={[0, 0.06, -0.92]} rotation={[0, 0, -0.05]}>
+        <boxGeometry args={[2.6, 1.64, 0.14]} />
+        <meshStandardMaterial color="#10161f" roughness={0.28} metalness={0.32} emissive={displayMode === 'viz' ? '#10324f' : '#0a1118'} emissiveIntensity={0.6} />
+      </mesh>
+      <mesh ref={monitor} position={[0, 0.1, -0.82]} rotation={[0, 0, -0.02]}>
+        <boxGeometry args={[2.32, 1.36, 0.05]} />
+        <meshStandardMaterial color={displayMode === 'viz' ? '#8fe6ff' : '#93f2d0'} emissive={displayMode === 'terminal' ? '#0e2a20' : '#0d2539'} emissiveIntensity={1.6} roughness={0.1} metalness={0.18} />
+      </mesh>
+      <mesh position={[0, 0.1, -0.79]} rotation={[0, 0, -0.02]}>
+        <planeGeometry args={[2.06, 1.08]} />
+        <meshBasicMaterial color={displayMode === 'terminal' ? '#08130f' : '#09111a'} transparent opacity={0.9} />
+      </mesh>
+      <group position={[0, 0.12, -0.775]} rotation={[0, 0, -0.02]}>
+        <mesh position={[-0.7, 0.28, 0.01]}>
+          <boxGeometry args={[0.86, 0.06, 0.02]} />
+          <meshBasicMaterial color="#8fe6ff" transparent opacity={0.92} />
+        </mesh>
+        <mesh position={[-0.5, 0.12, 0.01]}>
+          <boxGeometry args={[0.66, 0.05, 0.02]} />
+          <meshBasicMaterial color="#93f2d0" transparent opacity={0.86} />
+        </mesh>
+        <mesh position={[-0.22, -0.04, 0.01]}>
+          <boxGeometry args={[0.24, 0.04, 0.02]} />
+          <meshBasicMaterial color="#ffdca8" transparent opacity={0.84} />
+        </mesh>
+        <mesh position={[0.15, -0.04, 0.01]}>
+          <boxGeometry args={[0.46, 0.04, 0.02]} />
+          <meshBasicMaterial color="#8fe6ff" transparent opacity={0.5} />
+        </mesh>
+      </group>
+      <mesh position={[0, -0.82, -0.74]}>
+        <boxGeometry args={[1.62, 0.1, 0.6]} />
+        <meshStandardMaterial color="#151d28" roughness={0.72} metalness={0.22} />
+      </mesh>
+      <group ref={keys} position={[0, -1.0, -0.58]}>
+        {keyRows.map((position, index) => (
+          <mesh key={position.join(':')} position={position}>
+            <boxGeometry args={[0.12, 0.08, 0.04]} />
+            <meshStandardMaterial
+              color={index % 3 === 0 ? '#8fe6ff' : index % 3 === 1 ? '#93f2d0' : '#f5cf8f'}
+              emissive={index % 3 === 0 ? '#0f2c40' : index % 3 === 1 ? '#123f36' : '#413018'}
+              emissiveIntensity={0.66}
+              roughness={0.24}
+              metalness={0.44}
+            />
+          </mesh>
+        ))}
+      </group>
+      <mesh position={[0, -1.24, -0.62]} rotation={[0, 0, 0]}>
+        <boxGeometry args={[1.84, 0.1, 0.76]} />
+        <meshStandardMaterial color="#111722" roughness={0.65} metalness={0.2} />
+      </mesh>
+
+      <group ref={coder} position={[0, -0.18, -0.56]}>
+        <mesh position={[0, 1.12, 0]}>
+          <sphereGeometry args={[0.46, 24, 24]} />
+          <meshStandardMaterial color="#c79c74" roughness={0.54} metalness={0.06} />
+        </mesh>
+        <mesh position={[0, 1.14, 0.3]} rotation={[0.28, 0, 0]}>
+          <torusGeometry args={[0.14, 0.03, 12, 24]} />
+          <meshStandardMaterial color={displayMode === 'terminal' ? '#93f2d0' : '#8fe6ff'} emissive={displayMode === 'terminal' ? '#103b2b' : '#12314a'} emissiveIntensity={0.9} />
+        </mesh>
+        <mesh position={[0, 1.08, 0.44]}>
+          <sphereGeometry args={[0.05, 12, 12]} />
+          <meshBasicMaterial color="#09111a" />
+        </mesh>
+        <mesh position={[0, 1.02, 0.43]}>
+          <sphereGeometry args={[0.05, 12, 12]} />
+          <meshBasicMaterial color="#09111a" />
+        </mesh>
+        <mesh position={[0, 0.91, 0.46]}>
+          <boxGeometry args={[0.16, 0.08, 0.04]} />
+          <meshBasicMaterial color="#5f3a2b" />
+        </mesh>
+        <mesh position={[0, 0.8, -0.02]}>
+          <boxGeometry args={[0.5, 0.74, 0.34]} />
+          <meshStandardMaterial color="#182230" roughness={0.82} metalness={0.12} />
+        </mesh>
+        <mesh position={[0, 0.42, -0.01]}>
+          <boxGeometry args={[0.62, 0.5, 0.38]} />
+          <meshStandardMaterial color="#22303e" roughness={0.82} metalness={0.08} />
+        </mesh>
+        <mesh ref={armL} position={[-0.34, 0.38, 0]} rotation={[0, 0, -1.08]}>
+          <cylinderGeometry args={[0.07, 0.06, 0.88, 12]} />
+          <meshStandardMaterial color="#d1a37a" roughness={0.46} metalness={0.08} />
+        </mesh>
+        <mesh ref={armR} position={[0.34, 0.4, 0]} rotation={[0, 0, 1.02]}>
+          <cylinderGeometry args={[0.07, 0.06, 0.88, 12]} />
+          <meshStandardMaterial color="#d1a37a" roughness={0.46} metalness={0.08} />
+        </mesh>
+        <mesh ref={handL} position={[-0.72, -0.02, 0.02]} rotation={[0, 0.18, 0]}>
+          <sphereGeometry args={[0.09, 14, 14]} />
+          <meshStandardMaterial color="#c79066" roughness={0.4} metalness={0.04} />
+        </mesh>
+        <mesh ref={handR} position={[0.72, -0.05, 0.03]} rotation={[0, -0.12, 0]}>
+          <sphereGeometry args={[0.09, 14, 14]} />
+          <meshStandardMaterial color="#c79066" roughness={0.4} metalness={0.04} />
+        </mesh>
+        <mesh position={[0, -0.2, 0]}>
+          <cylinderGeometry args={[0.18, 0.24, 1.0, 14]} />
+          <meshStandardMaterial color="#1b2632" roughness={0.9} metalness={0.06} />
+        </mesh>
+        <mesh position={[-0.16, -0.98, 0.02]} rotation={[0, 0, -0.22]}>
+          <cylinderGeometry args={[0.08, 0.1, 0.96, 12]} />
+          <meshStandardMaterial color="#17202a" roughness={0.88} metalness={0.06} />
+        </mesh>
+        <mesh position={[0.16, -0.98, 0.02]} rotation={[0, 0, 0.22]}>
+          <cylinderGeometry args={[0.08, 0.1, 0.96, 12]} />
+          <meshStandardMaterial color="#17202a" roughness={0.88} metalness={0.06} />
+        </mesh>
+        <mesh position={[-0.44, -1.14, 0.02]} rotation={[0, 0, -0.26]}>
+          <cylinderGeometry args={[0.08, 0.08, 0.82, 12]} />
+          <meshStandardMaterial color="#1f2a36" roughness={0.88} metalness={0.06} />
+        </mesh>
+        <mesh position={[0.44, -1.14, 0.02]} rotation={[0, 0, 0.26]}>
+          <cylinderGeometry args={[0.08, 0.08, 0.82, 12]} />
+          <meshStandardMaterial color="#1f2a36" roughness={0.88} metalness={0.06} />
+        </mesh>
+        <mesh position={[0, -1.52, 0.06]}>
+          <torusGeometry args={[0.76, 0.08, 12, 28]} />
+          <meshStandardMaterial color="#111820" roughness={0.92} metalness={0.04} />
+        </mesh>
+      </group>
+
+      <mesh position={[0, 1.0, -3.8]}>
+        <planeGeometry args={[5.6, 2.4]} />
+        <meshBasicMaterial color={displayMode === 'viz' ? '#8fe6ff' : '#ffdca8'} transparent opacity={0.08} />
+      </mesh>
+      <mesh position={[-3.8, 0.55, -2.7]} rotation={[0, Math.PI / 8, 0]}>
+        <boxGeometry args={[0.16, 0.92, 0.14]} />
+        <meshStandardMaterial color={displayMode === 'terminal' ? '#93f2d0' : '#8fe6ff'} emissive={displayMode === 'terminal' ? '#103b2b' : '#12314a'} emissiveIntensity={1.2} />
+      </mesh>
+      <mesh position={[3.7, 0.4, -2.5]} rotation={[0, -Math.PI / 7, 0]}>
+        <boxGeometry args={[0.18, 1.02, 0.14]} />
+        <meshStandardMaterial color="#f5cf8f" emissive="#3d2c16" emissiveIntensity={0.7} />
+      </mesh>
+    </group>
+  );
+}
+
 function VizLattice({ activeSlug, pointer }: { activeSlug?: string | null; pointer: RefObject<Pointer> }) {
   const lattice = useRef<THREE.Group>(null);
   const nodes = useMemo(
@@ -681,6 +915,7 @@ export function HeroScene({
         />
         <pointLight position={[-4, -2, -2]} intensity={displayMode === 'terminal' ? 1.2 : activeSlug ? 1.85 : 1.3} color={palette.primary} />
         <Suspense fallback={null}>
+          <CoderRoom displayMode={displayMode} pointer={pointer} />
           <ModeFrame displayMode={displayMode} pointer={pointer} />
           <ParticleHalo activeSlug={activeSlug} pointer={pointer} />
           <SignalOrbit activeSlug={activeSlug} pointer={pointer} />

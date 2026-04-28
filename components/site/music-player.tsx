@@ -26,13 +26,15 @@ function Icon({
     case 'prev':
       return (
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7 6v12H5V6h2Zm11.5 11.5L10 12l8.5-5.5v11Z" />
+          <path d="M7 6v12H5V6h2Z" />
+          <path d="M17.5 18.5 9 12l8.5-6.5v13Z" />
         </svg>
       );
     case 'next':
       return (
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M17 6v12h-2V6h2Zm-1 6 8.5 5.5V6L16 12Z" />
+          <path d="M17 6v12h2V6h-2Z" />
+          <path d="M6.5 18.5 15 12 6.5 5.5v13Z" />
         </svg>
       );
     case 'volume':
@@ -157,11 +159,16 @@ export function MusicPlayer({
 
       <div className="music-panel surface" hidden={!isExpanded}>
         <div className="music-panel__header">
-          <div className="music-panel__glyphs" aria-hidden="true">
+          <div className="music-panel__glyphs">
             <span className="music-panel__cover">
               <img src={track.cover} alt="" loading="eager" decoding="async" />
             </span>
-            <span className={`music-panel__signal ${isPlaying ? 'music-panel__signal--live' : ''}`}>
+            <div className="music-panel__meta">
+              <span className="music-panel__eyebrow">{copy.eyebrow}</span>
+              <strong>{track.title}</strong>
+              <span>{track.artist}</span>
+            </div>
+            <span className={`music-panel__signal ${isPlaying ? 'music-panel__signal--live' : ''}`} aria-hidden="true">
               <span />
               <span />
               <span />
@@ -173,11 +180,7 @@ export function MusicPlayer({
           </button>
         </div>
 
-        <div className="sr-only">
-          <strong>{track.title}</strong>
-          <span>{track.artist}</span>
-          <p>{copy.note}</p>
-        </div>
+        <p className="music-panel__note">{copy.note}</p>
 
         <div className="music-panel__controls" role="group" aria-label={track.title}>
           <button type="button" className="music-panel__control" aria-label={copy.prev} onClick={() => goToTrack(-1)}>

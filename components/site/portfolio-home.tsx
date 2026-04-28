@@ -35,6 +35,9 @@ export function PortfolioHome({
   const activeProject = useMemo(() => {
     return projects.find((project) => project.slug === activeSlug) ?? null;
   }, [activeSlug, projects]);
+  const terminalText = content.showcase.terminal.lines
+    .map((line, index) => `${String(index + 1).padStart(2, '0')}  ${line}`)
+    .join('\n');
 
   useEffect(() => {
     if (!resumePreview) return;
@@ -101,6 +104,47 @@ export function PortfolioHome({
             </aside>
           </section>
         </header>
+
+        <section className="projects-block">
+          <SectionHeading eyebrow={content.showcase.eyebrow} title={content.showcase.title} />
+          <p className="muted compact">{content.showcase.lead}</p>
+          <div className="showcase-grid">
+            <article className="surface showcase-card showcase-card--editorial">
+              <span className="signal-index">{content.showcase.editorial.label}</span>
+              <h3>{content.showcase.editorial.title}</h3>
+              <p>{content.showcase.editorial.body}</p>
+              <blockquote>{content.showcase.editorial.quote}</blockquote>
+            </article>
+
+            <article className="surface showcase-card showcase-card--viz">
+              <span className="signal-index">{content.showcase.viz.label}</span>
+              <h3>{content.showcase.viz.title}</h3>
+              <p>{content.showcase.viz.body}</p>
+              <div className="viz-stats">
+                {content.showcase.viz.stats.map((stat, index) => (
+                  <div key={stat.label} className="viz-stat">
+                    <span className="viz-stat__label">{stat.label}</span>
+                    <strong>{stat.value}</strong>
+                    <span className={`viz-stat__bar viz-stat__bar--${index + 1}`} aria-hidden="true" />
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <article className="surface showcase-card showcase-card--terminal">
+              <span className="signal-index">{content.showcase.terminal.label}</span>
+              <h3>{content.showcase.terminal.title}</h3>
+              <div className="terminal-panel">
+                <div className="terminal-panel__bar" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <pre>{terminalText}</pre>
+              </div>
+            </article>
+          </div>
+        </section>
 
         <section className="two-column">
           <article className="surface about-card">

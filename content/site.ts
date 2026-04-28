@@ -60,6 +60,31 @@ export type SiteContent = {
       body: string;
     }>;
   };
+  showcase: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    editorial: {
+      label: string;
+      title: string;
+      body: string;
+      quote: string;
+    };
+    viz: {
+      label: string;
+      title: string;
+      body: string;
+      stats: Array<{
+        label: string;
+        value: string;
+      }>;
+    };
+    terminal: {
+      label: string;
+      title: string;
+      lines: string[];
+    };
+  };
   featured: {
     eyebrow: string;
     title: string;
@@ -279,6 +304,39 @@ const siteContent: Record<Locale, SiteContent> = {
         },
       ],
     },
+    showcase: {
+      eyebrow: 'Interface Lab',
+      title: 'Three visual modes so the homepage reads like a designed product surface.',
+      lead: 'Each panel leans into a different strength: editorial composition, data visualization, and a terminal-style engineering readout.',
+      editorial: {
+        label: 'Editorial',
+        title: 'Cinematic layering, large type, and a more magazine-like rhythm.',
+        body: 'The page uses oversized typography, atmospheric spacing, and strong contrast to give the work a premium landing-page feel.',
+        quote: 'Design the page like a story, not a checklist.',
+      },
+      viz: {
+        label: 'Data viz',
+        title: 'Live metrics and progress-style surfaces make the stack feel measurable.',
+        body: 'The dashboard-style panel is meant to echo product analytics while still staying within a portfolio context.',
+        stats: [
+          { label: 'Routes', value: '22' },
+          { label: 'Locales', value: '2' },
+          { label: 'Modes', value: '3' },
+          { label: '3D layers', value: '6+' },
+        ],
+      },
+      terminal: {
+        label: 'Terminal',
+        title: 'A compact CLI block makes the engineering identity explicit.',
+        lines: [
+          'pnpm build',
+          'route: /projects/[slug]',
+          'r3f: pointer-driven scene',
+          'mdx: bilingual content pipeline',
+          'deploy: GitHub Pages',
+        ],
+      },
+    },
     featured: {
       eyebrow: 'Featured Work',
       title: 'Selected builds now linked to dedicated project pages.',
@@ -421,6 +479,39 @@ const siteContent: Record<Locale, SiteContent> = {
           body: '任务分类、DeepSeek / Qwen 派发、私有化部署方案，以及 Langfuse / OpenTelemetry 追踪。',
         },
       ],
+    },
+    showcase: {
+      eyebrow: '界面实验室',
+      title: '用三种视觉语气，把首页做成一个有设计感的产品界面。',
+      lead: '这三个面板分别偏向编辑感、数据可视化和终端感，让作品集的表达更完整。',
+      editorial: {
+        label: '编辑感',
+        title: '更像杂志封面的层次、留白和大标题节奏。',
+        body: '通过大字号、强对比和更有呼吸感的排版，把作品集做成一张有主视觉的品牌页。',
+        quote: '把页面设计成故事，而不是清单。',
+      },
+      viz: {
+        label: '数据感',
+        title: '用指标、进度和条形图，让架构看起来是可度量的。',
+        body: '仪表盘式面板借用了产品分析看板的语言，但仍然保持作品集的表达方式。',
+        stats: [
+          { label: '路由', value: '22' },
+          { label: '语言', value: '2' },
+          { label: '模式', value: '3' },
+          { label: '3D层', value: '6+' },
+        ],
+      },
+      terminal: {
+        label: '终端感',
+        title: '用一个紧凑的 CLI 块，直接把工程身份亮出来。',
+        lines: [
+          'pnpm build',
+          'route: /projects/[slug]',
+          'r3f: pointer-driven scene',
+          'mdx: bilingual content pipeline',
+          'deploy: GitHub Pages',
+        ],
+      },
     },
     featured: {
       eyebrow: '精选项目',

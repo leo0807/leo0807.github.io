@@ -869,9 +869,11 @@ img {
 }
 
 .music-panel__glyphs {
-  display: flex;
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
   align-items: center;
   gap: 10px;
+  min-width: 0;
 }
 
 .music-panel__cover {
@@ -889,6 +891,29 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.music-panel__meta {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.music-panel__meta strong {
+  font-size: 0.98rem;
+  line-height: 1.2;
+}
+
+.music-panel__meta span:last-child {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.music-panel__eyebrow {
+  color: var(--cool);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .music-panel__signal {
@@ -1005,6 +1030,150 @@ img {
 .music-panel__volume input {
   width: 100%;
   accent-color: var(--cool);
+}
+
+.showcase-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.9fr;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.showcase-card {
+  display: grid;
+  gap: 14px;
+  min-height: 280px;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.showcase-card h3 {
+  margin: 0;
+  font-size: 1.55rem;
+  line-height: 1.08;
+  font-family:
+    "Space Grotesk",
+    "Avenir Next Condensed",
+    "Segoe UI",
+    sans-serif;
+}
+
+.showcase-card p,
+.showcase-card blockquote {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.showcase-card blockquote {
+  margin-top: auto;
+  padding: 14px 16px;
+  border-left: 2px solid rgba(143, 194, 255, 0.5);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 18px;
+  color: var(--text);
+}
+
+.showcase-card--editorial {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 24%),
+    radial-gradient(circle at top right, rgba(255, 182, 143, 0.16), transparent 42%);
+}
+
+.showcase-card--editorial h3 {
+  font-size: clamp(2rem, 3vw, 2.9rem);
+  max-width: 10ch;
+}
+
+.showcase-card--viz {
+  background:
+    linear-gradient(180deg, rgba(87, 217, 255, 0.12), rgba(10, 18, 32, 0.56)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 36%);
+}
+
+.viz-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: auto;
+}
+
+.viz-stat {
+  display: grid;
+  gap: 6px;
+}
+
+.viz-stat__label {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.viz-stat strong {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.viz-stat__bar {
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(125, 134, 255, 0.26), rgba(87, 217, 255, 0.8));
+  box-shadow: 0 0 0 1px rgba(143, 194, 255, 0.16);
+}
+
+.viz-stat__bar--2 {
+  background: linear-gradient(90deg, rgba(147, 242, 208, 0.24), rgba(87, 217, 255, 0.76));
+}
+
+.viz-stat__bar--3 {
+  background: linear-gradient(90deg, rgba(255, 182, 143, 0.24), rgba(243, 106, 79, 0.76));
+}
+
+.viz-stat__bar--4 {
+  background: linear-gradient(90deg, rgba(255, 241, 199, 0.24), rgba(255, 182, 143, 0.76));
+}
+
+.showcase-card--terminal {
+  background: linear-gradient(180deg, rgba(8, 12, 18, 0.96), rgba(10, 18, 32, 0.8));
+  border-color: rgba(147, 242, 208, 0.18);
+}
+
+.terminal-panel {
+  display: grid;
+  gap: 12px;
+  margin-top: auto;
+  padding: 14px;
+  border-radius: 20px;
+  background: rgba(2, 8, 15, 0.8);
+  border: 1px solid rgba(143, 194, 255, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.terminal-panel__bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.terminal-panel__bar span {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.terminal-panel pre {
+  margin: 0;
+  color: #c6d4ff;
+  font-size: 0.78rem;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family:
+    "SFMono-Regular",
+    "Menlo",
+    "Monaco",
+    "Consolas",
+    monospace;
 }
 
 .sr-only {
@@ -1298,6 +1467,7 @@ html[data-locale='zh'] .topbar-links {
   .two-column,
   .blog-grid,
   .blog-strip,
+  .showcase-grid,
   .timeline-grid,
   .metric-grid,
   .signal-grid,
@@ -1320,6 +1490,10 @@ html[data-locale='zh'] .topbar-links {
 
   .timeline-grid,
   .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .showcase-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1368,6 +1542,15 @@ html[data-locale='zh'] .topbar-links {
 
   .music-cd {
     margin-left: 0;
+  }
+
+  .showcase-card {
+    min-height: auto;
+    padding: 20px;
+  }
+
+  .viz-stats {
+    grid-template-columns: 1fr 1fr;
   }
 
   .filter-pills {

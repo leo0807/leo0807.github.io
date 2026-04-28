@@ -39,6 +39,25 @@ export function PortfolioHome({
   const terminalText = content.showcase.terminal.lines
     .map((line, index) => `${String(index + 1).padStart(2, '0')}  ${line}`)
     .join('\n');
+  const editorialTelemetry = {
+    label: 'Cover focus',
+    title: activeProject?.title ?? siteConfig.name,
+    body: activeProject?.summary ?? content.hero.currentFocusBody,
+  };
+  const vizTelemetry = {
+    label: 'Live metrics',
+    stats: [
+      { label: 'Projects', value: String(featuredProjects.length) },
+      { label: 'Posts', value: String(featuredBlogPosts.length) },
+      { label: 'Tracks', value: String(siteConfig.tracks.length) },
+    ],
+    note: `Active project: ${activeProject?.title ?? 'none'}`,
+  };
+  const terminalTelemetry = {
+    label: 'Session log',
+    title: 'portfolio@local',
+    lines: ['mode=terminal', `project=${activeProject?.slug ?? 'none'}`, `tracks=${siteConfig.tracks.length}`, `posts=${featuredBlogPosts.length}`],
+  };
 
   useEffect(() => {
     if (!resumePreview) return;
@@ -94,6 +113,39 @@ export function PortfolioHome({
                   <small>{mode.blurb}</small>
                 </button>
               ))}
+            </div>
+            <div className={`presentation-telemetry presentation-telemetry--${presentationMode}`}>
+              {presentationMode === 'editorial' ? (
+                <div className="presentation-telemetry__cover">
+                  <span className="presentation-telemetry__label">{editorialTelemetry.label}</span>
+                  <strong>{editorialTelemetry.title}</strong>
+                  <p>{editorialTelemetry.body}</p>
+                </div>
+              ) : null}
+
+              {presentationMode === 'viz' ? (
+                <div className="presentation-telemetry__viz">
+                  <span className="presentation-telemetry__label">{vizTelemetry.label}</span>
+                  <div className="presentation-telemetry__stats">
+                    {vizTelemetry.stats.map((stat, index) => (
+                      <div key={stat.label} className="presentation-telemetry__stat">
+                        <span>{stat.label}</span>
+                        <strong>{stat.value}</strong>
+                        <i className={`presentation-telemetry__bar presentation-telemetry__bar--${index + 1}`} aria-hidden="true" />
+                      </div>
+                    ))}
+                  </div>
+                  <p>{vizTelemetry.note}</p>
+                </div>
+              ) : null}
+
+              {presentationMode === 'terminal' ? (
+                <div className="presentation-telemetry__terminal">
+                  <span className="presentation-telemetry__label">{terminalTelemetry.label}</span>
+                  <strong>{terminalTelemetry.title}</strong>
+                  <pre>{terminalTelemetry.lines.join('\n')}</pre>
+                </div>
+              ) : null}
             </div>
             <p className="presentation-bar__hint">{content.presentation.hint}</p>
           </section>

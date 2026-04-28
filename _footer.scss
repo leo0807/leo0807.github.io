@@ -1,0 +1,31 @@
+// Footer
+footer{
+    background-color: #111;
+    padding: 20px 23px;
+    color: #fff;
+    text-align: center;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: $animate;
+    .footer--icons{
+        color: #fff;
+        margin: 0 5px;
+        font-size: 2rem;
+        transition: $animate;
+        &:hover{
+            color: crimson;
+            transform: scale(1.25);
+        }
+        margin-right: 10px;
+    }
+    span a{
+        line-height: 2rem;
+        color: crimson;
+        text-decoration: none;
+        &:hover{
+            text-decoration: underline;
+        }
+    }
+}

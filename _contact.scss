@@ -1,0 +1,122 @@
+// Contact Me
+.contact{
+    .title::after{
+        content: "Get In Touch";
+    }
+    .contact-content{
+        .column{
+            // width: calc(50% - 30px);
+            width: 50%;
+        }
+        .left{
+
+            p{
+                text-align: justify;
+            }
+            .icons{
+                margin: 10px 0;
+            }
+        }
+        .text{
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .row{
+            display: flex;
+            height: 65px;
+            align-items: center;
+            .info{
+                margin-left: 30px;
+            }
+            i{
+                font-size: 25px;
+                color: crimson;
+            }
+        }
+        .info{
+            .head{
+                font-weight: 500;
+            }
+            .sub-title{
+                color: #333;
+            }
+        }
+    }
+    .right{
+
+        form{
+            .fields{
+                display: flex;
+            }
+            .field, .fields .field{
+                height: 45px;
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            .textarea{
+                height: 80px;
+                width: 100%;
+                textarea{
+                    padding-top: 10px;
+                    resize: none;
+                }
+            }
+            .field input,
+            .textarea textarea{
+                    height: 100%;
+                    width: 100%;
+                    border: 1px solid lightgray;
+                    border-radius: 6px;
+                    outline: none;
+                    padding: 0 15px;
+                    font-size: 17px;
+                    font-family: 'Poppins', sans-serif;
+                    &:focus{
+                        border-color: #b3b3b3;
+                    }
+            }
+            .name{
+                margin-right: 10px;
+            }
+            .email{
+                margin-left: 10px;
+            }
+            .button{
+                height: 47px;
+                // width: 170px;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                button{
+                    width: 50%;
+                    height: 100%;
+                    border: 2px solid crimson;
+                    background-color: crimson;
+                    color: #fff;
+                    font-size: 20px;
+                    font-weight: 500;
+                    border-radius: 6px;
+                    flex-wrap: nowrap;
+
+                    margin-right: 10px;
+                    cursor: pointer;
+                    transition: all .3s ease;
+                    &:hover{
+                        color: crimson;
+                        background: none;
+                    }
+                }
+                .response-message{
+                    margin-left: 10px;
+                    width: 50%;
+                    font-size: 20px;
+                    font-weight: 500;
+                    line-height: 20px;
+                    visibility: hidden;
+                }
+            }
+        }
+
+    }
+}

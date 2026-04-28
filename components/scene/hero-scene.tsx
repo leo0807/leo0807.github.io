@@ -874,6 +874,87 @@ function RoomPod({ room, active }: { room: RoomSpec; active: boolean }) {
         </group>
       ) : null}
 
+      <mesh position={[0, 1.62, -2.42]} rotation={[0, 0, 0]}>
+        <boxGeometry args={[4.9, 0.1, 0.06]} />
+        <meshStandardMaterial color="#16202c" roughness={0.84} metalness={0.06} />
+      </mesh>
+      <mesh position={[-2.12, 0.92, -1.48]} rotation={[0, 0.08, 0]}>
+        <boxGeometry args={[0.22, 1.12, 0.18]} />
+        <meshStandardMaterial color="#121925" roughness={0.92} metalness={0.04} />
+      </mesh>
+      <mesh position={[-2.12, 1.54, -1.46]}>
+        <boxGeometry args={[0.34, 0.08, 0.18]} />
+        <meshStandardMaterial color="#20283a" roughness={0.84} metalness={0.08} />
+      </mesh>
+      <mesh position={[-2.1, 1.18, -1.34]} rotation={[0, 0.12, 0]}>
+        <boxGeometry args={[0.18, 0.52, 0.16]} />
+        <meshStandardMaterial color="#8fe6ff" roughness={0.84} metalness={0.04} />
+      </mesh>
+      <mesh position={[2.08, 1.02, -1.48]} rotation={[0, -0.08, 0]}>
+        <boxGeometry args={[0.28, 0.96, 0.18]} />
+        <meshStandardMaterial color="#121925" roughness={0.92} metalness={0.04} />
+      </mesh>
+      <mesh position={[2.08, 1.54, -1.46]}>
+        <boxGeometry args={[0.34, 0.08, 0.18]} />
+        <meshStandardMaterial color="#20283a" roughness={0.84} metalness={0.08} />
+      </mesh>
+      <mesh position={[2.08, 1.18, -1.34]} rotation={[0, -0.12, 0]}>
+        <boxGeometry args={[0.16, 0.54, 0.16]} />
+        <meshStandardMaterial color="#93f2d0" roughness={0.82} metalness={0.04} />
+      </mesh>
+      <mesh position={[-0.06, 1.38, -1.55]} rotation={[0, 0, -0.04]}>
+        <boxGeometry args={[1.34, 0.74, 0.02]} />
+        <meshStandardMaterial color="#10161f" roughness={0.95} metalness={0.02} />
+      </mesh>
+      <mesh position={[-0.06, 1.38, -1.53]}>
+        <boxGeometry args={[1.12, 0.48, 0.02]} />
+        <meshBasicMaterial color={room.glow} transparent opacity={0.08} />
+      </mesh>
+      <mesh position={[0, 0.06, -1.56]}>
+        <boxGeometry args={[4.2, 0.2, 0.04]} />
+        <meshStandardMaterial color="#161c27" roughness={0.84} metalness={0.06} />
+      </mesh>
+      <mesh position={[0, -0.26, -1.56]}>
+        <boxGeometry args={[4.0, 0.04, 0.04]} />
+        <meshBasicMaterial color="#0b1220" transparent opacity={0.8} />
+      </mesh>
+      <mesh position={[-1.35, -0.28, -1.54]}>
+        <boxGeometry args={[0.18, 0.3, 0.18]} />
+        <meshStandardMaterial color="#2b3442" roughness={0.82} metalness={0.05} />
+      </mesh>
+      <mesh position={[-1.35, -0.47, -1.5]}>
+        <cylinderGeometry args={[0.06, 0.08, 0.22, 10]} />
+        <meshStandardMaterial color="#8fe6ff" roughness={0.42} metalness={0.04} />
+      </mesh>
+      <mesh position={[1.48, -0.34, -1.53]} rotation={[0, 0.16, 0]}>
+        <boxGeometry args={[0.18, 0.38, 0.16]} />
+        <meshStandardMaterial color="#5f4c2b" roughness={0.92} metalness={0.02} />
+      </mesh>
+      <mesh position={[1.48, -0.48, -1.49]}>
+        <sphereGeometry args={[0.18, 16, 16]} />
+        <meshStandardMaterial color="#8fe6ff" roughness={0.72} metalness={0.04} />
+      </mesh>
+      <mesh position={[1.72, -0.54, -1.52]} rotation={[0, 0.2, 0]}>
+        <boxGeometry args={[0.12, 0.54, 0.1]} />
+        <meshStandardMaterial color="#173246" roughness={0.82} metalness={0.05} />
+      </mesh>
+      <mesh position={[-1.92, -0.48, -1.52]} rotation={[0, 0.12, 0]}>
+        <boxGeometry args={[0.24, 0.24, 0.24]} />
+        <meshStandardMaterial color="#1d2430" roughness={0.8} metalness={0.04} />
+      </mesh>
+      <mesh position={[-1.92, -0.34, -1.46]}>
+        <sphereGeometry args={[0.16, 14, 14]} />
+        <meshStandardMaterial color="#93f2d0" roughness={0.72} metalness={0.04} />
+      </mesh>
+      <mesh position={[0.88, -0.92, -1.34]} rotation={[0, 0.1, 0]}>
+        <boxGeometry args={[0.34, 0.16, 0.16]} />
+        <meshStandardMaterial color="#d6edf4" roughness={0.86} metalness={0.03} />
+      </mesh>
+      <mesh position={[-0.84, -0.92, -1.34]} rotation={[0, -0.08, 0]}>
+        <boxGeometry args={[0.34, 0.16, 0.16]} />
+        <meshStandardMaterial color="#f5cf8f" roughness={0.86} metalness={0.03} />
+      </mesh>
+
       <mesh position={[0, -0.88, -0.72]}>
         <boxGeometry args={[1.6, 0.1, 0.58]} />
         <meshStandardMaterial color="#141a24" roughness={0.7} metalness={0.18} />
@@ -893,6 +974,11 @@ function RoomPod({ room, active }: { room: RoomSpec; active: boolean }) {
       <mesh position={[0, 1.92, -0.15]}>
         <boxGeometry args={[0.66, 0.05, 0.02]} />
         <meshBasicMaterial color="#ffffff" transparent opacity={0.78} />
+      </mesh>
+
+      <mesh position={[0, 2.15, -0.72]}>
+        <boxGeometry args={[4.8, 0.04, 0.04]} />
+        <meshBasicMaterial color={room.glow} transparent opacity={0.26} />
       </mesh>
     </group>
   );
@@ -1267,6 +1353,34 @@ function MultiRoomStudio({
         <mesh position={[0.28, -1.8, 0.1]} rotation={[0, 0, 0.12]}>
           <boxGeometry args={[0.34, 0.12, 0.46]} />
           <meshStandardMaterial color="#2a333d" roughness={0.82} metalness={0.04} />
+        </mesh>
+        <mesh position={[-0.28, -1.92, 0.22]} rotation={[0, 0, -0.04]}>
+          <boxGeometry args={[0.34, 0.08, 0.18]} />
+          <meshStandardMaterial color="#e6f3f7" roughness={0.9} metalness={0.02} />
+        </mesh>
+        <mesh position={[0.28, -1.92, 0.22]} rotation={[0, 0, 0.04]}>
+          <boxGeometry args={[0.34, 0.08, 0.18]} />
+          <meshStandardMaterial color="#e6f3f7" roughness={0.9} metalness={0.02} />
+        </mesh>
+        <mesh position={[-0.28, -1.98, 0.25]} rotation={[0, 0, -0.06]}>
+          <boxGeometry args={[0.28, 0.06, 0.12]} />
+          <meshStandardMaterial color="#2a333d" roughness={0.9} metalness={0.03} />
+        </mesh>
+        <mesh position={[0.28, -1.98, 0.25]} rotation={[0, 0, 0.06]}>
+          <boxGeometry args={[0.28, 0.06, 0.12]} />
+          <meshStandardMaterial color="#2a333d" roughness={0.9} metalness={0.03} />
+        </mesh>
+        <mesh position={[-0.42, -0.58, 0.14]} rotation={[0.08, 0, -0.08]}>
+          <boxGeometry args={[0.14, 0.22, 0.1]} />
+          <meshStandardMaterial color="#cfe6ef" roughness={0.86} metalness={0.03} />
+        </mesh>
+        <mesh position={[0.42, -0.58, 0.14]} rotation={[0.08, 0, 0.08]}>
+          <boxGeometry args={[0.14, 0.22, 0.1]} />
+          <meshStandardMaterial color="#cfe6ef" roughness={0.86} metalness={0.03} />
+        </mesh>
+        <mesh position={[0, -0.58, 0.2]}>
+          <boxGeometry args={[0.24, 0.12, 0.08]} />
+          <meshStandardMaterial color="#8fe6ff" roughness={0.8} metalness={0.04} />
         </mesh>
       </group>
 

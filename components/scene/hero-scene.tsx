@@ -3,7 +3,7 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Line, MeshDistortMaterial, OrbitControls, useTexture } from '@react-three/drei';
 import { EffectComposer, Bloom, DepthOfField, Noise, Vignette } from '@react-three/postprocessing';
-import { Suspense, useEffect, useMemo, useRef } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import type { RefObject } from 'react';
 import * as THREE from 'three';
 import { BlendFunction } from 'postprocessing';
@@ -743,6 +743,471 @@ function CoderRoom({ displayMode, pointer }: { displayMode: DisplayMode; pointer
   );
 }
 
+type RoomSpec = {
+  id: string;
+  label: string;
+  kind: 'code' | 'notes' | 'review';
+  accent: string;
+  glow: string;
+  x: number;
+};
+
+function RoomPod({ room, active }: { room: RoomSpec; active: boolean }) {
+  const sign = useRef<THREE.Mesh>(null);
+  const glow = useRef<THREE.Mesh>(null);
+  const screen = useRef<THREE.Mesh>(null);
+
+  useFrame((state, delta) => {
+    if (sign.current) {
+      sign.current.rotation.y = THREE.MathUtils.lerp(sign.current.rotation.y, active ? 0.08 : -0.12, 0.04);
+      sign.current.position.y = 1.7 + Math.sin(state.clock.elapsedTime * 1.5 + room.x * 0.1) * 0.05;
+    }
+    if (glow.current) {
+      glow.current.rotation.z += delta * (active ? 0.16 : 0.08);
+    }
+    if (screen.current) {
+      screen.current.rotation.y = THREE.MathUtils.lerp(screen.current.rotation.y, active ? 0.02 : -0.04, 0.04);
+    }
+  });
+
+  return (
+    <group position={[room.x, -0.15, -0.9]}>
+      <mesh position={[0, -1.95, -1.2]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[5.8, 9, 1, 1]} />
+        <meshStandardMaterial color={active ? '#121a2a' : '#0e1520'} roughness={0.95} metalness={0.04} />
+      </mesh>
+      <mesh position={[0, 1.8, -4.1]}>
+        <planeGeometry args={[5.8, 6.4]} />
+        <meshStandardMaterial color={room.kind === 'notes' ? '#151b28' : '#0b1220'} roughness={0.92} metalness={0.04} />
+      </mesh>
+      <mesh position={[-2.9, 0.4, -1.9]} rotation={[0, Math.PI / 2, 0]}>
+        <planeGeometry args={[6.2, 4.9]} />
+        <meshStandardMaterial color="#0d1524" roughness={0.96} metalness={0.04} />
+      </mesh>
+      <mesh position={[2.9, 0.4, -1.9]} rotation={[0, -Math.PI / 2, 0]}>
+        <planeGeometry args={[6.2, 4.9]} />
+        <meshStandardMaterial color="#0d1524" roughness={0.96} metalness={0.04} />
+      </mesh>
+
+      <mesh ref={glow} position={[0, 0.1, -0.95]}>
+        <torusGeometry args={[1.65, 0.08, 16, 72]} />
+        <meshBasicMaterial color={room.glow} transparent opacity={active ? 0.28 : 0.12} />
+      </mesh>
+      <mesh position={[0, -1.0, -0.2]}>
+        <boxGeometry args={[4.8, 0.16, 2.6]} />
+        <meshStandardMaterial color={active ? '#1b2331' : '#171e29'} roughness={0.8} metalness={0.08} />
+      </mesh>
+
+      <mesh position={[0, 0.04, -0.88]}>
+        <boxGeometry args={[2.12, 1.28, 0.06]} />
+        <meshStandardMaterial color="#10161f" roughness={0.3} metalness={0.3} emissive={room.glow} emissiveIntensity={0.45} />
+      </mesh>
+      <mesh ref={screen} position={[0, 0.06, -0.84]}>
+        <planeGeometry args={[1.92, 1.04]} />
+        <meshBasicMaterial color={room.glow} transparent opacity={0.9} />
+      </mesh>
+
+      {room.kind === 'code' ? (
+        <group position={[0, 0.12, -0.79]}>
+          <mesh position={[-0.52, 0.24, 0]}>
+            <boxGeometry args={[0.82, 0.06, 0.02]} />
+            <meshBasicMaterial color="#8fe6ff" transparent opacity={0.85} />
+          </mesh>
+          <mesh position={[-0.28, 0.08, 0]}>
+            <boxGeometry args={[0.56, 0.05, 0.02]} />
+            <meshBasicMaterial color="#93f2d0" transparent opacity={0.72} />
+          </mesh>
+          <mesh position={[0.1, -0.08, 0]}>
+            <boxGeometry args={[0.34, 0.05, 0.02]} />
+            <meshBasicMaterial color="#f5cf8f" transparent opacity={0.68} />
+          </mesh>
+        </group>
+      ) : null}
+
+      {room.kind === 'notes' ? (
+        <group position={[0, 0.18, -0.76]}>
+          <mesh position={[-0.55, 0.2, 0.02]} rotation={[0, 0, -0.16]}>
+            <boxGeometry args={[0.76, 0.5, 0.02]} />
+            <meshBasicMaterial color="#f5cf8f" transparent opacity={0.86} />
+          </mesh>
+          <mesh position={[0.42, 0.28, 0.02]} rotation={[0, 0, 0.08]}>
+            <cylinderGeometry args={[0.06, 0.08, 0.42, 12]} />
+            <meshStandardMaterial color="#ffdca8" roughness={0.52} metalness={0.04} />
+          </mesh>
+          <mesh position={[0.42, 0.54, 0.02]}>
+            <sphereGeometry args={[0.1, 12, 12]} />
+            <meshBasicMaterial color="#ffdca8" />
+          </mesh>
+          <mesh position={[0, -0.08, 0.02]}>
+            <boxGeometry args={[0.98, 0.14, 0.02]} />
+            <meshBasicMaterial color="#8fe6ff" transparent opacity={0.24} />
+          </mesh>
+        </group>
+      ) : null}
+
+      {room.kind === 'review' ? (
+        <group position={[0, 0.1, -0.76]}>
+          <mesh position={[-0.55, 0.22, 0.02]}>
+            <boxGeometry args={[0.42, 0.42, 0.02]} />
+            <meshBasicMaterial color="#8fe6ff" transparent opacity={0.86} />
+          </mesh>
+          <mesh position={[-0.05, 0.16, 0.02]}>
+            <boxGeometry args={[0.42, 0.42, 0.02]} />
+            <meshBasicMaterial color="#93f2d0" transparent opacity={0.76} />
+          </mesh>
+          <mesh position={[0.45, 0.1, 0.02]}>
+            <boxGeometry args={[0.42, 0.42, 0.02]} />
+            <meshBasicMaterial color="#f5cf8f" transparent opacity={0.7} />
+          </mesh>
+          <mesh position={[0.08, -0.18, 0.02]}>
+            <boxGeometry args={[1.02, 0.08, 0.02]} />
+            <meshBasicMaterial color={room.glow} transparent opacity={0.3} />
+          </mesh>
+        </group>
+      ) : null}
+
+      <mesh position={[0, -0.88, -0.72]}>
+        <boxGeometry args={[1.6, 0.1, 0.58]} />
+        <meshStandardMaterial color="#141a24" roughness={0.7} metalness={0.18} />
+      </mesh>
+      <mesh position={[0, -1.2, -0.62]}>
+        <boxGeometry args={[1.8, 0.08, 0.7]} />
+        <meshStandardMaterial color="#111820" roughness={0.85} metalness={0.06} />
+      </mesh>
+      <mesh position={[0, 1.72, -0.2]} ref={sign}>
+        <boxGeometry args={[1.3, 0.28, 0.06]} />
+        <meshStandardMaterial color={room.accent} emissive={room.glow} emissiveIntensity={1.05} roughness={0.3} metalness={0.18} />
+      </mesh>
+      <mesh position={[0, 1.72, -0.16]}>
+        <boxGeometry args={[1.06, 0.12, 0.02]} />
+        <meshBasicMaterial color="#07111f" transparent opacity={0.8} />
+      </mesh>
+      <mesh position={[0, 1.92, -0.15]}>
+        <boxGeometry args={[0.66, 0.05, 0.02]} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={0.78} />
+      </mesh>
+    </group>
+  );
+}
+
+function MultiRoomStudio({ displayMode, pointer }: { displayMode: DisplayMode; pointer: RefObject<Pointer> }) {
+  const stage = useRef<THREE.Group>(null);
+  const avatar = useRef<THREE.Group>(null);
+  const chair = useRef<THREE.Group>(null);
+  const armL = useRef<THREE.Mesh>(null);
+  const armR = useRef<THREE.Mesh>(null);
+  const handL = useRef<THREE.Mesh>(null);
+  const handR = useRef<THREE.Mesh>(null);
+  const monitor = useRef<THREE.Mesh>(null);
+  const keys = useRef<THREE.Group>(null);
+  const [activeRoomIndex, setActiveRoomIndex] = useState(0);
+  const targetIndex = useRef(0);
+  const idleClock = useRef(0);
+
+  const rooms = useMemo<RoomSpec[]>(
+    () => [
+      { id: 'code', label: 'Code Room', kind: 'code', accent: '#8fe6ff', glow: '#73d5ff', x: -7.4 },
+      { id: 'notes', label: 'Notes Room', kind: 'notes', accent: '#f5cf8f', glow: '#ffdca8', x: 0 },
+      { id: 'review', label: 'Review Room', kind: 'review', accent: '#93f2d0', glow: '#93f2d0', x: 7.4 },
+    ],
+    [],
+  );
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
+        const nextIndex = (targetIndex.current - 1 + rooms.length) % rooms.length;
+        targetIndex.current = nextIndex;
+        setActiveRoomIndex(nextIndex);
+        idleClock.current = 0;
+      }
+      if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
+        const nextIndex = (targetIndex.current + 1) % rooms.length;
+        targetIndex.current = nextIndex;
+        setActiveRoomIndex(nextIndex);
+        idleClock.current = 0;
+      }
+      if (event.key === '1') {
+        targetIndex.current = 0;
+        setActiveRoomIndex(0);
+        idleClock.current = 0;
+      }
+      if (event.key === '2') {
+        targetIndex.current = 1;
+        setActiveRoomIndex(1);
+        idleClock.current = 0;
+      }
+      if (event.key === '3') {
+        targetIndex.current = 2;
+        setActiveRoomIndex(2);
+        idleClock.current = 0;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [rooms.length]);
+
+  useFrame((state, delta) => {
+    idleClock.current += delta;
+    if (idleClock.current > 7) {
+      const nextIndex = (targetIndex.current + 1) % rooms.length;
+      targetIndex.current = nextIndex;
+      setActiveRoomIndex(nextIndex);
+      idleClock.current = 0;
+    }
+
+    const activeRoom = rooms[activeRoomIndex];
+    const targetX = activeRoom.x;
+
+    if (stage.current) {
+      stage.current.position.x = THREE.MathUtils.lerp(stage.current.position.x, targetX * 0.08, 0.03);
+      stage.current.rotation.y = THREE.MathUtils.lerp(stage.current.rotation.y, pointer.current.x * 0.06, 0.03);
+      stage.current.rotation.x = THREE.MathUtils.lerp(stage.current.rotation.x, pointer.current.y * 0.025, 0.03);
+    }
+
+    if (avatar.current) {
+      avatar.current.position.x = THREE.MathUtils.lerp(avatar.current.position.x, targetX, 0.06);
+      avatar.current.position.y = THREE.MathUtils.lerp(avatar.current.position.y, -0.18 + Math.sin(state.clock.elapsedTime * 2.2) * 0.02, 0.08);
+    }
+
+    if (chair.current) {
+      chair.current.position.x = THREE.MathUtils.lerp(chair.current.position.x, targetX, 0.06);
+      chair.current.rotation.y = THREE.MathUtils.lerp(chair.current.rotation.y, pointer.current.x * 0.12, 0.04);
+    }
+
+    const typingPulse = 0.08 + Math.sin(state.clock.elapsedTime * 10) * 0.03;
+    if (armL.current) {
+      armL.current.rotation.z = THREE.MathUtils.lerp(armL.current.rotation.z, -0.95 + typingPulse, 0.08);
+    }
+    if (armR.current) {
+      armR.current.rotation.z = THREE.MathUtils.lerp(armR.current.rotation.z, 0.86 - typingPulse, 0.08);
+    }
+    if (handL.current) {
+      handL.current.rotation.x = Math.sin(state.clock.elapsedTime * 9) * 0.18;
+    }
+    if (handR.current) {
+      handR.current.rotation.x = Math.cos(state.clock.elapsedTime * 8.5) * 0.18;
+    }
+    if (monitor.current) {
+      monitor.current.rotation.y = THREE.MathUtils.lerp(monitor.current.rotation.y, pointer.current.x * 0.06, 0.03);
+      monitor.current.rotation.x = THREE.MathUtils.lerp(monitor.current.rotation.x, -0.05 + pointer.current.y * 0.02, 0.03);
+    }
+    if (keys.current) {
+      keys.current.children.forEach((child, index) => {
+        if (child instanceof THREE.Mesh) {
+          child.scale.y = 1 + Math.abs(Math.sin(state.clock.elapsedTime * 8 + index * 0.5)) * 0.16;
+        }
+      });
+    }
+  });
+
+  const keyRows = [
+    [-0.84, -0.92, 0.02],
+    [-0.66, -0.92, 0.02],
+    [-0.48, -0.92, 0.02],
+    [-0.3, -0.92, 0.02],
+    [-0.12, -0.92, 0.02],
+    [0.06, -0.92, 0.02],
+    [0.24, -0.92, 0.02],
+    [0.42, -0.92, 0.02],
+    [0.6, -0.92, 0.02],
+    [-0.84, -1.1, 0.02],
+    [-0.66, -1.1, 0.02],
+    [-0.48, -1.1, 0.02],
+    [-0.3, -1.1, 0.02],
+    [-0.12, -1.1, 0.02],
+    [0.06, -1.1, 0.02],
+    [0.24, -1.1, 0.02],
+    [0.42, -1.1, 0.02],
+    [0.6, -1.1, 0.02],
+  ] as const;
+
+  const currentRoom = rooms[activeRoomIndex];
+
+  return (
+    <group ref={stage} position={[0, -0.1, -0.9]}>
+      {rooms.map((room) => (
+        <RoomPod key={room.id} room={room} active={room.id === currentRoom.id} />
+      ))}
+
+      <group ref={chair} position={[currentRoom.x, -0.18, -0.56]}>
+        <mesh position={[0, -0.9, -0.03]}>
+          <cylinderGeometry args={[0.22, 0.26, 1.0, 14]} />
+          <meshStandardMaterial color="#1d2430" roughness={0.82} metalness={0.08} />
+        </mesh>
+        <mesh position={[0, -1.56, 0.06]}>
+          <torusGeometry args={[0.8, 0.08, 12, 28]} />
+          <meshStandardMaterial color="#111820" roughness={0.92} metalness={0.04} />
+        </mesh>
+        <mesh position={[-0.16, -1.02, 0.02]} rotation={[0, 0, -0.22]}>
+          <cylinderGeometry args={[0.08, 0.1, 1.0, 12]} />
+          <meshStandardMaterial color="#1f2831" roughness={0.88} metalness={0.06} />
+        </mesh>
+        <mesh position={[0.16, -1.02, 0.02]} rotation={[0, 0, 0.22]}>
+          <cylinderGeometry args={[0.08, 0.1, 1.0, 12]} />
+          <meshStandardMaterial color="#1f2831" roughness={0.88} metalness={0.06} />
+        </mesh>
+        <mesh position={[-0.44, -1.18, 0.02]} rotation={[0, 0, -0.26]}>
+          <cylinderGeometry args={[0.08, 0.08, 0.88, 12]} />
+          <meshStandardMaterial color="#202833" roughness={0.88} metalness={0.06} />
+        </mesh>
+        <mesh position={[0.44, -1.18, 0.02]} rotation={[0, 0, 0.26]}>
+          <cylinderGeometry args={[0.08, 0.08, 0.88, 12]} />
+          <meshStandardMaterial color="#202833" roughness={0.88} metalness={0.06} />
+        </mesh>
+      </group>
+
+      <group ref={avatar} position={[currentRoom.x, -0.18, -0.56]}>
+        <group position={[0, 1.16, 0.03]}>
+          <mesh position={[0, 0.08, 0]}>
+            <sphereGeometry args={[0.47, 28, 28]} />
+            <meshStandardMaterial color="#d4a581" roughness={0.58} metalness={0.05} />
+          </mesh>
+          <mesh position={[0, -0.03, 0.1]}>
+            <boxGeometry args={[0.54, 0.58, 0.44]} />
+            <meshStandardMaterial color="#d4a581" roughness={0.58} metalness={0.05} />
+          </mesh>
+          <mesh position={[0, -0.15, 0.03]}>
+            <boxGeometry args={[0.34, 0.2, 0.24]} />
+            <meshStandardMaterial color="#dcae8c" roughness={0.46} metalness={0.04} />
+          </mesh>
+          <mesh position={[-0.33, 0.02, 0.02]}>
+            <sphereGeometry args={[0.075, 16, 16]} />
+            <meshStandardMaterial color="#d19a74" roughness={0.52} metalness={0.04} />
+          </mesh>
+          <mesh position={[0.33, 0.02, 0.02]}>
+            <sphereGeometry args={[0.075, 16, 16]} />
+            <meshStandardMaterial color="#d19a74" roughness={0.52} metalness={0.04} />
+          </mesh>
+          <mesh position={[-0.12, -0.05, 0.39]} rotation={[0.16, 0, 0.04]}>
+            <sphereGeometry args={[0.045, 12, 12]} />
+            <meshBasicMaterial color="#0a1116" />
+          </mesh>
+          <mesh position={[0.12, -0.05, 0.39]} rotation={[0.16, 0, -0.04]}>
+            <sphereGeometry args={[0.045, 12, 12]} />
+            <meshBasicMaterial color="#0a1116" />
+          </mesh>
+          <mesh position={[-0.12, -0.13, 0.4]}>
+            <boxGeometry args={[0.12, 0.03, 0.02]} />
+            <meshBasicMaterial color="#11161b" />
+          </mesh>
+          <mesh position={[0.12, -0.13, 0.4]}>
+            <boxGeometry args={[0.12, 0.03, 0.02]} />
+            <meshBasicMaterial color="#11161b" />
+          </mesh>
+          <mesh position={[0, -0.02, 0.43]}>
+            <boxGeometry args={[0.08, 0.14, 0.03]} />
+            <meshBasicMaterial color="#c08d68" />
+          </mesh>
+          <mesh position={[0, -0.23, 0.42]}>
+            <boxGeometry args={[0.12, 0.04, 0.02]} />
+            <meshBasicMaterial color="#6b3f33" />
+          </mesh>
+          <mesh position={[0, -0.28, 0.4]}>
+            <torusGeometry args={[0.16, 0.02, 10, 20]} />
+            <meshBasicMaterial color="#6b3f33" />
+          </mesh>
+
+          <group position={[0, 0.35, -0.02]}>
+            <mesh position={[0, 0.18, -0.02]}>
+              <boxGeometry args={[0.62, 0.14, 0.5]} />
+              <meshStandardMaterial color="#1a1f25" roughness={0.9} metalness={0.06} />
+            </mesh>
+            {[
+              [-0.2, 0.17, 0.2, 0.14, 0.54],
+              [0.0, 0.25, 0.24, 0.12, 0.66],
+              [0.18, 0.18, 0.22, 0.12, 0.52],
+              [-0.3, 0.06, 0.18, 0.1, 0.38],
+              [0.3, 0.07, 0.18, 0.1, 0.42],
+              [-0.1, 0.3, 0.24, 0.11, 0.72],
+              [0.12, 0.31, 0.23, 0.1, 0.75],
+              [0.28, 0.28, 0.18, 0.09, 0.64],
+              [-0.38, 0.12, 0.2, 0.09, 0.46],
+              [0.4, 0.13, 0.18, 0.09, 0.44],
+            ].map(([x, y, sx, sy, z], index) => (
+              <mesh key={`hair-${index}`} position={[x, y, 0.02]} rotation={[0.2, 0, x > 0 ? 0.32 : -0.32]}>
+                <boxGeometry args={[sx, sy, z]} />
+                <meshStandardMaterial color="#060707" roughness={0.95} metalness={0.02} />
+              </mesh>
+            ))}
+            <mesh position={[0, 0.02, -0.03]}>
+              <cylinderGeometry args={[0.33, 0.4, 0.34, 14]} />
+              <meshStandardMaterial color="#223040" roughness={0.82} metalness={0.07} />
+            </mesh>
+          </group>
+        </group>
+
+        <mesh position={[0, 0.84, -0.02]}>
+          <boxGeometry args={[0.48, 0.86, 0.34]} />
+          <meshStandardMaterial color="#cfe6ef" roughness={0.72} metalness={0.06} />
+        </mesh>
+        <mesh position={[0, 0.55, -0.01]}>
+          <boxGeometry args={[0.68, 0.58, 0.42]} />
+          <meshStandardMaterial color="#bfdde8" roughness={0.78} metalness={0.05} />
+        </mesh>
+        <mesh position={[0, 0.9, -0.02]}>
+          <torusGeometry args={[0.24, 0.06, 12, 28]} />
+          <meshStandardMaterial color="#d6edf4" roughness={0.82} metalness={0.04} />
+        </mesh>
+        <mesh position={[0, 0.88, -0.01]}>
+          <torusGeometry args={[0.31, 0.06, 12, 28]} />
+          <meshStandardMaterial color="#a9d7e7" roughness={0.8} metalness={0.04} />
+        </mesh>
+        <mesh position={[0, 0.28, -0.01]}>
+          <boxGeometry args={[0.8, 0.42, 0.5]} />
+          <meshStandardMaterial color="#b8d9e4" roughness={0.82} metalness={0.05} />
+        </mesh>
+        <mesh position={[0, 0.02, 0.02]}>
+          <boxGeometry args={[0.58, 0.2, 0.4]} />
+          <meshStandardMaterial color="#e6f3f7" roughness={0.88} metalness={0.03} />
+        </mesh>
+        <mesh position={[0, -0.2, 0.01]}>
+          <cylinderGeometry args={[0.17, 0.22, 1.0, 14]} />
+          <meshStandardMaterial color="#c9a07d" roughness={0.5} metalness={0.06} />
+        </mesh>
+        <mesh position={[0, -0.2, 0.11]}>
+          <cylinderGeometry args={[0.17, 0.2, 0.96, 14]} />
+          <meshStandardMaterial color="#d4a581" roughness={0.58} metalness={0.04} />
+        </mesh>
+        <mesh ref={armL} position={[-0.36, 0.2, 0.03]} rotation={[0, 0, -1.18]}>
+          <cylinderGeometry args={[0.07, 0.06, 0.96, 12]} />
+          <meshStandardMaterial color="#cfe6ef" roughness={0.78} metalness={0.04} />
+        </mesh>
+        <mesh ref={armR} position={[0.36, 0.24, 0.03]} rotation={[0, 0, 1.08]}>
+          <cylinderGeometry args={[0.07, 0.06, 0.96, 12]} />
+          <meshStandardMaterial color="#cfe6ef" roughness={0.78} metalness={0.04} />
+        </mesh>
+        <mesh ref={handL} position={[-0.76, -0.04, 0.04]} rotation={[0, 0.18, 0]}>
+          <sphereGeometry args={[0.085, 14, 14]} />
+          <meshStandardMaterial color="#c98f69" roughness={0.44} metalness={0.04} />
+        </mesh>
+        <mesh ref={handR} position={[0.76, -0.08, 0.05]} rotation={[0, -0.12, 0]}>
+          <sphereGeometry args={[0.085, 14, 14]} />
+          <meshStandardMaterial color="#c98f69" roughness={0.44} metalness={0.04} />
+        </mesh>
+        <mesh position={[0, -0.18, -0.03]}>
+          <cylinderGeometry args={[0.22, 0.26, 0.92, 14]} />
+          <meshStandardMaterial color={currentRoom.accent} roughness={0.5} metalness={0.08} />
+        </mesh>
+      </group>
+
+      <mesh position={[currentRoom.x, 1.02, -3.8]}>
+        <planeGeometry args={[5.2, 2.4]} />
+        <meshBasicMaterial color={currentRoom.glow} transparent opacity={0.08} />
+      </mesh>
+      <mesh position={[currentRoom.x - 3.8, 0.55, -2.7]} rotation={[0, Math.PI / 8, 0]}>
+        <boxGeometry args={[0.16, 0.92, 0.14]} />
+        <meshStandardMaterial color={displayMode === 'terminal' ? '#93f2d0' : '#8fe6ff'} emissive={displayMode === 'terminal' ? '#103b2b' : '#12314a'} emissiveIntensity={1.2} />
+      </mesh>
+      <mesh position={[currentRoom.x + 3.7, 0.4, -2.5]} rotation={[0, -Math.PI / 7, 0]}>
+        <boxGeometry args={[0.18, 1.02, 0.14]} />
+        <meshStandardMaterial color="#f5cf8f" emissive="#3d2c16" emissiveIntensity={0.7} />
+      </mesh>
+    </group>
+  );
+}
+
 function VizLattice({ activeSlug, pointer }: { activeSlug?: string | null; pointer: RefObject<Pointer> }) {
   const lattice = useRef<THREE.Group>(null);
   const nodes = useMemo(
@@ -998,7 +1463,7 @@ export function HeroScene({
         />
         <pointLight position={[-4, -2, -2]} intensity={displayMode === 'terminal' ? 1.2 : activeSlug ? 1.85 : 1.3} color={palette.primary} />
         <Suspense fallback={null}>
-          <CoderRoom displayMode={displayMode} pointer={pointer} />
+          <MultiRoomStudio displayMode={displayMode} pointer={pointer} />
           <ModeFrame displayMode={displayMode} pointer={pointer} />
           <ParticleHalo activeSlug={activeSlug} pointer={pointer} />
           <SignalOrbit activeSlug={activeSlug} pointer={pointer} />

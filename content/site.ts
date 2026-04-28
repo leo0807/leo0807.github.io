@@ -360,7 +360,7 @@ const siteContent: Record<Locale, SiteContent> = {
       eyebrow: 'Presentation Mode',
       title: 'A single switch shifts the page between magazine, dashboard, and console.',
       lead: 'Use the mode chips to steer the page toward a different visual language without leaving the homepage.',
-      hint: 'Hover the project cards to retune the scene, or switch modes to reshape the whole frame.',
+      hint: 'Hover the project cards to retune the scene, or use ← / → and 1 / 2 / 3 to move the avatar between rooms while it also auto-roams.',
       modes: [
         {
           id: 'editorial',
@@ -567,7 +567,7 @@ const siteContent: Record<Locale, SiteContent> = {
       eyebrow: '展示模式',
       title: '一个开关，就能把页面切到杂志、看板或控制台语气。',
       lead: '通过模式切换，你可以在首页内直接调整整体视觉语言，而不需要跳出当前页面。',
-      hint: '悬停项目卡会重新调校场景，切换模式则会改变整个页面气质。',
+      hint: '悬停项目卡会重新调校场景，也可以用 ← / → 和 1 / 2 / 3 手动切换房间；人物还会在空闲时自动漫游。',
       modes: [
         {
           id: 'editorial',

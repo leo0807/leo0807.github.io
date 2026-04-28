@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BlogDetailPage } from '@/components/site/blog-pages';
 import { JsonLd } from '@/components/site/json-ld';
-import { getBlogPostBySlug, getBlogSlugs } from '@/content/blogs';
+import { getBlogPostBySlug, getBlogPosts, getBlogSlugs } from '@/content/blogs';
 import { getSiteContent, siteConfig } from '@/content/site';
 
 const locale = 'zh' as const;
@@ -57,9 +57,23 @@ export default async function BlogDetailRoute({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = await getBlogPostBySlug(locale, slug);
+  const [post, posts] = await Promise.all([getBlogPostBySlug(locale, slug), getBlogPosts(locale)]);
 
   if (!post) notFound();
+
+  const relatedPosts = posts
+    .filter((item) => item.slug !== post.slug)
+    .sort((left, right) => {
+      const leftTagMatch = left.tag === post.tag ? 0 : 1;
+      const rightTagMatch = right.tag === post.tag ? 0 : 1;
+
+      if (leftTagMatch !== rightTagMatch) {
+        return leftTagMatch - rightTagMatch;
+      }
+
+      return left.order - right.order;
+    })
+    .slice(0, 3);
 
   return (
     <>
@@ -77,7 +91,7 @@ export default async function BlogDetailRoute({
           },
         }}
       />
-      <BlogDetailPage locale={locale} content={content} post={post} />
+      <BlogDetailPage locale={locale} content={content} post={post} relatedPosts={relatedPosts} />
     </>
   );
 }

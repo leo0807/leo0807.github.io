@@ -194,7 +194,7 @@ export function MusicPlayer({
         }}
       >
         <span className="music-cd__disc">
-          <img className="music-cd__art" src={track.cover} alt="" aria-hidden="true" loading="eager" decoding="async" />
+          <img key={track.cover} className="music-cd__art" src={track.cover} alt="" aria-hidden="true" loading="eager" decoding="async" />
           <span className="music-cd__label" aria-hidden="true" />
         </span>
         <span className="music-cd__status" aria-hidden="true">
@@ -207,12 +207,13 @@ export function MusicPlayer({
         <div className="music-panel__header">
           <div className="music-panel__glyphs">
             <span className="music-panel__cover">
-              <img src={track.cover} alt="" loading="eager" decoding="async" />
+              <img key={track.cover} src={track.cover} alt="" loading="eager" decoding="async" />
             </span>
             <div className="music-panel__meta">
               <span className="music-panel__eyebrow">{copy.eyebrow}</span>
               <strong>{track.title}</strong>
               <span>{track.artist}</span>
+              <small>{String(trackIndex + 1).padStart(2, '0')} / {String(tracks.length).padStart(2, '0')}</small>
             </div>
             <span className={`music-panel__signal ${isPlaying ? 'music-panel__signal--live' : ''}`} aria-hidden="true">
               <span />

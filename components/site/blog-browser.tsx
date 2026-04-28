@@ -38,6 +38,8 @@ export function BlogBrowser({ locale, content, posts }: BlogBrowserProps) {
     });
   }, [activeTag, posts, query]);
 
+  const featuredCount = posts.filter((post) => post.featured).length;
+
   return (
     <>
       <section className="surface subpage-hero">
@@ -48,6 +50,20 @@ export function BlogBrowser({ locale, content, posts }: BlogBrowserProps) {
           </div>
         </div>
         <p className="lead compact">{content.blogIndex.lead}</p>
+        <div className="subpage-hero__stats" aria-label="Blog stats">
+          <span className="subpage-hero__stat">
+            <strong>{posts.length}</strong>
+            <span>{locale === 'zh' ? '篇文章' : 'posts'}</span>
+          </span>
+          <span className="subpage-hero__stat">
+            <strong>{featuredCount}</strong>
+            <span>{locale === 'zh' ? '精选' : 'featured'}</span>
+          </span>
+          <span className="subpage-hero__stat">
+            <strong>{visiblePosts.length}</strong>
+            <span>{locale === 'zh' ? '当前结果' : 'results'}</span>
+          </span>
+        </div>
         <div className="filter-bar">
           <input className="search-input" type="search" placeholder={placeholder} value={query} onChange={(event) => setQuery(event.target.value)} />
           <div className="filter-pills">

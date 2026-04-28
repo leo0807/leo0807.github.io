@@ -58,11 +58,25 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 
 export default async function ProjectDetailPageRoute({ params }: ProjectPageProps) {
   const { slug } = await params;
-  const project = await getProjectBySlug(locale, slug);
+  const [project, projects] = await Promise.all([getProjectBySlug(locale, slug), getProjects(locale)]);
 
   if (!project) {
     notFound();
   }
+
+  const relatedProjects = projects
+    .filter((item) => item.slug !== project.slug)
+    .sort((left, right) => {
+      const leftTagMatch = left.tag === project.tag ? 0 : 1;
+      const rightTagMatch = right.tag === project.tag ? 0 : 1;
+
+      if (leftTagMatch !== rightTagMatch) {
+        return leftTagMatch - rightTagMatch;
+      }
+
+      return left.order - right.order;
+    })
+    .slice(0, 3);
 
   return (
     <>
@@ -80,7 +94,12 @@ export default async function ProjectDetailPageRoute({ params }: ProjectPageProp
           },
         }}
       />
-      <ProjectDetailView locale={locale} siteConfig={siteConfig} content={content} project={project} />
+      <ProjectDetailView
+        locale={locale}
+        content={content}
+        project={project}
+        relatedProjects={relatedProjects}
+      />
     </>
   );
 }

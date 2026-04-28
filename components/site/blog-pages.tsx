@@ -15,6 +15,7 @@ type BlogDetailPageProps = {
   locale: Locale;
   content: SiteContent;
   post: BlogDocument;
+  relatedPosts: BlogPost[];
 };
 
 export function BlogIndexPage({ locale, content, posts }: BlogIndexPageProps) {
@@ -46,29 +47,68 @@ export function BlogIndexPage({ locale, content, posts }: BlogIndexPageProps) {
   );
 }
 
-export function BlogDetailPage({ locale, content, post }: BlogDetailPageProps) {
+export function BlogDetailPage({ locale, content, post, relatedPosts }: BlogDetailPageProps) {
   return (
     <main className="subpage-shell">
-      <article className="surface project-detail blog-detail">
-        <div className="project-detail__media">
-          <img src={post.cover} alt={post.title} loading="eager" decoding="async" />
-        </div>
-        <div className="project-detail__body">
-          <p className="eyebrow">{post.tag}</p>
-          <h1>{post.title}</h1>
-          <div className="blog-detail__meta">
-            <span>{post.date}</span>
-            <span>{post.readingTime}</span>
+      <section className="blog-detail__layout">
+        <article className="surface project-detail blog-detail">
+          <div className="project-detail__media">
+            <img src={post.cover} alt={post.title} loading="eager" decoding="async" />
           </div>
-          <p className="lead compact">{post.summary}</p>
-          <div className="button-row">
-            <Link className="button button-secondary" href={localizedPath(locale, '/blog/')}>
-              {content.blogDetail.back}
-            </Link>
+          <div className="project-detail__body">
+            <p className="eyebrow">{post.tag}</p>
+            <h1>{post.title}</h1>
+            <div className="blog-detail__meta">
+              <span>{post.date}</span>
+              <span>{post.readingTime}</span>
+            </div>
+            <p className="lead compact">{post.summary}</p>
+            <div className="button-row">
+              <Link className="button button-secondary" href={localizedPath(locale, '/blog/')}>
+                {content.blogDetail.back}
+              </Link>
+            </div>
+            <div className="blog-detail__overview">
+              <span className="label">{content.blogDetail.overview}</span>
+              <p>{content.blogIndex.lead}</p>
+            </div>
+            <div className="project-mdx">{post.content}</div>
           </div>
-          <div className="project-mdx">{post.content}</div>
-        </div>
-      </article>
+        </article>
+
+        <aside className="blog-detail__rail">
+          <section className="surface detail-rail-card">
+            <span className="label">{content.blogDetail.overview}</span>
+            <div className="detail-rail-card__stack">
+              <div>
+                <span className="label">{content.blogDetail.date}</span>
+                <strong>{post.date}</strong>
+              </div>
+              <div>
+                <span className="label">{content.blogDetail.reading}</span>
+                <strong>{post.readingTime}</strong>
+              </div>
+            </div>
+          </section>
+
+          <section className="surface detail-rail-card">
+            <span className="label">{content.blogDetail.related}</span>
+            <p>{content.blogDetail.relatedLead}</p>
+            <div className="related-list">
+              {relatedPosts.map((item) => (
+                <Link key={item.slug} className="related-card" href={localizedPath(locale, `/blog/${item.slug}/`)}>
+                  <img src={item.cover} alt={item.title} loading="lazy" decoding="async" />
+                  <div>
+                    <span className="project-tag">{item.tag}</span>
+                    <strong>{item.title}</strong>
+                    <p>{item.summary}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        </aside>
+      </section>
     </main>
   );
 }

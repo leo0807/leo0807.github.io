@@ -37,6 +37,8 @@ export function ProjectBrowser({ locale, content, projects }: ProjectBrowserProp
     });
   }, [activeTag, projects, query]);
 
+  const featuredCount = projects.filter((project) => project.featured).length;
+
   return (
     <>
       <section className="surface subpage-hero">
@@ -47,6 +49,20 @@ export function ProjectBrowser({ locale, content, projects }: ProjectBrowserProp
           </div>
         </div>
         <p className="lead compact">{content.projectsIndex.lead}</p>
+        <div className="subpage-hero__stats" aria-label="Project stats">
+          <span className="subpage-hero__stat">
+            <strong>{projects.length}</strong>
+            <span>{locale === 'zh' ? '个项目' : 'projects'}</span>
+          </span>
+          <span className="subpage-hero__stat">
+            <strong>{featuredCount}</strong>
+            <span>{locale === 'zh' ? '精选' : 'featured'}</span>
+          </span>
+          <span className="subpage-hero__stat">
+            <strong>{visibleProjects.length}</strong>
+            <span>{locale === 'zh' ? '当前结果' : 'results'}</span>
+          </span>
+        </div>
         <div className="filter-bar">
           <input className="search-input" type="search" placeholder={placeholder} value={query} onChange={(event) => setQuery(event.target.value)} />
           <div className="filter-pills">

@@ -113,15 +113,23 @@ export type SiteContent = {
     action: string;
   };
   blogDetail: {
+    overview: string;
+    date: string;
+    reading: string;
     back: string;
     readMore: string;
+    related: string;
+    relatedLead: string;
   };
   projectDetail: {
+    overview: string;
     visit: string;
     source: string;
     back: string;
     role: string;
     focus: string;
+    related: string;
+    relatedLead: string;
   };
   contact: {
     eyebrow: string;
@@ -390,15 +398,23 @@ const siteContent: Record<Locale, SiteContent> = {
       action: 'Read all posts',
     },
     blogDetail: {
+      overview: 'A short reading guide that keeps the post compact without stripping away depth.',
+      date: 'Published',
+      reading: 'Reading time',
       back: 'Back to Blog',
       readMore: 'Read more',
+      related: 'Continue reading',
+      relatedLead: 'If the topic resonates, these other posts expand the same design and engineering direction.',
     },
     projectDetail: {
+      overview: 'A quick look at the role, focus, and metrics behind the build.',
       visit: 'Visit Project',
       source: 'Source',
       back: 'Back to Projects',
       role: 'Role',
       focus: 'Focus',
+      related: 'More projects',
+      relatedLead: 'Related case studies that show the range of the same frontend skillset.',
     },
     contact: {
       eyebrow: 'Contact',
@@ -589,15 +605,23 @@ const siteContent: Record<Locale, SiteContent> = {
       action: '查看全部文章',
     },
     blogDetail: {
+      overview: '一段简短的阅读导览，让文章有深度但不拖沓。',
+      date: '发布日期',
+      reading: '阅读时长',
       back: '返回博客',
       readMore: '继续阅读',
+      related: '继续阅读',
+      relatedLead: '如果这个主题对你有用，可以继续看下面这些同方向的文章。',
     },
     projectDetail: {
+      overview: '先看职责、关注点和关键指标，再进入完整案例。',
       visit: '访问项目',
       source: '源码',
       back: '返回项目列表',
       role: '职责',
       focus: '关注点',
+      related: '更多项目',
+      relatedLead: '这些相关案例展示了同一套前端能力的不同侧面。',
     },
     contact: {
       eyebrow: '联系',

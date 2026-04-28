@@ -260,6 +260,88 @@ function SignalOrbit({ activeSlug, pointer }: { activeSlug?: string | null; poin
   );
 }
 
+function VizLattice({ activeSlug, pointer }: { activeSlug?: string | null; pointer: RefObject<Pointer> }) {
+  const lattice = useRef<THREE.Group>(null);
+  const nodes = useMemo(
+    () => [
+      [-2.8, 1.5, -0.6],
+      [2.55, 1.2, -0.8],
+      [-2.25, -0.9, -0.4],
+      [2.65, -1.2, -0.7],
+      [0, 1.95, -1.05],
+      [0.15, -1.8, -0.9],
+    ] as const,
+    [],
+  );
+
+  useFrame((state, delta) => {
+    if (!lattice.current) return;
+
+    lattice.current.rotation.y = THREE.MathUtils.lerp(
+      lattice.current.rotation.y,
+      state.clock.elapsedTime * 0.1 + pointer.current.x * 0.24,
+      0.04,
+    );
+    lattice.current.rotation.x = THREE.MathUtils.lerp(
+      lattice.current.rotation.x,
+      pointer.current.y * 0.14 + (activeSlug ? 0.08 : 0.02),
+      0.04,
+    );
+    lattice.current.position.y = THREE.MathUtils.lerp(
+      lattice.current.position.y,
+      pointer.current.y * 0.22,
+      0.05,
+    );
+    lattice.current.position.x = THREE.MathUtils.lerp(
+      lattice.current.position.x,
+      pointer.current.x * 0.16,
+      0.05,
+    );
+
+    lattice.current.children.forEach((child, index) => {
+      if (child instanceof THREE.Mesh) {
+        child.rotation.z += delta * (index % 2 === 0 ? 0.12 : -0.08);
+      }
+    });
+  });
+
+  return (
+    <group ref={lattice} position={[0, 0.1, -0.95]}>
+      {nodes.map((position, index) => {
+        const isCore = index === 4;
+        const beam = Math.max(0.65, 1.8 - Math.abs(position[1]) * 0.32);
+
+        return (
+          <group key={position.join(':')} position={position}>
+            <mesh>
+              <sphereGeometry args={[isCore ? 0.14 : 0.1, 20, 20]} />
+              <meshStandardMaterial
+                color={isCore || activeSlug ? '#8fe6ff' : '#a7e8ff'}
+                emissive={isCore || activeSlug ? '#173b53' : '#102336'}
+                emissiveIntensity={isCore || activeSlug ? 1.4 : 0.95}
+                roughness={0.22}
+                metalness={0.72}
+              />
+            </mesh>
+            <mesh position={[0, beam * 0.42, -0.06]} rotation={[0, 0, Math.PI / 2]}>
+              <cylinderGeometry args={[0.022, 0.022, beam, 6]} />
+              <meshBasicMaterial color={activeSlug ? '#93f2d0' : '#8fe6ff'} transparent opacity={0.3} />
+            </mesh>
+            <mesh position={[0, -beam * 0.34, 0.04]} rotation={[Math.PI / 2, 0, 0]}>
+              <ringGeometry args={[0.14, 0.22, 24]} />
+              <meshBasicMaterial color={activeSlug ? '#ffdca8' : '#93f2d0'} transparent opacity={0.22} side={THREE.DoubleSide} />
+            </mesh>
+          </group>
+        );
+      })}
+      <mesh position={[0, 0, -0.18]} rotation={[Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[1.4, 1.78, 64]} />
+        <meshBasicMaterial color={activeSlug ? '#8fe6ff' : '#93f2d0'} transparent opacity={0.18} side={THREE.DoubleSide} />
+      </mesh>
+    </group>
+  );
+}
+
 function PointerOrb({ activeSlug, pointer }: { activeSlug?: string | null; pointer: RefObject<Pointer> }) {
   const orb = useRef<THREE.Mesh>(null);
   const light = useRef<THREE.PointLight>(null);
@@ -436,6 +518,7 @@ export function HeroScene({
           <ModeFrame displayMode={displayMode} pointer={pointer} />
           <ParticleHalo activeSlug={activeSlug} pointer={pointer} />
           <SignalOrbit activeSlug={activeSlug} pointer={pointer} />
+          {displayMode === 'viz' ? <VizLattice activeSlug={activeSlug} pointer={pointer} /> : null}
           <CoreSculpture activeSlug={activeSlug} pointer={pointer} />
           <PointerOrb activeSlug={activeSlug} pointer={pointer} />
           <ProjectPanels projects={projects} activeSlug={activeSlug} pointer={pointer} />

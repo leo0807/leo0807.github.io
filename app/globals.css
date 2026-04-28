@@ -315,6 +315,76 @@ img {
   gap: 12px;
 }
 
+.presentation-telemetry__rail {
+  display: grid;
+  gap: 10px;
+}
+
+.presentation-telemetry__project {
+  display: grid;
+  gap: 6px;
+  text-align: left;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.presentation-telemetry__project:hover {
+  transform: translateY(-1px);
+  border-color: rgba(143, 194, 255, 0.22);
+  box-shadow: 0 20px 36px rgba(0, 0, 0, 0.16);
+}
+
+.presentation-telemetry__project--active {
+  border-color: rgba(143, 194, 255, 0.45);
+  background:
+    linear-gradient(180deg, rgba(143, 194, 255, 0.12), rgba(255, 255, 255, 0.03)),
+    rgba(255, 255, 255, 0.03);
+}
+
+.presentation-telemetry__project-index {
+  color: var(--cool);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+}
+
+.presentation-telemetry__project strong {
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.presentation-telemetry__project small {
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: 0.78rem;
+}
+
+.presentation-telemetry__focus {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.presentation-telemetry__focus strong {
+  font-size: 1.05rem;
+}
+
+.presentation-telemetry__focus p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.72;
+}
+
 .presentation-telemetry__stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -463,8 +533,20 @@ img {
     radial-gradient(circle at top left, rgba(87, 217, 255, 0.08), transparent 30%);
 }
 
+.page-shell[data-presentation='viz'] .presentation-telemetry__project--active {
+  box-shadow:
+    0 24px 42px rgba(0, 0, 0, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
 .page-shell[data-presentation='viz'] .presentation-telemetry__stat strong {
   color: #dff9ff;
+}
+
+.page-shell[data-presentation='viz'] .presentation-telemetry__focus {
+  background:
+    linear-gradient(180deg, rgba(87, 217, 255, 0.05), rgba(255, 255, 255, 0.025)),
+    rgba(255, 255, 255, 0.03);
 }
 
 .page-shell[data-presentation='terminal'] .surface {
@@ -504,6 +586,11 @@ img {
 
 .page-shell[data-presentation='terminal'] .presentation-bar__controls {
   gap: 10px;
+}
+
+.page-shell[data-presentation='terminal'] .presentation-telemetry__project {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(147, 242, 208, 0.08);
 }
 
 .page-shell[data-presentation='terminal'] .mode-chip {

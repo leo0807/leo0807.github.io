@@ -32,6 +32,7 @@ export function PortfolioHome({
   const [activeSlug, setActiveSlug] = useState<string>(featuredProjects[0]?.slug ?? projects[0]?.slug ?? '');
   const [resumePreview, setResumePreview] = useState<'english' | 'chinese' | null>(null);
   const [presentationMode, setPresentationMode] = useState<'editorial' | 'viz' | 'terminal'>('editorial');
+  const vizProjects = featuredProjects.slice(0, 3);
 
   const activeProject = useMemo(() => {
     return projects.find((project) => project.slug === activeSlug) ?? null;
@@ -51,7 +52,7 @@ export function PortfolioHome({
       { label: 'Posts', value: String(featuredBlogPosts.length) },
       { label: 'Tracks', value: String(siteConfig.tracks.length) },
     ],
-    note: `Active project: ${activeProject?.title ?? 'none'}`,
+    note: 'Click a project chip to retune the scene and surface a different case study.',
   };
   const terminalTelemetry = {
     label: 'Session log',
@@ -134,6 +135,32 @@ export function PortfolioHome({
                         <i className={`presentation-telemetry__bar presentation-telemetry__bar--${index + 1}`} aria-hidden="true" />
                       </div>
                     ))}
+                  </div>
+                  <div className="presentation-telemetry__rail" aria-label="Project navigator">
+                    {vizProjects.map((project, index) => {
+                      const isActive = project.slug === activeSlug;
+                      return (
+                        <button
+                          key={project.slug}
+                          type="button"
+                          className={`presentation-telemetry__project${isActive ? ' presentation-telemetry__project--active' : ''}`}
+                          aria-pressed={isActive}
+                          onClick={() => {
+                            setActiveSlug(project.slug);
+                            setPresentationMode('viz');
+                          }}
+                        >
+                          <span className="presentation-telemetry__project-index">{String(index + 1).padStart(2, '0')}</span>
+                          <strong>{project.title}</strong>
+                          <small>{project.summary}</small>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="presentation-telemetry__focus">
+                    <span className="presentation-telemetry__label">Active project</span>
+                    <strong>{activeProject?.title ?? siteConfig.name}</strong>
+                    <p>{activeProject?.summary ?? content.hero.currentFocusBody}</p>
                   </div>
                   <p>{vizTelemetry.note}</p>
                 </div>

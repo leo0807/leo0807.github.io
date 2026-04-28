@@ -1275,7 +1275,7 @@ img {
 .blog-card__copy h2,
 .blog-strip__card h3 {
   margin: 0;
-  font-size: 1.35rem;
+  font-size: 1.22rem;
   font-family:
     "Space Grotesk",
     "Avenir Next Condensed",
@@ -2035,8 +2035,8 @@ img {
 .project-detail__layout,
 .blog-detail__layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(290px, 0.7fr);
-  gap: 18px;
+  grid-template-columns: minmax(0, 1.18fr) minmax(300px, 0.82fr);
+  gap: 24px;
   align-items: start;
 }
 
@@ -2143,6 +2143,7 @@ img {
   display: grid;
   gap: 18px;
   margin-top: 30px;
+  max-width: 72ch;
 }
 
 .project-mdx h2 {
@@ -2179,7 +2180,8 @@ img {
 }
 
 .project-detail h1 {
-  font-size: clamp(2.5rem, 4vw, 4.6rem);
+  font-size: clamp(2.4rem, 3.9vw, 4.2rem);
+  max-width: 12ch;
 }
 
 .meta-grid {
@@ -2206,25 +2208,53 @@ img {
 }
 
 .subpage-hero {
-  margin-bottom: 26px;
+  margin-bottom: 28px;
+  padding: 28px 30px;
+  display: grid;
+  gap: 14px;
+  max-width: 88ch;
 }
 
 .subpage-hero__stats {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 6px;
 }
 
 .subpage-hero__stat {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px;
+  padding: 9px 13px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--muted);
+}
+
+.subpage-hero .lead {
+  max-width: 64ch;
+}
+
+.project-grid,
+.blog-grid {
+  gap: 16px;
+}
+
+.project-card,
+.blog-card {
+  border-radius: 22px;
+}
+
+.project-card__copy,
+.blog-card__copy {
+  gap: 8px;
+}
+
+.project-card__copy h3,
+.blog-card__copy h2 {
+  line-height: 1.12;
 }
 
 .subpage-hero__stat strong {

@@ -111,6 +111,37 @@ export function PortfolioHome({
             </div>
           </nav>
 
+          <section className="hero-grid">
+            <div className="surface hero-copy">
+              <p className="eyebrow">{content.hero.eyebrow}</p>
+              <h1>
+                {content.hero.title[0]}
+                <span>{content.hero.title[1]}</span>
+              </h1>
+              <p className="lead">{content.hero.lead}</p>
+              <div className="button-row">
+                <Link className="button button-primary" href={localizedPath(locale, '/projects/')}>
+                  {content.hero.projects}
+                </Link>
+                <button type="button" className="button button-secondary" onClick={() => setResumePreview('english')}>
+                  {content.hero.resumeEnglish}
+                </button>
+                <button type="button" className="button button-secondary" onClick={() => setResumePreview('chinese')}>
+                  {content.hero.resumeChinese}
+                </button>
+              </div>
+            </div>
+
+            <aside className="surface hero-profile">
+              <img src={siteConfig.heroImage} alt="Junxu Zhang portrait" loading="eager" decoding="async" />
+              <div className="hero-profile__copy">
+                <span className="label">{content.hero.currentFocusLabel}</span>
+                <h2>{content.hero.currentFocusTitle}</h2>
+                <p>{content.hero.currentFocusBody}</p>
+              </div>
+            </aside>
+          </section>
+
           <section className="surface presentation-bar">
             <div className="presentation-bar__copy">
               <p className="eyebrow">{content.presentation.eyebrow}</p>
@@ -194,6 +225,25 @@ export function PortfolioHome({
             <p className="presentation-bar__hint">{content.presentation.hint}</p>
           </section>
 
+          <section className="surface room-stage">
+            <div className="room-stage__copy">
+              <p className="eyebrow">{locale === 'zh' ? '多房间工作室' : 'Multi-room studio'}</p>
+              <h2>{roomLabels[roomIndex] ?? roomLabels[1]}</h2>
+              <p className="muted">
+                {locale === 'zh'
+                  ? '这个 3D 头像现在直接放在首页的可见区域里，而不是背景层。'
+                  : 'This 3D avatar now lives in a visible homepage panel instead of the background layer.'}
+              </p>
+            </div>
+            <div className="room-stage__viewer">
+              <RoomStudioStage
+                displayMode={presentationMode}
+                roomIndex={roomIndex}
+                onRoomIndexChange={setRoomIndex}
+              />
+            </div>
+          </section>
+
           <section className="surface room-dock">
             <div className="room-dock__copy">
               <p className="eyebrow">{locale === 'zh' ? '多房间工作室' : 'Multi-room studio'}</p>
@@ -219,56 +269,6 @@ export function PortfolioHome({
                 </button>
               ))}
             </div>
-          </section>
-
-          <section className="surface room-stage">
-            <div className="room-stage__copy">
-              <p className="eyebrow">{locale === 'zh' ? '3D 场景' : '3D Scene'}</p>
-              <h2>{roomLabels[roomIndex] ?? roomLabels[1]}</h2>
-              <p className="muted">
-                {locale === 'zh'
-                  ? '这个 3D 头像现在直接放在首页的可见区域里，而不是背景层。'
-                  : 'This 3D avatar now lives in a visible homepage panel instead of the background layer.'}
-              </p>
-            </div>
-            <div className="room-stage__viewer">
-              <RoomStudioStage
-                displayMode={presentationMode}
-                roomIndex={roomIndex}
-                onRoomIndexChange={setRoomIndex}
-              />
-            </div>
-          </section>
-
-          <section className="hero-grid">
-            <div className="surface hero-copy">
-              <p className="eyebrow">{content.hero.eyebrow}</p>
-              <h1>
-                {content.hero.title[0]}
-                <span>{content.hero.title[1]}</span>
-              </h1>
-              <p className="lead">{content.hero.lead}</p>
-              <div className="button-row">
-                <Link className="button button-primary" href={localizedPath(locale, '/projects/')}>
-                  {content.hero.projects}
-                </Link>
-                <button type="button" className="button button-secondary" onClick={() => setResumePreview('english')}>
-                  {content.hero.resumeEnglish}
-                </button>
-                <button type="button" className="button button-secondary" onClick={() => setResumePreview('chinese')}>
-                  {content.hero.resumeChinese}
-                </button>
-              </div>
-            </div>
-
-            <aside className="surface hero-profile">
-              <img src={siteConfig.heroImage} alt="Junxu Zhang portrait" loading="eager" decoding="async" />
-              <div className="hero-profile__copy">
-                <span className="label">{content.hero.currentFocusLabel}</span>
-                <h2>{content.hero.currentFocusTitle}</h2>
-                <p>{content.hero.currentFocusBody}</p>
-              </div>
-            </aside>
           </section>
         </header>
 

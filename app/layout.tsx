@@ -2,7 +2,10 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
 import { HtmlLanguageSync } from '@/components/site/html-language-sync';
+import { QuickSwitcher } from '@/components/site/quick-switcher';
 import { ScrollToTop } from '@/components/site/scroll-to-top';
+import { getBlogPosts } from '@/content/blogs';
+import { getProjects } from '@/content/projects';
 import { siteConfig } from '@/content/site';
 
 export const metadata: Metadata = {
@@ -43,17 +46,34 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const [enProjects, zhProjects, enPosts, zhPosts] = await Promise.all([
+    getProjects('en'),
+    getProjects('zh'),
+    getBlogPosts('en'),
+    getBlogPosts('zh'),
+  ]);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
         <HtmlLanguageSync />
         <ScrollToTop />
         {children}
+        <QuickSwitcher
+          projectsByLocale={{
+            en: enProjects,
+            zh: zhProjects,
+          }}
+          postsByLocale={{
+            en: enPosts,
+            zh: zhPosts,
+          }}
+        />
       </body>
     </html>
   );

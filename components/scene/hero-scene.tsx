@@ -1,7 +1,7 @@
 'use client';
 
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, Line, MeshDistortMaterial, OrbitControls, useTexture } from '@react-three/drei';
+import { Float, Line, MeshDistortMaterial, OrbitControls, useAnimations, useGLTF, useTexture } from '@react-three/drei';
 import { EffectComposer, Bloom, DepthOfField, Noise, Vignette } from '@react-three/postprocessing';
 import { Suspense, useEffect, useMemo, useRef } from 'react';
 import type { RefObject } from 'react';
@@ -984,6 +984,95 @@ function RoomPod({ room, active }: { room: RoomSpec; active: boolean }) {
   );
 }
 
+function RiggedAvatar({
+  room,
+  displayMode,
+  pointer,
+}: {
+  room: RoomSpec;
+  displayMode: DisplayMode;
+  pointer: RefObject<Pointer>;
+}) {
+  const rig = useRef<THREE.Group>(null);
+  const { scene, animations } = useGLTF('/models/cesium-man/CesiumMan.glb') as unknown as {
+    scene: THREE.Group;
+    animations: THREE.AnimationClip[];
+  };
+  const { actions, names } = useAnimations(animations, rig);
+
+  useEffect(() => {
+    scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+        const material = child.material;
+        const materials = Array.isArray(material) ? material : [material];
+
+        materials.forEach((entry) => {
+          if (entry && 'metalness' in entry) {
+            entry.metalness = Math.min((entry.metalness ?? 0.1) + 0.02, 0.2);
+          }
+          if (entry && 'roughness' in entry) {
+            entry.roughness = Math.min((entry.roughness ?? 0.8) + 0.05, 0.92);
+          }
+        });
+      }
+    });
+  }, [scene]);
+
+  useEffect(() => {
+    const clipName = names[0];
+    if (!clipName) return;
+    const action = actions[clipName];
+    if (!action) return;
+
+    action.reset();
+    action.setLoop(THREE.LoopRepeat, Infinity);
+    action.fadeIn(0.25).play();
+    action.timeScale = displayMode === 'terminal' ? 0.72 : room.kind === 'review' ? 0.88 : 0.82;
+
+    return () => {
+      action.fadeOut(0.18);
+    };
+  }, [actions, displayMode, names, room.kind]);
+
+  useFrame((state, delta) => {
+    if (!rig.current) return;
+
+    const targetTilt = pointer.current.x * 0.12;
+    const targetLean = pointer.current.y * 0.06 + Math.sin(state.clock.elapsedTime * 1.4) * 0.02;
+    const targetLift = -0.58 + Math.sin(state.clock.elapsedTime * 2.2) * 0.02;
+
+    rig.current.rotation.y = THREE.MathUtils.lerp(rig.current.rotation.y, Math.PI + targetTilt, 0.05);
+    rig.current.rotation.x = THREE.MathUtils.lerp(rig.current.rotation.x, targetLean * 0.2, 0.05);
+    rig.current.rotation.z = THREE.MathUtils.lerp(rig.current.rotation.z, -0.03 + pointer.current.x * 0.02, 0.04);
+    rig.current.position.y = THREE.MathUtils.lerp(rig.current.position.y, targetLift, 0.05);
+    rig.current.position.x = THREE.MathUtils.lerp(rig.current.position.x, 0, 0.08);
+
+    rig.current.children.forEach((child) => {
+      if (child instanceof THREE.Group) {
+        child.rotation.z += delta * 0.01;
+      }
+    });
+  });
+
+  return (
+    <group ref={rig} position={[0, -0.58, 0.12]} scale={[1.86, 1.86, 1.86]} rotation={[0, Math.PI, 0]}>
+      <primitive object={scene} />
+      <mesh position={[0, -0.22, 0.24]} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.4, 0.74, 48]} />
+        <meshBasicMaterial color={room.glow} transparent opacity={displayMode === 'terminal' ? 0.12 : 0.22} side={THREE.DoubleSide} />
+      </mesh>
+      <mesh position={[0.02, -0.34, 0.18]}>
+        <sphereGeometry args={[0.2, 18, 18]} />
+        <meshBasicMaterial color={room.accent} transparent opacity={0.08} />
+      </mesh>
+    </group>
+  );
+}
+
+useGLTF.preload('/models/cesium-man/CesiumMan.glb');
+
 function MultiRoomStudio({
   displayMode,
   pointer,
@@ -1166,222 +1255,7 @@ function MultiRoomStudio({
       </group>
 
       <group ref={avatar} position={[currentRoom.x, -0.18, -0.56]}>
-        <group position={[0, 1.18, 0.03]}>
-          <mesh position={[0, 0.1, 0]}>
-            <sphereGeometry args={[0.5, 30, 30]} />
-            <meshStandardMaterial color="#d4a581" roughness={0.54} metalness={0.05} />
-          </mesh>
-          <mesh position={[0, -0.02, 0.08]}>
-            <boxGeometry args={[0.56, 0.64, 0.42]} />
-            <meshStandardMaterial color="#d6a781" roughness={0.58} metalness={0.04} />
-          </mesh>
-          <mesh position={[0, -0.18, 0.02]}>
-            <boxGeometry args={[0.36, 0.2, 0.24]} />
-            <meshStandardMaterial color="#deb08f" roughness={0.44} metalness={0.03} />
-          </mesh>
-          <mesh position={[-0.38, 0.04, 0.02]} rotation={[0, 0, -0.08]}>
-            <cylinderGeometry args={[0.055, 0.08, 0.18, 12]} />
-            <meshStandardMaterial color="#d79a72" roughness={0.5} metalness={0.03} />
-          </mesh>
-          <mesh position={[0.38, 0.04, 0.02]} rotation={[0, 0, 0.08]}>
-            <cylinderGeometry args={[0.055, 0.08, 0.18, 12]} />
-            <meshStandardMaterial color="#d79a72" roughness={0.5} metalness={0.03} />
-          </mesh>
-          <mesh position={[-0.12, -0.02, 0.4]}>
-            <sphereGeometry args={[0.048, 14, 14]} />
-            <meshStandardMaterial color="#0d1217" roughness={0.14} metalness={0.06} />
-          </mesh>
-          <mesh position={[0.12, -0.02, 0.4]}>
-            <sphereGeometry args={[0.048, 14, 14]} />
-            <meshStandardMaterial color="#0d1217" roughness={0.14} metalness={0.06} />
-          </mesh>
-          <mesh position={[-0.12, -0.08, 0.42]}>
-            <boxGeometry args={[0.12, 0.02, 0.02]} />
-            <meshBasicMaterial color="#10161b" />
-          </mesh>
-          <mesh position={[0.12, -0.08, 0.42]}>
-            <boxGeometry args={[0.12, 0.02, 0.02]} />
-            <meshBasicMaterial color="#10161b" />
-          </mesh>
-          <mesh position={[0, 0.01, 0.44]}>
-            <boxGeometry args={[0.08, 0.14, 0.03]} />
-            <meshBasicMaterial color="#c08d68" />
-          </mesh>
-          <mesh position={[0, -0.22, 0.41]}>
-            <boxGeometry args={[0.14, 0.04, 0.02]} />
-            <meshBasicMaterial color="#6b3f33" />
-          </mesh>
-          <mesh position={[0, -0.26, 0.4]}>
-            <torusGeometry args={[0.16, 0.02, 10, 20]} />
-            <meshBasicMaterial color="#6b3f33" />
-          </mesh>
-          <mesh position={[-0.18, -0.42, 0.18]} rotation={[0.15, 0, -0.22]}>
-            <boxGeometry args={[0.22, 0.1, 0.04]} />
-            <meshStandardMaterial color="#f7dcc8" roughness={0.28} metalness={0.02} />
-          </mesh>
-          <mesh position={[0.18, -0.42, 0.18]} rotation={[0.15, 0, 0.22]}>
-            <boxGeometry args={[0.22, 0.1, 0.04]} />
-            <meshStandardMaterial color="#f7dcc8" roughness={0.28} metalness={0.02} />
-          </mesh>
-          <group position={[0, 0.38, -0.02]}>
-            <mesh position={[0, 0.16, -0.02]}>
-              <boxGeometry args={[0.72, 0.16, 0.52]} />
-              <meshStandardMaterial color="#1a1f25" roughness={0.9} metalness={0.06} />
-            </mesh>
-            <mesh position={[0, 0.18, -0.08]}>
-              <torusGeometry args={[0.45, 0.08, 12, 24]} />
-              <meshStandardMaterial color="#233140" roughness={0.84} metalness={0.07} />
-            </mesh>
-            {[
-              [-0.26, 0.2, 0.16, 0.16, 0.5],
-              [-0.06, 0.28, 0.22, 0.12, 0.68],
-              [0.12, 0.32, 0.2, 0.1, 0.72],
-              [0.28, 0.26, 0.2, 0.11, 0.62],
-              [-0.34, 0.1, 0.18, 0.08, 0.42],
-              [0.36, 0.12, 0.18, 0.08, 0.4],
-              [-0.16, 0.36, 0.22, 0.12, 0.74],
-              [0.18, 0.38, 0.2, 0.1, 0.78],
-            ].map(([x, y, sx, sy, z], index) => (
-              <mesh key={`hair-${index}`} position={[x, y, 0.02]} rotation={[0.2, 0, x > 0 ? 0.28 : -0.28]}>
-                <boxGeometry args={[sx, sy, z]} />
-                <meshStandardMaterial color="#060707" roughness={0.95} metalness={0.02} />
-              </mesh>
-            ))}
-            <mesh position={[0, 0.02, -0.03]}>
-              <cylinderGeometry args={[0.34, 0.42, 0.36, 14]} />
-              <meshStandardMaterial color="#223040" roughness={0.82} metalness={0.07} />
-            </mesh>
-            <mesh position={[-0.28, 0.0, 0.12]} rotation={[0.1, 0, -0.18]}>
-              <sphereGeometry args={[0.08, 12, 12]} />
-              <meshStandardMaterial color="#0d1217" roughness={0.18} metalness={0.04} />
-            </mesh>
-            <mesh position={[0.28, 0.0, 0.12]} rotation={[0.1, 0, 0.18]}>
-              <sphereGeometry args={[0.08, 12, 12]} />
-              <meshStandardMaterial color="#0d1217" roughness={0.18} metalness={0.04} />
-            </mesh>
-          </group>
-        </group>
-
-        <mesh position={[0, 0.84, -0.02]}>
-          <boxGeometry args={[0.48, 0.86, 0.34]} />
-          <meshStandardMaterial color="#cfe6ef" roughness={0.72} metalness={0.06} />
-        </mesh>
-        <mesh position={[0, 0.55, -0.01]}>
-          <boxGeometry args={[0.68, 0.58, 0.42]} />
-          <meshStandardMaterial color="#bfdde8" roughness={0.78} metalness={0.05} />
-        </mesh>
-        <mesh position={[0, 0.9, -0.02]}>
-          <torusGeometry args={[0.24, 0.06, 12, 28]} />
-          <meshStandardMaterial color="#d6edf4" roughness={0.82} metalness={0.04} />
-        </mesh>
-        <mesh position={[0, 0.88, -0.01]}>
-          <torusGeometry args={[0.31, 0.06, 12, 28]} />
-          <meshStandardMaterial color="#a9d7e7" roughness={0.8} metalness={0.04} />
-        </mesh>
-        <mesh position={[0, 0.28, -0.01]}>
-          <boxGeometry args={[0.8, 0.42, 0.5]} />
-          <meshStandardMaterial color="#b8d9e4" roughness={0.82} metalness={0.05} />
-        </mesh>
-        <mesh position={[0, 0.02, 0.02]}>
-          <boxGeometry args={[0.58, 0.2, 0.4]} />
-          <meshStandardMaterial color="#e6f3f7" roughness={0.88} metalness={0.03} />
-        </mesh>
-        <mesh position={[0, -0.2, 0.01]}>
-          <cylinderGeometry args={[0.17, 0.22, 1.0, 14]} />
-          <meshStandardMaterial color="#c9a07d" roughness={0.5} metalness={0.06} />
-        </mesh>
-        <mesh position={[0, -0.2, 0.11]}>
-          <cylinderGeometry args={[0.17, 0.2, 0.96, 14]} />
-          <meshStandardMaterial color="#d4a581" roughness={0.58} metalness={0.04} />
-        </mesh>
-        <mesh ref={armL} position={[-0.36, 0.2, 0.03]} rotation={[0, 0, -1.18]}>
-          <cylinderGeometry args={[0.07, 0.06, 0.96, 12]} />
-          <meshStandardMaterial color="#cfe6ef" roughness={0.78} metalness={0.04} />
-        </mesh>
-        <mesh ref={armR} position={[0.36, 0.24, 0.03]} rotation={[0, 0, 1.08]}>
-          <cylinderGeometry args={[0.07, 0.06, 0.96, 12]} />
-          <meshStandardMaterial color="#cfe6ef" roughness={0.78} metalness={0.04} />
-        </mesh>
-        <mesh ref={handL} position={[-0.76, -0.04, 0.04]} rotation={[0, 0.18, 0]}>
-          <sphereGeometry args={[0.085, 14, 14]} />
-          <meshStandardMaterial color="#c98f69" roughness={0.44} metalness={0.04} />
-        </mesh>
-        <mesh position={[-0.92, -0.06, 0.05]} rotation={[0, 0.18, -0.14]}>
-          <cylinderGeometry args={[0.03, 0.035, 0.24, 8]} />
-          <meshStandardMaterial color="#f7dcc8" roughness={0.34} metalness={0.02} />
-        </mesh>
-        <mesh position={[-0.84, -0.02, 0.09]} rotation={[0, 0.18, 0.24]}>
-          <cylinderGeometry args={[0.02, 0.026, 0.16, 8]} />
-          <meshStandardMaterial color="#f7dcc8" roughness={0.34} metalness={0.02} />
-        </mesh>
-        <mesh ref={handR} position={[0.76, -0.08, 0.05]} rotation={[0, -0.12, 0]}>
-          <sphereGeometry args={[0.085, 14, 14]} />
-          <meshStandardMaterial color="#c98f69" roughness={0.44} metalness={0.04} />
-        </mesh>
-        <mesh position={[0.92, -0.1, 0.06]} rotation={[0, -0.12, 0.12]}>
-          <cylinderGeometry args={[0.03, 0.035, 0.24, 8]} />
-          <meshStandardMaterial color="#f7dcc8" roughness={0.34} metalness={0.02} />
-        </mesh>
-        <mesh position={[0.84, -0.04, 0.1]} rotation={[0, -0.12, -0.18]}>
-          <cylinderGeometry args={[0.02, 0.026, 0.16, 8]} />
-          <meshStandardMaterial color="#f7dcc8" roughness={0.34} metalness={0.02} />
-        </mesh>
-        <mesh position={[0, -0.18, -0.03]}>
-          <cylinderGeometry args={[0.22, 0.26, 0.92, 14]} />
-          <meshStandardMaterial color={currentRoom.accent} roughness={0.5} metalness={0.08} />
-        </mesh>
-        <mesh position={[0, -0.68, -0.02]}>
-          <boxGeometry args={[0.86, 0.58, 0.44]} />
-          <meshStandardMaterial color="#d8ecf2" roughness={0.8} metalness={0.04} />
-        </mesh>
-        <mesh position={[0, -1.12, -0.02]}>
-          <boxGeometry args={[0.78, 0.36, 0.42]} />
-          <meshStandardMaterial color="#bbd7e2" roughness={0.84} metalness={0.04} />
-        </mesh>
-        <mesh position={[-0.24, -1.42, 0.02]} rotation={[0, 0, -0.12]}>
-          <cylinderGeometry args={[0.12, 0.13, 0.72, 10]} />
-          <meshStandardMaterial color="#2a333d" roughness={0.86} metalness={0.05} />
-        </mesh>
-        <mesh position={[0.24, -1.42, 0.02]} rotation={[0, 0, 0.12]}>
-          <cylinderGeometry args={[0.12, 0.13, 0.72, 10]} />
-          <meshStandardMaterial color="#2a333d" roughness={0.86} metalness={0.05} />
-        </mesh>
-        <mesh position={[-0.28, -1.8, 0.1]} rotation={[0, 0, -0.12]}>
-          <boxGeometry args={[0.34, 0.12, 0.46]} />
-          <meshStandardMaterial color="#2a333d" roughness={0.82} metalness={0.04} />
-        </mesh>
-        <mesh position={[0.28, -1.8, 0.1]} rotation={[0, 0, 0.12]}>
-          <boxGeometry args={[0.34, 0.12, 0.46]} />
-          <meshStandardMaterial color="#2a333d" roughness={0.82} metalness={0.04} />
-        </mesh>
-        <mesh position={[-0.28, -1.92, 0.22]} rotation={[0, 0, -0.04]}>
-          <boxGeometry args={[0.34, 0.08, 0.18]} />
-          <meshStandardMaterial color="#e6f3f7" roughness={0.9} metalness={0.02} />
-        </mesh>
-        <mesh position={[0.28, -1.92, 0.22]} rotation={[0, 0, 0.04]}>
-          <boxGeometry args={[0.34, 0.08, 0.18]} />
-          <meshStandardMaterial color="#e6f3f7" roughness={0.9} metalness={0.02} />
-        </mesh>
-        <mesh position={[-0.28, -1.98, 0.25]} rotation={[0, 0, -0.06]}>
-          <boxGeometry args={[0.28, 0.06, 0.12]} />
-          <meshStandardMaterial color="#2a333d" roughness={0.9} metalness={0.03} />
-        </mesh>
-        <mesh position={[0.28, -1.98, 0.25]} rotation={[0, 0, 0.06]}>
-          <boxGeometry args={[0.28, 0.06, 0.12]} />
-          <meshStandardMaterial color="#2a333d" roughness={0.9} metalness={0.03} />
-        </mesh>
-        <mesh position={[-0.42, -0.58, 0.14]} rotation={[0.08, 0, -0.08]}>
-          <boxGeometry args={[0.14, 0.22, 0.1]} />
-          <meshStandardMaterial color="#cfe6ef" roughness={0.86} metalness={0.03} />
-        </mesh>
-        <mesh position={[0.42, -0.58, 0.14]} rotation={[0.08, 0, 0.08]}>
-          <boxGeometry args={[0.14, 0.22, 0.1]} />
-          <meshStandardMaterial color="#cfe6ef" roughness={0.86} metalness={0.03} />
-        </mesh>
-        <mesh position={[0, -0.58, 0.2]}>
-          <boxGeometry args={[0.24, 0.12, 0.08]} />
-          <meshStandardMaterial color="#8fe6ff" roughness={0.8} metalness={0.04} />
-        </mesh>
+        <RiggedAvatar room={currentRoom} displayMode={displayMode} pointer={pointer} />
       </group>
 
       <mesh position={[currentRoom.x, 1.02, -3.8]}>
@@ -1651,13 +1525,26 @@ export function HeroScene({
       >
         <color attach="background" args={[displayMode === 'terminal' ? '#050911' : '#07111f']} />
         <fog attach="fog" args={[displayMode === 'terminal' ? '#050911' : '#07111f', 8, 18]} />
-        <ambientLight intensity={displayMode === 'terminal' ? 0.62 : activeSlug ? 0.92 : 0.74} />
+        <ambientLight intensity={displayMode === 'terminal' ? 0.84 : activeSlug ? 1.1 : 0.9} />
+        <hemisphereLight
+          color={displayMode === 'terminal' ? '#9ff6db' : '#d8f1ff'}
+          groundColor="#0a1220"
+          intensity={displayMode === 'terminal' ? 0.34 : 0.46}
+        />
         <directionalLight
           position={[5, 4, 5]}
-          intensity={displayMode === 'viz' ? 2.8 : activeSlug ? 2.6 : 2.1}
+          intensity={displayMode === 'viz' ? 3.05 : activeSlug ? 2.85 : 2.35}
           color={palette.secondary}
         />
-        <pointLight position={[-4, -2, -2]} intensity={displayMode === 'terminal' ? 1.2 : activeSlug ? 1.85 : 1.3} color={palette.primary} />
+        <spotLight
+          position={[0, 5.2, 4.2]}
+          angle={0.42}
+          penumbra={0.6}
+          intensity={displayMode === 'terminal' ? 1.9 : 2.25}
+          color={palette.accent}
+          castShadow={false}
+        />
+        <pointLight position={[-4, -2, -2]} intensity={displayMode === 'terminal' ? 1.35 : activeSlug ? 2.05 : 1.4} color={palette.primary} />
         <Suspense fallback={null}>
           <ModeFrame displayMode={displayMode} pointer={pointer} />
           <ParticleHalo activeSlug={activeSlug} pointer={pointer} />
@@ -1726,13 +1613,26 @@ export function RoomStudioStage({
       >
         <color attach="background" args={[displayMode === 'terminal' ? '#050911' : '#07111f']} />
         <fog attach="fog" args={[displayMode === 'terminal' ? '#050911' : '#07111f', 8, 18]} />
-        <ambientLight intensity={displayMode === 'terminal' ? 0.8 : 0.92} />
+        <ambientLight intensity={displayMode === 'terminal' ? 0.98 : 1.06} />
+        <hemisphereLight
+          color={displayMode === 'terminal' ? '#9ff6db' : '#d8f1ff'}
+          groundColor="#0a1220"
+          intensity={displayMode === 'terminal' ? 0.42 : 0.56}
+        />
         <directionalLight
           position={[5, 4, 5]}
-          intensity={displayMode === 'viz' ? 2.5 : 2.15}
+          intensity={displayMode === 'viz' ? 2.85 : 2.35}
           color={modePalette[displayMode].secondary}
         />
-        <pointLight position={[-4, -2, -2]} intensity={displayMode === 'terminal' ? 1.2 : 1.35} color={modePalette[displayMode].primary} />
+        <spotLight
+          position={[0, 5.2, 4.2]}
+          angle={0.42}
+          penumbra={0.6}
+          intensity={displayMode === 'terminal' ? 1.9 : 2.25}
+          color={modePalette[displayMode].accent}
+          castShadow={false}
+        />
+        <pointLight position={[-4, -2, -2]} intensity={displayMode === 'terminal' ? 1.35 : 1.45} color={modePalette[displayMode].primary} />
         <Suspense fallback={null}>
           <MultiRoomStudio
             displayMode={displayMode}

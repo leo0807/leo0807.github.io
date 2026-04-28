@@ -1586,6 +1586,27 @@ img {
   fill: currentColor;
 }
 
+.music-panel__timeline {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.music-panel__time {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.music-panel__progress {
+  width: 100%;
+  accent-color: var(--cool);
+}
+
 .music-panel__controls {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

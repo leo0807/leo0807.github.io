@@ -191,20 +191,20 @@ export const siteConfig: SiteConfig = {
     {
       title: 'Gymnopédies',
       artist: 'Erik Satie',
-      file: '/music/Gymnopédies.mp3',
-      cover: '/music-img/Gymnopédies.jpg',
+      file: '/music/gymnopedies.mp3',
+      cover: '/music-img/gymnopedies.jpg',
     },
     {
       title: 'Old Town Road',
       artist: 'Lil Nas X',
-      file: '/music/Old Town Road.mp3',
-      cover: '/music-img/Lil Nas X.png',
+      file: '/music/old-town-road.mp3',
+      cover: '/music-img/lil-nas-x.png',
     },
     {
       title: 'Daddy',
       artist: 'Coldplay',
-      file: '/music/Daddy.mp3',
-      cover: '/music-img/Daddy.png',
+      file: '/music/daddy.mp3',
+      cover: '/music-img/daddy.png',
     },
   ],
 };

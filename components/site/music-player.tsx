@@ -5,6 +5,17 @@ import type { SiteContent, Track } from '@/content/site';
 
 const DEFAULT_VOLUME = 0.72;
 
+function formatTime(seconds: number) {
+  if (!Number.isFinite(seconds) || seconds < 0) {
+    return '0:00';
+  }
+
+  const totalSeconds = Math.floor(seconds);
+  const minutes = Math.floor(totalSeconds / 60);
+  const remainder = totalSeconds % 60;
+  return `${minutes}:${String(remainder).padStart(2, '0')}`;
+}
+
 function Icon({
   name,
 }: {
@@ -72,6 +83,8 @@ export function MusicPlayer({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [volume, setVolume] = useState(DEFAULT_VOLUME);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
 
   const track = tracks[trackIndex];
 
@@ -83,6 +96,8 @@ export function MusicPlayer({
     audio.currentTime = 0;
     audio.volume = volume;
     audio.load();
+    setCurrentTime(0);
+    setDuration(0);
 
     if (isPlaying) {
       void audio.play().catch(() => {
@@ -124,14 +139,45 @@ export function MusicPlayer({
 
     audio.addEventListener('ended', handleEnd);
 
+    const handleLoadedMetadata = () => {
+      setDuration(audio.duration || 0);
+      setCurrentTime(audio.currentTime || 0);
+    };
+
+    const handleTimeUpdate = () => {
+      setCurrentTime(audio.currentTime || 0);
+      setDuration(audio.duration || 0);
+    };
+
+    const handleDurationChange = () => {
+      setDuration(audio.duration || 0);
+    };
+
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('durationchange', handleDurationChange);
+
     return () => {
       audio.removeEventListener('ended', handleEnd);
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('durationchange', handleDurationChange);
     };
   }, [tracks.length]);
 
   const goToTrack = (direction: 1 | -1) => {
     setTrackIndex((current) => (current + direction + tracks.length) % tracks.length);
     setIsExpanded(true);
+  };
+
+  const progress = duration > 0 ? Math.min(currentTime / duration, 1) : 0;
+  const seek = (value: number) => {
+    const audio = audioRef.current;
+    if (!audio || !Number.isFinite(duration) || duration <= 0) return;
+
+    const clamped = Math.min(Math.max(value, 0), 1);
+    audio.currentTime = duration * clamped;
+    setCurrentTime(audio.currentTime);
   };
 
   return (
@@ -181,6 +227,23 @@ export function MusicPlayer({
         </div>
 
         <p className="music-panel__note">{copy.note}</p>
+
+        <div className="music-panel__timeline">
+          <div className="music-panel__time">
+            <span>{formatTime(currentTime)}</span>
+            <span>{formatTime(duration)}</span>
+          </div>
+          <input
+            className="music-panel__progress"
+            type="range"
+            min="0"
+            max="1"
+            step="0.001"
+            value={progress}
+            onChange={(event) => seek(Number(event.target.value))}
+            aria-label={`${track.title} progress`}
+          />
+        </div>
 
         <div className="music-panel__controls" role="group" aria-label={track.title}>
           <button type="button" className="music-panel__control" aria-label={copy.prev} onClick={() => goToTrack(-1)}>

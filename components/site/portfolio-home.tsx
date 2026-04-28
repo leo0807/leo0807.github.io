@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { HeroScene } from '@/components/scene/hero-scene';
+import { HeroScene, RoomStudioStage } from '@/components/scene/hero-scene';
 import { MusicPlayer } from '@/components/site/music-player';
 import { ProjectCard } from '@/components/site/project-card';
 import { SectionHeading } from '@/components/site/section-heading';
@@ -218,6 +218,25 @@ export function PortfolioHome({
                   <strong>{label}</strong>
                 </button>
               ))}
+            </div>
+          </section>
+
+          <section className="surface room-stage">
+            <div className="room-stage__copy">
+              <p className="eyebrow">{locale === 'zh' ? '3D 场景' : '3D Scene'}</p>
+              <h2>{roomLabels[roomIndex] ?? roomLabels[1]}</h2>
+              <p className="muted">
+                {locale === 'zh'
+                  ? '这个 3D 头像现在直接放在首页的可见区域里，而不是背景层。'
+                  : 'This 3D avatar now lives in a visible homepage panel instead of the background layer.'}
+              </p>
+            </div>
+            <div className="room-stage__viewer">
+              <RoomStudioStage
+                displayMode={presentationMode}
+                roomIndex={roomIndex}
+                onRoomIndexChange={setRoomIndex}
+              />
             </div>
           </section>
 

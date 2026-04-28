@@ -1480,12 +1480,6 @@ export function HeroScene({
         />
         <pointLight position={[-4, -2, -2]} intensity={displayMode === 'terminal' ? 1.2 : activeSlug ? 1.85 : 1.3} color={palette.primary} />
         <Suspense fallback={null}>
-          <MultiRoomStudio
-            displayMode={displayMode}
-            pointer={pointer}
-            roomIndex={roomIndex}
-            onRoomIndexChange={onRoomIndexChange}
-          />
           <ModeFrame displayMode={displayMode} pointer={pointer} />
           <ParticleHalo activeSlug={activeSlug} pointer={pointer} />
           <SignalOrbit activeSlug={activeSlug} pointer={pointer} />
@@ -1527,6 +1521,56 @@ export function HeroScene({
           <Bloom intensity={displayMode === 'viz' ? 1.46 : activeSlug ? 1.58 : 1.08} luminanceThreshold={0.16} luminanceSmoothing={0.86} />
           <Noise premultiply blendFunction={BlendFunction.SOFT_LIGHT} opacity={displayMode === 'terminal' ? 0.04 : activeSlug ? 0.06 : 0.03} />
           <Vignette eskil={false} offset={0.2} darkness={palette.vignette} />
+        </EffectComposer>
+      </Canvas>
+    </div>
+  );
+}
+
+export function RoomStudioStage({
+  displayMode = 'editorial',
+  roomIndex = 1,
+  onRoomIndexChange,
+}: {
+  displayMode?: DisplayMode;
+  roomIndex?: number;
+  onRoomIndexChange?: (index: number) => void;
+}) {
+  const pointer = useScenePointer();
+
+  return (
+    <div className="room-stage__scene" aria-hidden="true">
+      <Canvas
+        camera={{ position: [0, 0.4, 8.2], fov: 42 }}
+        dpr={[1, 1.15]}
+        gl={{ antialias: false, powerPreference: 'high-performance', alpha: true }}
+      >
+        <color attach="background" args={[displayMode === 'terminal' ? '#050911' : '#07111f']} />
+        <fog attach="fog" args={[displayMode === 'terminal' ? '#050911' : '#07111f', 8, 18]} />
+        <ambientLight intensity={displayMode === 'terminal' ? 0.8 : 0.92} />
+        <directionalLight
+          position={[5, 4, 5]}
+          intensity={displayMode === 'viz' ? 2.5 : 2.15}
+          color={modePalette[displayMode].secondary}
+        />
+        <pointLight position={[-4, -2, -2]} intensity={displayMode === 'terminal' ? 1.2 : 1.35} color={modePalette[displayMode].primary} />
+        <Suspense fallback={null}>
+          <MultiRoomStudio
+            displayMode={displayMode}
+            pointer={pointer}
+            roomIndex={roomIndex}
+            onRoomIndexChange={onRoomIndexChange}
+          />
+          <ModeFrame displayMode={displayMode} pointer={pointer} />
+          <PointerOrb pointer={pointer} />
+          <ScanBeam displayMode={displayMode} activeSlug={null} />
+        </Suspense>
+        <OrbitControls enableZoom={false} enablePan={false} enableRotate enableDamping dampingFactor={0.08} autoRotate autoRotateSpeed={0.15} />
+        <EffectComposer>
+          <DepthOfField focusDistance={0.03} focalLength={0.03} bokehScale={1.4} height={320} />
+          <Bloom intensity={1.14} luminanceThreshold={0.18} luminanceSmoothing={0.86} />
+          <Noise premultiply blendFunction={BlendFunction.SOFT_LIGHT} opacity={0.03} />
+          <Vignette eskil={false} offset={0.18} darkness={modePalette[displayMode].vignette} />
         </EffectComposer>
       </Canvas>
     </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, MeshDistortMaterial, OrbitControls, useTexture } from '@react-three/drei';
+import { Float, Line, MeshDistortMaterial, OrbitControls, useTexture } from '@react-three/drei';
 import { EffectComposer, Bloom, DepthOfField, Noise, Vignette } from '@react-three/postprocessing';
 import { Suspense, useEffect, useMemo, useRef } from 'react';
 import type { RefObject } from 'react';
@@ -85,6 +85,7 @@ function ProjectPanels({
 }) {
   const group = useRef<THREE.Group>(null);
   const activeGlow = useRef<THREE.Mesh>(null);
+  const connectors = useRef<THREE.Group>(null);
   const textures = useTexture(projects.map((project) => project.image));
 
   useFrame((state, delta) => {
@@ -108,10 +109,49 @@ function ProjectPanels({
     if (activeGlow.current) {
       activeGlow.current.rotation.z += delta * 0.12;
     }
+
+    if (connectors.current) {
+      connectors.current.rotation.y = THREE.MathUtils.lerp(connectors.current.rotation.y, state.clock.elapsedTime * 0.03, 0.02);
+    }
   });
 
   return (
-    <group ref={group}>
+    <group>
+      <group ref={connectors}>
+        {projects.map((project, index) => {
+          const angle = (index / projects.length) * Math.PI * 2;
+          const radius = 3.9;
+          const anchor: [number, number, number] = [
+            Math.cos(angle) * radius,
+            (index % 2 === 0 ? 1 : -1) * 0.68,
+            Math.sin(angle) * radius - 1.4,
+          ];
+          const mid: [number, number, number] = [anchor[0] * 0.48, anchor[1] * 0.48, anchor[2] * 0.48];
+
+          return (
+            <group key={`${project.slug}-connector`}>
+              <Line
+                points={[[0, 0, 0], mid, anchor]}
+                color={project.slug === activeSlug ? '#8fe6ff' : '#a7e8ff'}
+                transparent
+                opacity={project.slug === activeSlug ? 0.5 : 0.22}
+                lineWidth={1}
+              />
+              <mesh position={mid}>
+                <sphereGeometry args={[project.slug === activeSlug ? 0.08 : 0.055, 14, 14]} />
+                <meshStandardMaterial
+                  color={project.slug === activeSlug ? '#8fe6ff' : '#ffdca8'}
+                  emissive={project.slug === activeSlug ? '#1d4059' : '#43301c'}
+                  emissiveIntensity={1.2}
+                  roughness={0.18}
+                  metalness={0.84}
+                />
+              </mesh>
+            </group>
+          );
+        })}
+      </group>
+      <group ref={group}>
       {projects.map((project, index) => {
         const angle = (index / projects.length) * Math.PI * 2;
         const radius = 3.9;
@@ -139,6 +179,14 @@ function ProjectPanels({
                 opacity={isActive ? 0.22 : 0.08}
               />
             </mesh>
+            <mesh position={[0, 0, -0.14]} rotation={[0, angle + Math.PI, 0]}>
+              <planeGeometry args={[2.36, 1.46]} />
+              <meshBasicMaterial color="#08101a" transparent opacity={0.5} />
+            </mesh>
+            <mesh position={[0, 0, -0.06]} rotation={[0, angle + Math.PI, 0]}>
+              <planeGeometry args={[2.46, 1.56]} />
+              <meshBasicMaterial color={isActive ? '#8fe6ff' : '#ffdca8'} transparent opacity={0.08} />
+            </mesh>
             <mesh rotation={[0, angle + Math.PI, 0]}>
               <planeGeometry args={[2.1, 1.28]} />
               <meshStandardMaterial
@@ -161,9 +209,20 @@ function ProjectPanels({
                 emissiveIntensity={isActive ? 0.75 : 0}
               />
             </mesh>
+            <mesh position={[0, 0, 0.1]} rotation={[0, angle + Math.PI, 0]}>
+              <boxGeometry args={[2.22, 1.4, 0.05]} />
+              <meshStandardMaterial
+                color={isActive ? '#101723' : '#0b121d'}
+                metalness={0.45}
+                roughness={0.46}
+                emissive={isActive ? '#173246' : '#000000'}
+                emissiveIntensity={isActive ? 0.4 : 0.12}
+              />
+            </mesh>
           </Float>
         );
       })}
+      </group>
     </group>
   );
 }
@@ -255,6 +314,113 @@ function SignalOrbit({ activeSlug, pointer }: { activeSlug?: string | null; poin
       <mesh position={[0, 0.18, 0]} rotation={[Math.PI / 2, 0, 0]}>
         <ringGeometry args={[3.55, 3.72, 64]} />
         <meshBasicMaterial color="#a6c6ff" transparent opacity={0.28} side={THREE.DoubleSide} />
+      </mesh>
+      <mesh position={[0, 0.62, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[2.24, 2.34, 64]} />
+        <meshBasicMaterial color={activeSlug ? '#8fe6ff' : '#f5cf8f'} transparent opacity={0.18} side={THREE.DoubleSide} />
+      </mesh>
+      <mesh position={[0, -0.4, 0]} rotation={[Math.PI / 2, Math.PI / 4, 0]}>
+        <ringGeometry args={[1.28, 1.41, 48]} />
+        <meshBasicMaterial color={activeSlug ? '#93f2d0' : '#b9ffef'} transparent opacity={0.16} side={THREE.DoubleSide} />
+      </mesh>
+    </group>
+  );
+}
+
+function DataSpokes({ activeSlug, pointer }: { activeSlug?: string | null; pointer: RefObject<Pointer> }) {
+  const spokes = useRef<THREE.Group>(null);
+  const shardA = useRef<THREE.Mesh>(null);
+  const shardB = useRef<THREE.Mesh>(null);
+  const shell = useRef<THREE.Mesh>(null);
+
+  useFrame((state, delta) => {
+    if (!spokes.current) return;
+
+    spokes.current.rotation.x = THREE.MathUtils.lerp(
+      spokes.current.rotation.x,
+      pointer.current.y * 0.1 + (activeSlug ? 0.18 : 0.08),
+      0.03,
+    );
+    spokes.current.rotation.y = THREE.MathUtils.lerp(
+      spokes.current.rotation.y,
+      state.clock.elapsedTime * 0.07 - pointer.current.x * 0.12,
+      0.03,
+    );
+
+    if (shardA.current) shardA.current.rotation.z += delta * 0.18;
+    if (shardB.current) shardB.current.rotation.z -= delta * 0.16;
+    if (shell.current) shell.current.rotation.y += delta * 0.04;
+  });
+
+  const pairs = [
+    [-3.2, 1.45, -1.4],
+    [3.35, 1.1, -1.2],
+    [-3.05, -1.55, -1.3],
+    [3.0, -1.35, -1.25],
+  ] as const;
+
+  return (
+    <group ref={spokes} position={[0, 0.25, -1.4]}>
+      <mesh ref={shell}>
+        <dodecahedronGeometry args={[2.42, 1]} />
+        <meshBasicMaterial color={activeSlug ? '#8fe6ff' : '#ffdca8'} transparent opacity={0.06} wireframe />
+      </mesh>
+      <mesh ref={shardA} position={[0, 1.8, 0.1]} rotation={[0.12, 0.18, 0.32]}>
+        <boxGeometry args={[0.08, 2.8, 0.04]} />
+        <meshBasicMaterial color={activeSlug ? '#8fe6ff' : '#93f2d0'} transparent opacity={0.38} />
+      </mesh>
+      <mesh ref={shardB} position={[0, -1.7, -0.1]} rotation={[-0.18, -0.06, -0.28]}>
+        <boxGeometry args={[0.06, 2.45, 0.04]} />
+        <meshBasicMaterial color={activeSlug ? '#ffdca8' : '#f5cf8f'} transparent opacity={0.28} />
+      </mesh>
+      {pairs.map((position, index) => (
+        <group key={position.join(':')} position={position}>
+          <mesh>
+            <sphereGeometry args={[0.09 + index * 0.01, 14, 14]} />
+            <meshStandardMaterial
+              color={index % 2 === 0 ? '#8fe6ff' : '#ffdca8'}
+              emissive={index % 2 === 0 ? '#15324a' : '#47311b'}
+              emissiveIntensity={1.2}
+              roughness={0.24}
+              metalness={0.76}
+            />
+          </mesh>
+          <mesh position={[0, 0, -0.07]}>
+            <ringGeometry args={[0.2, 0.29, 24]} />
+            <meshBasicMaterial color={index % 2 === 0 ? '#93f2d0' : '#8fe6ff'} transparent opacity={0.18} side={THREE.DoubleSide} />
+          </mesh>
+        </group>
+      ))}
+    </group>
+  );
+}
+
+function ScanBeam({ displayMode, activeSlug }: { displayMode: DisplayMode; activeSlug?: string | null }) {
+  const beam = useRef<THREE.Mesh>(null);
+  const sheen = useRef<THREE.Mesh>(null);
+
+  useFrame((state, delta) => {
+    if (beam.current) {
+      beam.current.position.x = Math.sin(state.clock.elapsedTime * 0.42) * 4.4;
+      beam.current.position.y = Math.cos(state.clock.elapsedTime * 0.24) * 0.55;
+      beam.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.18) * 0.06;
+    }
+
+    if (sheen.current) {
+      sheen.current.rotation.z += delta * (activeSlug ? 0.18 : 0.1);
+      sheen.current.position.y = Math.sin(state.clock.elapsedTime * 0.9) * 0.08;
+    }
+  });
+
+  return (
+    <group position={[0, 0.2, -1.05]}>
+      <mesh ref={beam} position={[-4.4, 0, 0.02]} rotation={[0, 0, 0.28]}>
+        <boxGeometry args={[0.08, 6.1, 0.02]} />
+        <meshBasicMaterial color={displayMode === 'terminal' ? '#93f2d0' : '#8fe6ff'} transparent opacity={0.08} />
+      </mesh>
+      <mesh ref={sheen} position={[0, 0, -0.15]} rotation={[0, 0, Math.PI / 4]}>
+        <planeGeometry args={[8.8, 0.08]} />
+        <meshBasicMaterial color={displayMode === 'viz' ? '#8fe6ff' : '#ffdca8'} transparent opacity={0.06} />
       </mesh>
     </group>
   );
@@ -518,6 +684,8 @@ export function HeroScene({
           <ModeFrame displayMode={displayMode} pointer={pointer} />
           <ParticleHalo activeSlug={activeSlug} pointer={pointer} />
           <SignalOrbit activeSlug={activeSlug} pointer={pointer} />
+          <DataSpokes activeSlug={activeSlug} pointer={pointer} />
+          <ScanBeam displayMode={displayMode} activeSlug={activeSlug} />
           {displayMode === 'viz' ? <VizLattice activeSlug={activeSlug} pointer={pointer} /> : null}
           <CoreSculpture activeSlug={activeSlug} pointer={pointer} />
           <PointerOrb activeSlug={activeSlug} pointer={pointer} />

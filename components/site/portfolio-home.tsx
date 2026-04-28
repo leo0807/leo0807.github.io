@@ -128,7 +128,7 @@ export function PortfolioHome({
                 <div className="presentation-telemetry__viz">
                   <span className="presentation-telemetry__label">{vizTelemetry.label}</span>
                   <div className="presentation-telemetry__stats">
-                    {vizTelemetry.stats.map((stat, index) => (
+                    {(vizTelemetry.stats ?? []).map((stat, index) => (
                       <div key={stat.label} className="presentation-telemetry__stat">
                         <span>{stat.label}</span>
                         <strong>{stat.value}</strong>
@@ -225,7 +225,7 @@ export function PortfolioHome({
               <h3>{content.showcase.viz.title}</h3>
               <p>{content.showcase.viz.body}</p>
               <div className="viz-stats">
-                {content.showcase.viz.stats.map((stat, index) => (
+                {(content.showcase.viz.stats ?? []).map((stat, index) => (
                   <div key={stat.label} className="viz-stat">
                     <span className="viz-stat__label">{stat.label}</span>
                     <strong>{stat.value}</strong>
@@ -265,7 +265,7 @@ export function PortfolioHome({
           <article id="stack" className="surface stack-card">
             <SectionHeading eyebrow={content.stack.eyebrow} title={content.stack.title} />
             <div className="pill-grid">
-              {content.strengths.map((item) => (
+              {(content.strengths ?? []).map((item) => (
                 <span key={item} className="pill">
                   {item}
                 </span>
@@ -279,7 +279,7 @@ export function PortfolioHome({
           <SectionHeading eyebrow={content.timeline.eyebrow} title={content.timeline.title} />
           <p className="muted compact">{content.timeline.lead}</p>
           <div className="timeline-grid">
-            {content.timeline.items.map((item) => (
+            {(content.timeline.items ?? []).map((item) => (
               <article key={item.period + item.title} className="surface timeline-card">
                 <span className="signal-index">{item.period}</span>
                 <h3>{item.title}</h3>
@@ -293,7 +293,7 @@ export function PortfolioHome({
           <SectionHeading eyebrow={content.signals.eyebrow} title={content.signals.title} />
           <p className="muted compact">{content.signals.lead}</p>
           <div className="signal-grid">
-            {content.signals.cards.map((signal, index) => (
+            {(content.signals.cards ?? []).map((signal, index) => (
               <article key={signal.title} className={`surface signal-card signal-card--${index + 1}`}>
                 <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
                 <h3>{signal.title}</h3>
@@ -315,7 +315,7 @@ export function PortfolioHome({
           />
           <p className="muted compact">{content.blogIndex.lead}</p>
           <div className="blog-strip">
-            {featuredBlogPosts.map((post, index) => (
+            {(featuredBlogPosts ?? []).map((post, index) => (
               <article key={post.slug} className="surface blog-strip__card">
                 <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
                 <h3>{post.title}</h3>
@@ -339,7 +339,7 @@ export function PortfolioHome({
             }
           />
           <div className="project-grid project-grid--interactive">
-            {featuredProjects.map((project) => (
+            {(featuredProjects ?? []).map((project) => (
               <ProjectCard
                 key={project.slug}
                 project={project}
@@ -373,7 +373,7 @@ export function PortfolioHome({
           <SectionHeading eyebrow={content.contact.eyebrow} title={content.contact.title} />
           <p className="muted">{content.contact.lead}</p>
           <div className="contact-grid">
-            {content.contactLinks.map((link) => (
+            {(content.contactLinks ?? []).map((link) => (
               <a key={link.label} className="contact-tile" href={link.href} target="_blank" rel="noreferrer">
                 <strong>{link.label}</strong>
                 <span>{link.helper ?? link.href.replace('https://', '')}</span>

@@ -9,6 +9,8 @@ import * as THREE from 'three';
 import { BlendFunction } from 'postprocessing';
 import type { Project } from '@/content/projects';
 
+type DisplayMode = 'editorial' | 'viz' | 'terminal';
+
 type Pointer = {
   x: number;
   y: number;
@@ -34,6 +36,39 @@ function useScenePointer() {
 
   return pointer;
 }
+
+const modePalette: Record<
+  DisplayMode,
+  {
+    primary: string;
+    secondary: string;
+    accent: string;
+    vignette: number;
+    bloom: number;
+  }
+> = {
+  editorial: {
+    primary: '#f5cf8f',
+    secondary: '#ff7b5f',
+    accent: '#8fe6ff',
+    vignette: 0.98,
+    bloom: 1.16,
+  },
+  viz: {
+    primary: '#8fe6ff',
+    secondary: '#93f2d0',
+    accent: '#ffdca8',
+    vignette: 0.95,
+    bloom: 1.32,
+  },
+  terminal: {
+    primary: '#93f2d0',
+    secondary: '#a7e8ff',
+    accent: '#f5cf8f',
+    vignette: 0.91,
+    bloom: 1.02,
+  },
+};
 
 function ProjectPanels({
   projects,
@@ -313,9 +348,48 @@ function ParticleHalo({ activeSlug, pointer }: { activeSlug?: string | null; poi
   );
 }
 
-export function HeroScene({ projects, activeProject }: { projects: Project[]; activeProject?: Project | null }) {
+function ModeFrame({
+  displayMode,
+  pointer,
+}: {
+  displayMode: DisplayMode;
+  pointer: RefObject<Pointer>;
+}) {
+  const frame = useRef<THREE.Mesh>(null);
+  const palette = modePalette[displayMode];
+
+  useFrame((_, delta) => {
+    if (!frame.current) return;
+    frame.current.rotation.x = THREE.MathUtils.lerp(frame.current.rotation.x, pointer.current.y * 0.06, 0.04);
+    frame.current.rotation.y = THREE.MathUtils.lerp(frame.current.rotation.y, pointer.current.x * 0.08, 0.04);
+    frame.current.rotation.z += delta * 0.08;
+  });
+
+  return (
+    <mesh ref={frame} position={[0, 0.45, -1.25]}>
+      <boxGeometry args={[5.6, 4.2, 0.12]} />
+      <meshBasicMaterial
+        color={palette.primary}
+        transparent
+        opacity={0.12}
+        wireframe
+      />
+    </mesh>
+  );
+}
+
+export function HeroScene({
+  projects,
+  activeProject,
+  displayMode = 'editorial',
+}: {
+  projects: Project[];
+  activeProject?: Project | null;
+  displayMode?: DisplayMode;
+}) {
   const activeSlug = activeProject?.slug ?? null;
   const pointer = useScenePointer();
+  const palette = modePalette[displayMode];
 
   return (
     <div className="scene-shell" aria-hidden="true">
@@ -324,12 +398,17 @@ export function HeroScene({ projects, activeProject }: { projects: Project[]; ac
         dpr={[1, 1.2]}
         gl={{ antialias: false, powerPreference: 'high-performance', alpha: true }}
       >
-        <color attach="background" args={['#07111f']} />
-        <fog attach="fog" args={['#07111f', 8, 18]} />
-        <ambientLight intensity={activeSlug ? 0.88 : 0.72} />
-        <directionalLight position={[5, 4, 5]} intensity={activeSlug ? 2.6 : 2.1} color={activeSlug ? '#fff0cf' : '#ffe9c8'} />
-        <pointLight position={[-4, -2, -2]} intensity={activeSlug ? 1.8 : 1.3} color={activeSlug ? '#8ec9ff' : '#5ebdff'} />
+        <color attach="background" args={[displayMode === 'terminal' ? '#050911' : '#07111f']} />
+        <fog attach="fog" args={[displayMode === 'terminal' ? '#050911' : '#07111f', 8, 18]} />
+        <ambientLight intensity={displayMode === 'terminal' ? 0.62 : activeSlug ? 0.92 : 0.74} />
+        <directionalLight
+          position={[5, 4, 5]}
+          intensity={displayMode === 'viz' ? 2.8 : activeSlug ? 2.6 : 2.1}
+          color={palette.secondary}
+        />
+        <pointLight position={[-4, -2, -2]} intensity={displayMode === 'terminal' ? 1.2 : activeSlug ? 1.85 : 1.3} color={palette.primary} />
         <Suspense fallback={null}>
+          <ModeFrame displayMode={displayMode} pointer={pointer} />
           <ParticleHalo activeSlug={activeSlug} pointer={pointer} />
           <SignalOrbit activeSlug={activeSlug} pointer={pointer} />
           <CoreSculpture activeSlug={activeSlug} pointer={pointer} />
@@ -348,13 +427,13 @@ export function HeroScene({ projects, activeProject }: { projects: Project[]; ac
           enableDamping
           dampingFactor={0.08}
           autoRotate
-          autoRotateSpeed={activeSlug ? 0.5 : 0.22}
+          autoRotateSpeed={displayMode === 'terminal' ? 0.34 : activeSlug ? 0.5 : 0.22}
         />
         <EffectComposer>
           <DepthOfField focusDistance={0.02} focalLength={0.035} bokehScale={activeSlug ? 3.2 : 1.7} height={320} />
-          <Bloom intensity={activeSlug ? 1.58 : 1.08} luminanceThreshold={0.16} luminanceSmoothing={0.86} />
-          <Noise premultiply blendFunction={BlendFunction.SOFT_LIGHT} opacity={activeSlug ? 0.06 : 0.03} />
-          <Vignette eskil={false} offset={0.2} darkness={0.98} />
+          <Bloom intensity={displayMode === 'viz' ? 1.46 : activeSlug ? 1.58 : 1.08} luminanceThreshold={0.16} luminanceSmoothing={0.86} />
+          <Noise premultiply blendFunction={BlendFunction.SOFT_LIGHT} opacity={displayMode === 'terminal' ? 0.04 : activeSlug ? 0.06 : 0.03} />
+          <Vignette eskil={false} offset={0.2} darkness={palette.vignette} />
         </EffectComposer>
       </Canvas>
     </div>

@@ -85,6 +85,17 @@ export type SiteContent = {
       lines: string[];
     };
   };
+  presentation: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    hint: string;
+    modes: Array<{
+      id: 'editorial' | 'viz' | 'terminal';
+      label: string;
+      blurb: string;
+    }>;
+  };
   featured: {
     eyebrow: string;
     title: string;
@@ -337,6 +348,29 @@ const siteContent: Record<Locale, SiteContent> = {
         ],
       },
     },
+    presentation: {
+      eyebrow: 'Presentation Mode',
+      title: 'A single switch shifts the page between magazine, dashboard, and console.',
+      lead: 'Use the mode chips to steer the page toward a different visual language without leaving the homepage.',
+      hint: 'Hover the project cards to retune the scene, or switch modes to reshape the whole frame.',
+      modes: [
+        {
+          id: 'editorial',
+          label: 'Editorial',
+          blurb: 'Cinematic framing, softer light, and a more premium landing-page rhythm.',
+        },
+        {
+          id: 'viz',
+          label: 'Data viz',
+          blurb: 'Sharper metrics, brighter accents, and a more analytic product-surface feel.',
+        },
+        {
+          id: 'terminal',
+          label: 'Terminal',
+          blurb: 'Higher contrast, compact HUD cues, and a more engineering-forward read.',
+        },
+      ],
+    },
     featured: {
       eyebrow: 'Featured Work',
       title: 'Selected builds now linked to dedicated project pages.',
@@ -512,6 +546,29 @@ const siteContent: Record<Locale, SiteContent> = {
           'deploy: GitHub Pages',
         ],
       },
+    },
+    presentation: {
+      eyebrow: '展示模式',
+      title: '一个开关，就能把页面切到杂志、看板或控制台语气。',
+      lead: '通过模式切换，你可以在首页内直接调整整体视觉语言，而不需要跳出当前页面。',
+      hint: '悬停项目卡会重新调校场景，切换模式则会改变整个页面气质。',
+      modes: [
+        {
+          id: 'editorial',
+          label: '编辑感',
+          blurb: '更像封面页的构图、柔和光感和高级节奏。',
+        },
+        {
+          id: 'viz',
+          label: '数据感',
+          blurb: '更锐利的指标、更亮的点缀，以及更像产品看板的观感。',
+        },
+        {
+          id: 'terminal',
+          label: '终端感',
+          blurb: '更高对比度、紧凑 HUD 线索，以及更偏工程化的表达。',
+        },
+      ],
     },
     featured: {
       eyebrow: '精选项目',

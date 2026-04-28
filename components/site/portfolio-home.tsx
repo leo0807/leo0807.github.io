@@ -31,6 +31,7 @@ export function PortfolioHome({
 }: PortfolioHomeProps) {
   const [activeSlug, setActiveSlug] = useState<string>(featuredProjects[0]?.slug ?? projects[0]?.slug ?? '');
   const [resumePreview, setResumePreview] = useState<'english' | 'chinese' | null>(null);
+  const [presentationMode, setPresentationMode] = useState<'editorial' | 'viz' | 'terminal'>('editorial');
 
   const activeProject = useMemo(() => {
     return projects.find((project) => project.slug === activeSlug) ?? null;
@@ -54,7 +55,7 @@ export function PortfolioHome({
 
   return (
     <main className="page-shell">
-      <HeroScene projects={featuredProjects} activeProject={activeProject} />
+      <HeroScene projects={featuredProjects} activeProject={activeProject} displayMode={presentationMode} />
       <div className="content-shell">
         <header className="hero-stack">
           <nav className="topbar surface">
@@ -72,6 +73,30 @@ export function PortfolioHome({
               <MusicPlayer tracks={siteConfig.tracks} copy={content.music} />
             </div>
           </nav>
+
+          <section className="surface presentation-bar">
+            <div className="presentation-bar__copy">
+              <p className="eyebrow">{content.presentation.eyebrow}</p>
+              <h2>{content.presentation.title}</h2>
+              <p className="muted">{content.presentation.lead}</p>
+            </div>
+            <div className="presentation-bar__controls" role="tablist" aria-label={content.presentation.eyebrow}>
+              {content.presentation.modes.map((mode) => (
+                <button
+                  key={mode.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={presentationMode === mode.id}
+                  className={`mode-chip${presentationMode === mode.id ? ' mode-chip--active' : ''}`}
+                  onClick={() => setPresentationMode(mode.id)}
+                >
+                  <span>{mode.label}</span>
+                  <small>{mode.blurb}</small>
+                </button>
+              ))}
+            </div>
+            <p className="presentation-bar__hint">{content.presentation.hint}</p>
+          </section>
 
           <section className="hero-grid">
             <div className="surface hero-copy">

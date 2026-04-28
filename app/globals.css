@@ -172,6 +172,32 @@ img {
   white-space: nowrap;
 }
 
+.quick-switcher-trigger {
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  line-height: 1;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.quick-switcher-trigger:hover {
+  transform: translateY(-1px);
+  border-color: rgba(143, 194, 255, 0.34);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.quick-switcher-trigger span {
+  font-size: 0.86rem;
+  letter-spacing: 0.12em;
+}
+
 .language-switch {
   border-radius: 999px;
   padding: 6px 12px;
@@ -270,6 +296,91 @@ img {
   margin: 0;
   color: var(--muted);
   font-size: 0.88rem;
+}
+
+.quick-switcher {
+  position: fixed;
+  inset: 0;
+  z-index: 130;
+  display: grid;
+  place-items: start center;
+  padding: 84px 18px 24px;
+  background: rgba(2, 6, 12, 0.56);
+  backdrop-filter: blur(20px);
+}
+
+.quick-switcher__panel {
+  width: min(760px, calc(100vw - 24px));
+  padding: 22px;
+  border-radius: 28px;
+  display: grid;
+  gap: 16px;
+}
+
+.quick-switcher__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.quick-switcher__head h3 {
+  margin: 4px 0 0;
+  font-size: clamp(1.25rem, 2.4vw, 1.9rem);
+}
+
+.quick-switcher__input {
+  min-height: 52px;
+}
+
+.quick-switcher__list {
+  display: grid;
+  gap: 10px;
+  max-height: min(52vh, 520px);
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.quick-switcher__item {
+  display: grid;
+  gap: 5px;
+  text-align: left;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.quick-switcher__item:hover {
+  border-color: rgba(143, 194, 255, 0.24);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.quick-switcher__kind {
+  color: var(--cool);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.68rem;
+}
+
+.quick-switcher__item strong {
+  font-size: 1rem;
+}
+
+.quick-switcher__item small {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.quick-switcher__empty {
+  display: grid;
+  gap: 6px;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  color: var(--muted);
 }
 
 .presentation-telemetry {

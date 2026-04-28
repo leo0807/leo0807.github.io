@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { HeroScene } from '@/components/scene/hero-scene';
 import { MusicPlayer } from '@/components/site/music-player';
 import { ProjectCard } from '@/components/site/project-card';
+import { QuickSwitcher } from '@/components/site/quick-switcher';
 import { SectionHeading } from '@/components/site/section-heading';
 import type { BlogPost } from '@/content/blogs';
 import type { Project } from '@/content/projects';
@@ -87,6 +88,7 @@ export function PortfolioHome({
               <Link href={localizedPath(locale, '/blog/')}>{content.nav.blog}</Link>
               <a href="#stack">{content.nav.stack}</a>
               <a href="#contact">{content.nav.contact}</a>
+              <QuickSwitcher locale={locale} content={content} projects={projects} posts={featuredBlogPosts} />
               <Link className="language-switch" href={localizedPath(locale === 'en' ? 'zh' : 'en', '/')}>
                 {locale === 'en' ? content.nav.language : content.nav.language}
               </Link>

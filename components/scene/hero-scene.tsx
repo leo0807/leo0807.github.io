@@ -43,6 +43,7 @@ const modePalette: Record<
     primary: string;
     secondary: string;
     accent: string;
+    frame: string;
     vignette: number;
     bloom: number;
   }
@@ -51,6 +52,7 @@ const modePalette: Record<
     primary: '#f5cf8f',
     secondary: '#ff7b5f',
     accent: '#8fe6ff',
+    frame: '#ffdca8',
     vignette: 0.98,
     bloom: 1.16,
   },
@@ -58,6 +60,7 @@ const modePalette: Record<
     primary: '#8fe6ff',
     secondary: '#93f2d0',
     accent: '#ffdca8',
+    frame: '#8fe6ff',
     vignette: 0.95,
     bloom: 1.32,
   },
@@ -65,6 +68,7 @@ const modePalette: Record<
     primary: '#93f2d0',
     secondary: '#a7e8ff',
     accent: '#f5cf8f',
+    frame: '#93f2d0',
     vignette: 0.91,
     bloom: 1.02,
   },
@@ -366,15 +370,36 @@ function ModeFrame({
   });
 
   return (
-    <mesh ref={frame} position={[0, 0.45, -1.25]}>
-      <boxGeometry args={[5.6, 4.2, 0.12]} />
-      <meshBasicMaterial
-        color={palette.primary}
-        transparent
-        opacity={0.12}
-        wireframe
-      />
-    </mesh>
+    <group ref={frame} position={[0, 0.45, -1.25]}>
+      <mesh>
+        <boxGeometry args={[5.6, 4.2, 0.02]} />
+        <meshBasicMaterial color={palette.frame} transparent opacity={0.04} />
+      </mesh>
+      <mesh position={[-2.72, 1.88, 0.05]}>
+        <boxGeometry args={[0.34, 0.04, 0.04]} />
+        <meshBasicMaterial color={palette.accent} transparent opacity={0.95} />
+      </mesh>
+      <mesh position={[2.72, 1.88, 0.05]}>
+        <boxGeometry args={[0.34, 0.04, 0.04]} />
+        <meshBasicMaterial color={palette.accent} transparent opacity={0.95} />
+      </mesh>
+      <mesh position={[-2.72, -1.88, 0.05]}>
+        <boxGeometry args={[0.34, 0.04, 0.04]} />
+        <meshBasicMaterial color={palette.secondary} transparent opacity={0.95} />
+      </mesh>
+      <mesh position={[2.72, -1.88, 0.05]}>
+        <boxGeometry args={[0.34, 0.04, 0.04]} />
+        <meshBasicMaterial color={palette.secondary} transparent opacity={0.95} />
+      </mesh>
+      <mesh position={[0, 0.02, 0.03]}>
+        <boxGeometry args={[5.22, 0.02, 0.02]} />
+        <meshBasicMaterial color={palette.primary} transparent opacity={0.08} />
+      </mesh>
+      <mesh position={[0, 0.72, 0.03]}>
+        <boxGeometry args={[5.1, 0.01, 0.01]} />
+        <meshBasicMaterial color={palette.primary} transparent opacity={0.05} />
+      </mesh>
+    </group>
   );
 }
 
@@ -414,7 +439,19 @@ export function HeroScene({
           <CoreSculpture activeSlug={activeSlug} pointer={pointer} />
           <PointerOrb activeSlug={activeSlug} pointer={pointer} />
           <ProjectPanels projects={projects} activeSlug={activeSlug} pointer={pointer} />
+          <mesh position={[0, 0.2, -1.6]} rotation={[0, 0, 0]}>
+            <planeGeometry args={[6.8, 4.8]} />
+            <meshBasicMaterial
+              color={displayMode === 'terminal' ? '#93f2d0' : displayMode === 'viz' ? '#8fe6ff' : '#ffdca8'}
+              transparent
+              opacity={0.018}
+            />
+          </mesh>
           <gridHelper args={[22, 22, '#233a5c', '#132236']} position={[0, -2.35, -1.8]} />
+          <mesh position={[0, 1.7, -1.18]}>
+            <planeGeometry args={[6.2, 0.02]} />
+            <meshBasicMaterial color={palette.accent} transparent opacity={0.24} />
+          </mesh>
           <mesh position={[0, -2.7, -1.2]} rotation={[-Math.PI / 2, 0, 0]}>
             <planeGeometry args={[24, 24, 1, 1]} />
             <meshBasicMaterial color="#07111f" transparent opacity={0.2} />

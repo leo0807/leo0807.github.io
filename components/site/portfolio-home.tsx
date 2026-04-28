@@ -54,11 +54,11 @@ export function PortfolioHome({
   const resumePreviewSrc = resumePreview === 'english' ? '/pdf/english.PDF' : '/pdf/chinese.pdf';
 
   return (
-    <main className="page-shell">
+    <main className={`page-shell page-shell--${presentationMode}`} data-presentation={presentationMode}>
       <HeroScene projects={featuredProjects} activeProject={activeProject} displayMode={presentationMode} />
       <div className="content-shell">
         <header className="hero-stack">
-          <nav className="topbar surface">
+          <nav className="topbar surface topbar--mode">
             <Link className="brand" href={localizedPath(locale, '/')}>
               {siteConfig.name}
             </Link>

@@ -392,7 +392,7 @@ export function HeroScene({
   const palette = modePalette[displayMode];
 
   return (
-    <div className="scene-shell" aria-hidden="true">
+    <div className={`scene-shell scene-shell--${displayMode}`} aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0.35, 8], fov: 46 }}
         dpr={[1, 1.2]}

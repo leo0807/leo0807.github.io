@@ -661,6 +661,14 @@ function CoderRoom({ displayMode, pointer }: { displayMode: DisplayMode; pointer
           <boxGeometry args={[0.68, 0.58, 0.42]} />
           <meshStandardMaterial color="#bfdde8" roughness={0.78} metalness={0.05} />
         </mesh>
+        <mesh position={[0, 0.7, -0.08]}>
+          <torusGeometry args={[0.32, 0.06, 12, 24]} />
+          <meshStandardMaterial color="#e8f4f8" roughness={0.86} metalness={0.03} />
+        </mesh>
+        <mesh position={[0, 0.46, 0.16]}>
+          <boxGeometry args={[0.16, 0.38, 0.18]} />
+          <meshStandardMaterial color="#dbeef3" roughness={0.8} metalness={0.04} />
+        </mesh>
         <mesh position={[0, 0.9, -0.02]}>
           <torusGeometry args={[0.24, 0.06, 12, 28]} />
           <meshStandardMaterial color="#d6edf4" roughness={0.82} metalness={0.04} />
@@ -1072,81 +1080,98 @@ function MultiRoomStudio({
       </group>
 
       <group ref={avatar} position={[currentRoom.x, -0.18, -0.56]}>
-        <group position={[0, 1.16, 0.03]}>
-          <mesh position={[0, 0.08, 0]}>
-            <sphereGeometry args={[0.47, 28, 28]} />
-            <meshStandardMaterial color="#d4a581" roughness={0.58} metalness={0.05} />
+        <group position={[0, 1.18, 0.03]}>
+          <mesh position={[0, 0.1, 0]}>
+            <sphereGeometry args={[0.5, 30, 30]} />
+            <meshStandardMaterial color="#d4a581" roughness={0.54} metalness={0.05} />
           </mesh>
-          <mesh position={[0, -0.03, 0.1]}>
-            <boxGeometry args={[0.54, 0.58, 0.44]} />
-            <meshStandardMaterial color="#d4a581" roughness={0.58} metalness={0.05} />
+          <mesh position={[0, -0.02, 0.08]}>
+            <boxGeometry args={[0.56, 0.64, 0.42]} />
+            <meshStandardMaterial color="#d6a781" roughness={0.58} metalness={0.04} />
           </mesh>
-          <mesh position={[0, -0.15, 0.03]}>
-            <boxGeometry args={[0.34, 0.2, 0.24]} />
-            <meshStandardMaterial color="#dcae8c" roughness={0.46} metalness={0.04} />
+          <mesh position={[0, -0.18, 0.02]}>
+            <boxGeometry args={[0.36, 0.2, 0.24]} />
+            <meshStandardMaterial color="#deb08f" roughness={0.44} metalness={0.03} />
           </mesh>
-          <mesh position={[-0.33, 0.02, 0.02]}>
-            <sphereGeometry args={[0.075, 16, 16]} />
-            <meshStandardMaterial color="#d19a74" roughness={0.52} metalness={0.04} />
+          <mesh position={[-0.38, 0.04, 0.02]} rotation={[0, 0, -0.08]}>
+            <cylinderGeometry args={[0.055, 0.08, 0.18, 12]} />
+            <meshStandardMaterial color="#d79a72" roughness={0.5} metalness={0.03} />
           </mesh>
-          <mesh position={[0.33, 0.02, 0.02]}>
-            <sphereGeometry args={[0.075, 16, 16]} />
-            <meshStandardMaterial color="#d19a74" roughness={0.52} metalness={0.04} />
+          <mesh position={[0.38, 0.04, 0.02]} rotation={[0, 0, 0.08]}>
+            <cylinderGeometry args={[0.055, 0.08, 0.18, 12]} />
+            <meshStandardMaterial color="#d79a72" roughness={0.5} metalness={0.03} />
           </mesh>
-          <mesh position={[-0.12, -0.05, 0.39]} rotation={[0.16, 0, 0.04]}>
-            <sphereGeometry args={[0.045, 12, 12]} />
-            <meshBasicMaterial color="#0a1116" />
+          <mesh position={[-0.12, -0.02, 0.4]}>
+            <sphereGeometry args={[0.048, 14, 14]} />
+            <meshStandardMaterial color="#0d1217" roughness={0.14} metalness={0.06} />
           </mesh>
-          <mesh position={[0.12, -0.05, 0.39]} rotation={[0.16, 0, -0.04]}>
-            <sphereGeometry args={[0.045, 12, 12]} />
-            <meshBasicMaterial color="#0a1116" />
+          <mesh position={[0.12, -0.02, 0.4]}>
+            <sphereGeometry args={[0.048, 14, 14]} />
+            <meshStandardMaterial color="#0d1217" roughness={0.14} metalness={0.06} />
           </mesh>
-          <mesh position={[-0.12, -0.13, 0.4]}>
-            <boxGeometry args={[0.12, 0.03, 0.02]} />
-            <meshBasicMaterial color="#11161b" />
+          <mesh position={[-0.12, -0.08, 0.42]}>
+            <boxGeometry args={[0.12, 0.02, 0.02]} />
+            <meshBasicMaterial color="#10161b" />
           </mesh>
-          <mesh position={[0.12, -0.13, 0.4]}>
-            <boxGeometry args={[0.12, 0.03, 0.02]} />
-            <meshBasicMaterial color="#11161b" />
+          <mesh position={[0.12, -0.08, 0.42]}>
+            <boxGeometry args={[0.12, 0.02, 0.02]} />
+            <meshBasicMaterial color="#10161b" />
           </mesh>
-          <mesh position={[0, -0.02, 0.43]}>
+          <mesh position={[0, 0.01, 0.44]}>
             <boxGeometry args={[0.08, 0.14, 0.03]} />
             <meshBasicMaterial color="#c08d68" />
           </mesh>
-          <mesh position={[0, -0.23, 0.42]}>
-            <boxGeometry args={[0.12, 0.04, 0.02]} />
+          <mesh position={[0, -0.22, 0.41]}>
+            <boxGeometry args={[0.14, 0.04, 0.02]} />
             <meshBasicMaterial color="#6b3f33" />
           </mesh>
-          <mesh position={[0, -0.28, 0.4]}>
+          <mesh position={[0, -0.26, 0.4]}>
             <torusGeometry args={[0.16, 0.02, 10, 20]} />
             <meshBasicMaterial color="#6b3f33" />
           </mesh>
-
-          <group position={[0, 0.35, -0.02]}>
-            <mesh position={[0, 0.18, -0.02]}>
-              <boxGeometry args={[0.62, 0.14, 0.5]} />
+          <mesh position={[-0.18, -0.42, 0.18]} rotation={[0.15, 0, -0.22]}>
+            <boxGeometry args={[0.22, 0.1, 0.04]} />
+            <meshStandardMaterial color="#f7dcc8" roughness={0.28} metalness={0.02} />
+          </mesh>
+          <mesh position={[0.18, -0.42, 0.18]} rotation={[0.15, 0, 0.22]}>
+            <boxGeometry args={[0.22, 0.1, 0.04]} />
+            <meshStandardMaterial color="#f7dcc8" roughness={0.28} metalness={0.02} />
+          </mesh>
+          <group position={[0, 0.38, -0.02]}>
+            <mesh position={[0, 0.16, -0.02]}>
+              <boxGeometry args={[0.72, 0.16, 0.52]} />
               <meshStandardMaterial color="#1a1f25" roughness={0.9} metalness={0.06} />
             </mesh>
+            <mesh position={[0, 0.18, -0.08]}>
+              <torusGeometry args={[0.45, 0.08, 12, 24]} />
+              <meshStandardMaterial color="#233140" roughness={0.84} metalness={0.07} />
+            </mesh>
             {[
-              [-0.2, 0.17, 0.2, 0.14, 0.54],
-              [0.0, 0.25, 0.24, 0.12, 0.66],
-              [0.18, 0.18, 0.22, 0.12, 0.52],
-              [-0.3, 0.06, 0.18, 0.1, 0.38],
-              [0.3, 0.07, 0.18, 0.1, 0.42],
-              [-0.1, 0.3, 0.24, 0.11, 0.72],
-              [0.12, 0.31, 0.23, 0.1, 0.75],
-              [0.28, 0.28, 0.18, 0.09, 0.64],
-              [-0.38, 0.12, 0.2, 0.09, 0.46],
-              [0.4, 0.13, 0.18, 0.09, 0.44],
+              [-0.26, 0.2, 0.16, 0.16, 0.5],
+              [-0.06, 0.28, 0.22, 0.12, 0.68],
+              [0.12, 0.32, 0.2, 0.1, 0.72],
+              [0.28, 0.26, 0.2, 0.11, 0.62],
+              [-0.34, 0.1, 0.18, 0.08, 0.42],
+              [0.36, 0.12, 0.18, 0.08, 0.4],
+              [-0.16, 0.36, 0.22, 0.12, 0.74],
+              [0.18, 0.38, 0.2, 0.1, 0.78],
             ].map(([x, y, sx, sy, z], index) => (
-              <mesh key={`hair-${index}`} position={[x, y, 0.02]} rotation={[0.2, 0, x > 0 ? 0.32 : -0.32]}>
+              <mesh key={`hair-${index}`} position={[x, y, 0.02]} rotation={[0.2, 0, x > 0 ? 0.28 : -0.28]}>
                 <boxGeometry args={[sx, sy, z]} />
                 <meshStandardMaterial color="#060707" roughness={0.95} metalness={0.02} />
               </mesh>
             ))}
             <mesh position={[0, 0.02, -0.03]}>
-              <cylinderGeometry args={[0.33, 0.4, 0.34, 14]} />
+              <cylinderGeometry args={[0.34, 0.42, 0.36, 14]} />
               <meshStandardMaterial color="#223040" roughness={0.82} metalness={0.07} />
+            </mesh>
+            <mesh position={[-0.28, 0.0, 0.12]} rotation={[0.1, 0, -0.18]}>
+              <sphereGeometry args={[0.08, 12, 12]} />
+              <meshStandardMaterial color="#0d1217" roughness={0.18} metalness={0.04} />
+            </mesh>
+            <mesh position={[0.28, 0.0, 0.12]} rotation={[0.1, 0, 0.18]}>
+              <sphereGeometry args={[0.08, 12, 12]} />
+              <meshStandardMaterial color="#0d1217" roughness={0.18} metalness={0.04} />
             </mesh>
           </group>
         </group>
@@ -1195,13 +1220,53 @@ function MultiRoomStudio({
           <sphereGeometry args={[0.085, 14, 14]} />
           <meshStandardMaterial color="#c98f69" roughness={0.44} metalness={0.04} />
         </mesh>
+        <mesh position={[-0.92, -0.06, 0.05]} rotation={[0, 0.18, -0.14]}>
+          <cylinderGeometry args={[0.03, 0.035, 0.24, 8]} />
+          <meshStandardMaterial color="#f7dcc8" roughness={0.34} metalness={0.02} />
+        </mesh>
+        <mesh position={[-0.84, -0.02, 0.09]} rotation={[0, 0.18, 0.24]}>
+          <cylinderGeometry args={[0.02, 0.026, 0.16, 8]} />
+          <meshStandardMaterial color="#f7dcc8" roughness={0.34} metalness={0.02} />
+        </mesh>
         <mesh ref={handR} position={[0.76, -0.08, 0.05]} rotation={[0, -0.12, 0]}>
           <sphereGeometry args={[0.085, 14, 14]} />
           <meshStandardMaterial color="#c98f69" roughness={0.44} metalness={0.04} />
         </mesh>
+        <mesh position={[0.92, -0.1, 0.06]} rotation={[0, -0.12, 0.12]}>
+          <cylinderGeometry args={[0.03, 0.035, 0.24, 8]} />
+          <meshStandardMaterial color="#f7dcc8" roughness={0.34} metalness={0.02} />
+        </mesh>
+        <mesh position={[0.84, -0.04, 0.1]} rotation={[0, -0.12, -0.18]}>
+          <cylinderGeometry args={[0.02, 0.026, 0.16, 8]} />
+          <meshStandardMaterial color="#f7dcc8" roughness={0.34} metalness={0.02} />
+        </mesh>
         <mesh position={[0, -0.18, -0.03]}>
           <cylinderGeometry args={[0.22, 0.26, 0.92, 14]} />
           <meshStandardMaterial color={currentRoom.accent} roughness={0.5} metalness={0.08} />
+        </mesh>
+        <mesh position={[0, -0.68, -0.02]}>
+          <boxGeometry args={[0.86, 0.58, 0.44]} />
+          <meshStandardMaterial color="#d8ecf2" roughness={0.8} metalness={0.04} />
+        </mesh>
+        <mesh position={[0, -1.12, -0.02]}>
+          <boxGeometry args={[0.78, 0.36, 0.42]} />
+          <meshStandardMaterial color="#bbd7e2" roughness={0.84} metalness={0.04} />
+        </mesh>
+        <mesh position={[-0.24, -1.42, 0.02]} rotation={[0, 0, -0.12]}>
+          <cylinderGeometry args={[0.12, 0.13, 0.72, 10]} />
+          <meshStandardMaterial color="#2a333d" roughness={0.86} metalness={0.05} />
+        </mesh>
+        <mesh position={[0.24, -1.42, 0.02]} rotation={[0, 0, 0.12]}>
+          <cylinderGeometry args={[0.12, 0.13, 0.72, 10]} />
+          <meshStandardMaterial color="#2a333d" roughness={0.86} metalness={0.05} />
+        </mesh>
+        <mesh position={[-0.28, -1.8, 0.1]} rotation={[0, 0, -0.12]}>
+          <boxGeometry args={[0.34, 0.12, 0.46]} />
+          <meshStandardMaterial color="#2a333d" roughness={0.82} metalness={0.04} />
+        </mesh>
+        <mesh position={[0.28, -1.8, 0.1]} rotation={[0, 0, 0.12]}>
+          <boxGeometry args={[0.34, 0.12, 0.46]} />
+          <meshStandardMaterial color="#2a333d" roughness={0.82} metalness={0.04} />
         </mesh>
       </group>
 

@@ -326,7 +326,7 @@ img {
 .room-stage {
   display: grid;
   gap: 18px;
-  padding: 22px;
+  padding: 26px;
   margin-top: 6px;
 }
 
@@ -345,7 +345,7 @@ img {
 
 .room-stage__viewer {
   position: relative;
-  min-height: 520px;
+  min-height: 700px;
   border-radius: 24px;
   overflow: hidden;
   border: 1px solid rgba(143, 230, 255, 0.14);
@@ -360,6 +360,22 @@ img {
 
 .room-stage__scene canvas {
   display: block;
+}
+
+.room-stage__viewer::after {
+  content: '← → 1 2 3';
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  z-index: 2;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(7, 13, 24, 0.6);
+  border: 1px solid rgba(143, 230, 255, 0.16);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  pointer-events: none;
 }
 
 .room-dock__copy {

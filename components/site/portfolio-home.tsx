@@ -37,10 +37,12 @@ export function PortfolioHome({
   const safeStrengths = content.strengths ?? [];
   const safeTimelineItems = content.timeline.items ?? [];
   const safeSignalCards = content.signals.cards ?? [];
+  const roomLabels = locale === 'zh' ? ['代码房间', '笔记房间', '评审房间'] : ['Code Room', 'Notes Room', 'Review Room'];
 
   const [activeSlug, setActiveSlug] = useState<string>(safeFeaturedProjects[0]?.slug ?? projects[0]?.slug ?? '');
   const [resumePreview, setResumePreview] = useState<'english' | 'chinese' | null>(null);
   const [presentationMode, setPresentationMode] = useState<'editorial' | 'viz' | 'terminal'>('editorial');
+  const [roomIndex, setRoomIndex] = useState(1);
   const vizProjects = safeFeaturedProjects.slice(0, 3);
 
   const activeProject = useMemo(() => {
@@ -84,7 +86,13 @@ export function PortfolioHome({
 
   return (
       <main className={`page-shell page-shell--${presentationMode}`} data-presentation={presentationMode}>
-      <HeroScene projects={featuredProjects} activeProject={activeProject} displayMode={presentationMode} />
+      <HeroScene
+        projects={featuredProjects}
+        activeProject={activeProject}
+        displayMode={presentationMode}
+        roomIndex={roomIndex}
+        onRoomIndexChange={setRoomIndex}
+      />
       <div className="content-shell">
         <header className="hero-stack">
           <nav className="topbar surface topbar--mode">
@@ -184,6 +192,33 @@ export function PortfolioHome({
               ) : null}
             </div>
             <p className="presentation-bar__hint">{content.presentation.hint}</p>
+          </section>
+
+          <section className="surface room-dock">
+            <div className="room-dock__copy">
+              <p className="eyebrow">{locale === 'zh' ? '多房间工作室' : 'Multi-room studio'}</p>
+              <h2>{roomLabels[roomIndex] ?? roomLabels[1]}</h2>
+              <p className="muted">
+                {locale === 'zh'
+                  ? '这是 3D 头像的可见控制条。点击下面的按钮，或按 ← / → 和 1 / 2 / 3 在房间之间切换。'
+                  : 'A visible control strip for the 3D avatar. Use the buttons below or press ← / → and 1 / 2 / 3 to move through the rooms.'}
+              </p>
+            </div>
+            <div className="room-dock__controls" role="tablist" aria-label="Room switcher">
+              {roomLabels.map((label, index) => (
+                <button
+                  key={label}
+                  type="button"
+                  role="tab"
+                  aria-selected={roomIndex === index}
+                  className={`room-chip${roomIndex === index ? ' room-chip--active' : ''}`}
+                  onClick={() => setRoomIndex(index)}
+                >
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <strong>{label}</strong>
+                </button>
+              ))}
+            </div>
           </section>
 
           <section className="hero-grid">

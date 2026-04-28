@@ -3,7 +3,7 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Line, MeshDistortMaterial, OrbitControls, useTexture } from '@react-three/drei';
 import { EffectComposer, Bloom, DepthOfField, Noise, Vignette } from '@react-three/postprocessing';
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef } from 'react';
 import type { RefObject } from 'react';
 import * as THREE from 'three';
 import { BlendFunction } from 'postprocessing';
@@ -890,7 +890,17 @@ function RoomPod({ room, active }: { room: RoomSpec; active: boolean }) {
   );
 }
 
-function MultiRoomStudio({ displayMode, pointer }: { displayMode: DisplayMode; pointer: RefObject<Pointer> }) {
+function MultiRoomStudio({
+  displayMode,
+  pointer,
+  roomIndex = 1,
+  onRoomIndexChange,
+}: {
+  displayMode: DisplayMode;
+  pointer: RefObject<Pointer>;
+  roomIndex?: number;
+  onRoomIndexChange?: (index: number) => void;
+}) {
   const stage = useRef<THREE.Group>(null);
   const avatar = useRef<THREE.Group>(null);
   const chair = useRef<THREE.Group>(null);
@@ -900,7 +910,6 @@ function MultiRoomStudio({ displayMode, pointer }: { displayMode: DisplayMode; p
   const handR = useRef<THREE.Mesh>(null);
   const monitor = useRef<THREE.Mesh>(null);
   const keys = useRef<THREE.Group>(null);
-  const [activeRoomIndex, setActiveRoomIndex] = useState(0);
   const targetIndex = useRef(0);
   const idleClock = useRef(0);
 
@@ -918,28 +927,28 @@ function MultiRoomStudio({ displayMode, pointer }: { displayMode: DisplayMode; p
       if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') {
         const nextIndex = (targetIndex.current - 1 + rooms.length) % rooms.length;
         targetIndex.current = nextIndex;
-        setActiveRoomIndex(nextIndex);
+        onRoomIndexChange?.(nextIndex);
         idleClock.current = 0;
       }
       if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') {
         const nextIndex = (targetIndex.current + 1) % rooms.length;
         targetIndex.current = nextIndex;
-        setActiveRoomIndex(nextIndex);
+        onRoomIndexChange?.(nextIndex);
         idleClock.current = 0;
       }
       if (event.key === '1') {
         targetIndex.current = 0;
-        setActiveRoomIndex(0);
+        onRoomIndexChange?.(0);
         idleClock.current = 0;
       }
       if (event.key === '2') {
         targetIndex.current = 1;
-        setActiveRoomIndex(1);
+        onRoomIndexChange?.(1);
         idleClock.current = 0;
       }
       if (event.key === '3') {
         targetIndex.current = 2;
-        setActiveRoomIndex(2);
+        onRoomIndexChange?.(2);
         idleClock.current = 0;
       }
     };
@@ -948,16 +957,20 @@ function MultiRoomStudio({ displayMode, pointer }: { displayMode: DisplayMode; p
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [rooms.length]);
 
+  useEffect(() => {
+    targetIndex.current = roomIndex;
+  }, [roomIndex]);
+
   useFrame((state, delta) => {
     idleClock.current += delta;
     if (idleClock.current > 7) {
       const nextIndex = (targetIndex.current + 1) % rooms.length;
       targetIndex.current = nextIndex;
-      setActiveRoomIndex(nextIndex);
+      onRoomIndexChange?.(nextIndex);
       idleClock.current = 0;
     }
 
-    const activeRoom = rooms[activeRoomIndex];
+    const activeRoom = rooms[roomIndex] ?? rooms[1];
     const targetX = activeRoom.x;
 
     if (stage.current) {
@@ -1023,7 +1036,7 @@ function MultiRoomStudio({ displayMode, pointer }: { displayMode: DisplayMode; p
     [0.6, -1.1, 0.02],
   ] as const;
 
-  const currentRoom = rooms[activeRoomIndex];
+  const currentRoom = rooms[roomIndex] ?? rooms[1];
 
   return (
     <group ref={stage} position={[0, -0.1, -0.9]}>
@@ -1437,10 +1450,14 @@ export function HeroScene({
   projects,
   activeProject,
   displayMode = 'editorial',
+  roomIndex = 1,
+  onRoomIndexChange,
 }: {
   projects: Project[];
   activeProject?: Project | null;
   displayMode?: DisplayMode;
+  roomIndex?: number;
+  onRoomIndexChange?: (index: number) => void;
 }) {
   const activeSlug = activeProject?.slug ?? null;
   const pointer = useScenePointer();
@@ -1463,7 +1480,12 @@ export function HeroScene({
         />
         <pointLight position={[-4, -2, -2]} intensity={displayMode === 'terminal' ? 1.2 : activeSlug ? 1.85 : 1.3} color={palette.primary} />
         <Suspense fallback={null}>
-          <MultiRoomStudio displayMode={displayMode} pointer={pointer} />
+          <MultiRoomStudio
+            displayMode={displayMode}
+            pointer={pointer}
+            roomIndex={roomIndex}
+            onRoomIndexChange={onRoomIndexChange}
+          />
           <ModeFrame displayMode={displayMode} pointer={pointer} />
           <ParticleHalo activeSlug={activeSlug} pointer={pointer} />
           <SignalOrbit activeSlug={activeSlug} pointer={pointer} />

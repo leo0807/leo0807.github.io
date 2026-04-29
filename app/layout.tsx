@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import type { ReactNode } from 'react';
 import './globals.css';
 import { HtmlLanguageSync } from '@/components/site/html-language-sync';
 import { QuickSwitcher } from '@/components/site/quick-switcher';
 import { ScrollToTop } from '@/components/site/scroll-to-top';
+import { ThemeToggle } from '@/components/site/theme-toggle';
 import { getBlogPosts } from '@/content/blogs';
 import { getProjects } from '@/content/projects';
 import { siteConfig } from '@/content/site';
@@ -61,8 +63,27 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        <Script id="theme-bootstrap" strategy="beforeInteractive">
+          {`
+            (() => {
+              try {
+                const stored = localStorage.getItem('portfolio-theme');
+                const hour = new Date().getHours();
+                const autoTheme = hour >= 6 && hour < 18 ? 'day' : 'night';
+                const theme = stored === 'day' || stored === 'night' ? stored : autoTheme;
+                const root = document.documentElement;
+                root.dataset.theme = theme;
+                root.style.colorScheme = theme === 'day' ? 'light' : 'dark';
+              } catch (error) {
+                document.documentElement.dataset.theme = 'night';
+                document.documentElement.style.colorScheme = 'dark';
+              }
+            })();
+          `}
+        </Script>
         <HtmlLanguageSync />
         <ScrollToTop />
+        <ThemeToggle />
         {children}
         <QuickSwitcher
           projectsByLocale={{

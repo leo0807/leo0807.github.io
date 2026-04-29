@@ -52,7 +52,6 @@ export function ThemeToggle() {
   }
 
   const nextMode: ThemeMode = themeMode === 'day' ? 'night' : 'day';
-  const nextLabel = nextMode === 'day' ? 'DAY' : 'NIGHT';
   const icon = nextMode === 'day' ? '☼' : '☾';
 
   return (
@@ -68,7 +67,6 @@ export function ThemeToggle() {
       }}
     >
       <span aria-hidden="true">{icon}</span>
-      <small>{nextLabel}</small>
     </button>
   );
 }

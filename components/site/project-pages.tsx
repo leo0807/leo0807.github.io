@@ -21,11 +21,36 @@ type ProjectDetailPageProps = {
 };
 
 export function ProjectIndexPage({ locale, content, projects }: ProjectIndexPageProps) {
+  const tagEntries = Array.from(
+    projects.reduce((acc, project) => acc.set(project.tag, (acc.get(project.tag) ?? 0) + 1), new Map<string, number>()),
+  )
+    .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+    .slice(0, 6);
+
   return (
     <main className="subpage-shell">
       <section className="surface subpage-hero">
         <SectionHeading eyebrow={content.projectsIndex.eyebrow} title={content.projectsIndex.title} />
         <p className="lead compact">{content.projectsIndex.lead}</p>
+        <div className="taxonomy-strip">
+          <div>
+            <p className="section-heading__eyebrow">{content.projectTaxonomy.eyebrow}</p>
+            <strong>{content.projectTaxonomy.title}</strong>
+            <p className="muted compact">{content.projectTaxonomy.lead}</p>
+          </div>
+          <div className="taxonomy-strip__tags" aria-label={content.projectTaxonomy.pathLabel}>
+            <span className="taxonomy-pill taxonomy-pill--static">
+              <strong>{locale === 'zh' ? '全部' : 'All'}</strong>
+              <small>{projects.length}</small>
+            </span>
+            {tagEntries.map(([tag, count]) => (
+              <span key={tag} className="taxonomy-pill taxonomy-pill--static">
+                <strong>{tag}</strong>
+                <small>{count}</small>
+              </span>
+            ))}
+          </div>
+        </div>
       </section>
       <section className="project-grid">
         {projects.map((project) => (
@@ -37,6 +62,7 @@ export function ProjectIndexPage({ locale, content, projects }: ProjectIndexPage
 }
 
 export function ProjectDetailPage({ locale, content, project, relatedProjects }: ProjectDetailPageProps) {
+  const sameTagProjects = relatedProjects.filter((item) => item.tag === project.tag);
 
   return (
     <main className="subpage-shell">
@@ -99,8 +125,8 @@ export function ProjectDetailPage({ locale, content, project, relatedProjects }:
 
         <aside className="project-detail__rail">
           <section className="surface detail-rail-card">
-            <span className="label">{content.projectDetail.overview}</span>
-            <p>{project.summary}</p>
+            <span className="label">{content.projectTaxonomy.caseLabel}</span>
+            <p>{content.projectTaxonomy.lead}</p>
             <div className="detail-rail-card__stack">
               <div>
                 <span className="label">{content.projectDetail.role}</span>
@@ -110,6 +136,17 @@ export function ProjectDetailPage({ locale, content, project, relatedProjects }:
                 <span className="label">{content.projectDetail.focus}</span>
                 <strong>{project.focus}</strong>
               </div>
+              <div>
+                <span className="label">{content.projectTaxonomy.metricsLabel}</span>
+                <strong>{project.metrics?.length ?? 0} {locale === 'zh' ? '项指标' : 'metrics'}</strong>
+              </div>
+            </div>
+            <div className="pill-grid pill-grid--compact">
+              {project.tech.slice(0, 4).map((item) => (
+                <span key={item} className="pill">
+                  {item}
+                </span>
+              ))}
             </div>
           </section>
 
@@ -117,7 +154,7 @@ export function ProjectDetailPage({ locale, content, project, relatedProjects }:
             <span className="label">{content.projectDetail.related}</span>
             <p>{content.projectDetail.relatedLead}</p>
             <div className="related-list">
-              {relatedProjects.map((item) => (
+              {(sameTagProjects.length ? sameTagProjects : relatedProjects).map((item) => (
                 <Link key={item.slug} className="related-card" href={localizedPath(locale, `/projects/${item.slug}/`)}>
                   <img src={item.image} alt={item.title} loading="lazy" decoding="async" />
                   <div>

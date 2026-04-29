@@ -116,6 +116,14 @@ export type SiteContent = {
     title: string;
     lead: string;
   };
+  projectTaxonomy: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    caseLabel: string;
+    pathLabel: string;
+    metricsLabel: string;
+  };
   blogIndex: {
     eyebrow: string;
     title: string;
@@ -435,6 +443,15 @@ const siteContent: Record<Locale, SiteContent> = {
       lead:
         'Each project is now powered by Markdown content and structured metadata, so expanding into deeper writeups or a content workflow later is straightforward.',
     },
+    projectTaxonomy: {
+      eyebrow: 'Project Paths',
+      title: 'Use tags to move through the archive like a case library.',
+      lead:
+        'The project index is organized around tags and featured routes so the archive can grow without becoming a flat wall of cards.',
+      caseLabel: 'Case path',
+      pathLabel: 'Project path',
+      metricsLabel: 'Project scale',
+    },
     blogIndex: {
       eyebrow: 'Blog',
       title: 'A place to write, explain, and keep adding depth to the portfolio.',
@@ -686,6 +703,15 @@ const siteContent: Record<Locale, SiteContent> = {
       title: '按路由组织的项目库，适合后续继续补案例。',
       lead:
         '每个项目现在都由 Markdown 内容和结构化元数据驱动，后面要继续扩展长文案例、项目说明或内容工作流都会轻松很多。',
+    },
+    projectTaxonomy: {
+      eyebrow: '项目路径',
+      title: '用标签来浏览项目档案，而不是平铺所有卡片。',
+      lead:
+        '项目索引现在按标签和精选路线组织，后续即使继续增加案例，也不会变成一面单调的卡片墙。',
+      caseLabel: '案例路径',
+      pathLabel: '项目路径',
+      metricsLabel: '项目规模',
     },
     blogIndex: {
       eyebrow: '博客',

@@ -23,7 +23,20 @@ export function ProjectBrowser({ locale, content, projects }: ProjectBrowserProp
       ? '试试换一个关键词，或者把分类筛选切回“全部”。'
       : 'Try a different keyword or switch the category filter back to All.';
 
-  const tags = useMemo(() => [allLabel, ...Array.from(new Set(projects.map((project) => project.tag)))], [allLabel, projects]);
+  const tagEntries = useMemo(() => {
+    const counts = new Map<string, number>();
+
+    for (const project of projects) {
+      counts.set(project.tag, (counts.get(project.tag) ?? 0) + 1);
+    }
+
+    return [
+      { tag: allLabel, count: projects.length, isAll: true },
+      ...Array.from(counts.entries())
+        .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+        .map(([tag, count]) => ({ tag, count, isAll: false })),
+    ];
+  }, [allLabel, projects]);
 
   const visibleProjects = useMemo(() => {
     const loweredQuery = query.trim().toLowerCase();
@@ -49,6 +62,27 @@ export function ProjectBrowser({ locale, content, projects }: ProjectBrowserProp
           </div>
         </div>
         <p className="lead compact">{content.projectsIndex.lead}</p>
+        <div className="taxonomy-strip">
+          <div>
+            <p className="section-heading__eyebrow">{content.projectTaxonomy.eyebrow}</p>
+            <strong>{content.projectTaxonomy.title}</strong>
+            <p className="muted compact">{content.projectTaxonomy.lead}</p>
+          </div>
+          <div className="taxonomy-strip__tags" aria-label={content.projectTaxonomy.pathLabel}>
+            {tagEntries.map((entry, index) => (
+              <button
+                key={entry.tag}
+                type="button"
+                className={`taxonomy-pill ${activeTag === entry.tag ? 'taxonomy-pill--active' : ''}`}
+                onClick={() => setActiveTag(entry.tag)}
+              >
+                <strong>{entry.tag}</strong>
+                <small>{entry.count}</small>
+                {entry.isAll && index === 0 ? <span className="muted">{locale === 'zh' ? '起点' : 'start'}</span> : null}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="subpage-hero__stats" aria-label="Project stats">
           <span className="subpage-hero__stat">
             <strong>{projects.length}</strong>
@@ -65,18 +99,7 @@ export function ProjectBrowser({ locale, content, projects }: ProjectBrowserProp
         </div>
         <div className="filter-bar">
           <input className="search-input" type="search" placeholder={placeholder} value={query} onChange={(event) => setQuery(event.target.value)} />
-          <div className="filter-pills">
-            {tags.map((tag) => (
-              <button
-                key={tag}
-                type="button"
-                className={`pill ${activeTag === tag ? 'pill--active' : ''}`}
-                onClick={() => setActiveTag(tag)}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
+          <p className="muted compact">{locale === 'zh' ? '使用顶部路径快速筛选，搜索框可继续缩小结果。' : 'Use the taxonomy strip to filter quickly, then refine with search.'}</p>
         </div>
       </section>
       <section className="project-grid">

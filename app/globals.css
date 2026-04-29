@@ -2078,6 +2078,16 @@ img {
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.taxonomy-pill--static {
+  pointer-events: none;
+}
+
+.taxonomy-pill--active {
+  border-color: rgba(143, 194, 255, 0.28);
+  background: rgba(143, 194, 255, 0.14);
+  box-shadow: 0 16px 36px rgba(73, 116, 255, 0.12);
+}
+
 .taxonomy-pill strong {
   font-size: 0.88rem;
 }
@@ -2085,6 +2095,16 @@ img {
 .taxonomy-pill small {
   color: var(--muted);
   font-size: 0.78rem;
+}
+
+.taxonomy-pill span {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pill-grid--compact {
+  margin-top: 8px;
 }
 
 .resume-modal {

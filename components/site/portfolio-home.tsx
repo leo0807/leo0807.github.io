@@ -35,6 +35,7 @@ export function PortfolioHome({
   const terminalLines = content.showcase?.terminal?.lines ?? [];
   const showcaseVizStats = content.showcase?.viz?.stats ?? [];
   const safeStrengths = content.strengths ?? [];
+  const serviceCards = content.services.items ?? [];
   const safeTimelineItems = content.timeline.items ?? [];
   const safeSignalCards = content.signals.cards ?? [];
   const roomLabels = locale === 'zh' ? ['代码房间', '笔记房间', '评审房间'] : ['Code Room', 'Notes Room', 'Review Room'];
@@ -336,6 +337,21 @@ export function PortfolioHome({
             </div>
             <p className="muted">{content.stack.lead}</p>
           </article>
+        </section>
+
+        <section className="projects-block">
+          <SectionHeading eyebrow={content.services.eyebrow} title={content.services.title} />
+          <p className="muted compact">{content.services.lead}</p>
+          <div className="service-grid">
+            {serviceCards.map((service, index) => (
+              <article key={service.title} className="surface service-card">
+                <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
+                <h3>{service.title}</h3>
+                <p>{service.body}</p>
+                <span className="service-card__note">{service.note}</span>
+              </article>
+            ))}
+          </div>
         </section>
 
         <section className="projects-block">

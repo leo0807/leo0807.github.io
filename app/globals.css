@@ -1306,10 +1306,24 @@ img {
   margin-top: 18px;
 }
 
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
 .signal-card {
   display: grid;
   gap: 12px;
   min-height: 180px;
+  padding: 22px;
+}
+
+.service-card {
+  display: grid;
+  gap: 12px;
+  min-height: 220px;
   padding: 22px;
 }
 
@@ -1323,16 +1337,41 @@ img {
     sans-serif;
 }
 
+.service-card h3 {
+  margin: 0;
+  font-size: 1.18rem;
+  line-height: 1.12;
+  font-family:
+    "Space Grotesk",
+    "Avenir Next Condensed",
+    "Segoe UI",
+    sans-serif;
+}
+
 .signal-card p {
   margin: 0;
   color: var(--muted);
   line-height: 1.7;
 }
 
+.service-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.72;
+}
+
 .signal-index {
   color: var(--cool);
   letter-spacing: 0.18em;
   font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.service-card__note {
+  align-self: end;
+  color: var(--cool);
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
   text-transform: uppercase;
 }
 

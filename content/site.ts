@@ -51,6 +51,16 @@ export type SiteContent = {
     title: string;
     lead: string;
   };
+  services: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    items: Array<{
+      title: string;
+      body: string;
+      note: string;
+    }>;
+  };
   signals: {
     eyebrow: string;
     title: string;
@@ -303,6 +313,29 @@ const siteContent: Record<Locale, SiteContent> = {
       lead:
         'App Router for structure, static export for easy deployment, React Three Fiber for 3D presentation, MDX for content, and typed content objects for future project additions.',
     },
+    services: {
+      eyebrow: 'Services',
+      title: 'What I can help design, prototype, and ship.',
+      lead:
+        'These are the kinds of systems and surfaces this portfolio is built to signal. If you want an AI product interface, a content-heavy frontend, or a sharper prototype, these are the lanes I work in.',
+      items: [
+        {
+          title: 'AI Product Interfaces',
+          body: 'Landing pages, dashboards, and internal tools that make model-powered products feel clear, premium, and usable.',
+          note: 'UI systems, interaction design, product storytelling',
+        },
+        {
+          title: 'RAG + Knowledge Systems',
+          body: 'Retrieval flows, embeddings, bilingual search, and internal Q&A experiences for team knowledge and support.',
+          note: 'Search, embeddings, retrieval quality, observability',
+        },
+        {
+          title: 'Frontend Architecture',
+          body: 'Route-driven app structures, reusable content models, and component systems that stay maintainable as content scales.',
+          note: 'Next.js, React, TypeScript, MDX',
+        },
+      ],
+    },
     signals: {
       eyebrow: 'AI Systems',
       title: 'Recent work now reads like an engineering portfolio, not just a visual gallery.',
@@ -509,6 +542,29 @@ const siteContent: Record<Locale, SiteContent> = {
       title: '这套架构追求的是成长性、推理能力和交付效率。',
       lead:
         '用 App Router 做结构组织，用静态导出适配 GitHub Pages，用 React Three Fiber 承载 3D 表现，用 MDX 和类型化内容对象为后续新增项目留好接口。',
+    },
+    services: {
+      eyebrow: '服务',
+      title: '我能帮你设计、原型化并交付什么。',
+      lead:
+        '这些就是这个作品集想传达的能力范围。如果你需要 AI 产品界面、内容型前端，或者更干净的原型，我会更擅长做这些方向。',
+      items: [
+        {
+          title: 'AI 产品界面',
+          body: '登陆页、数据看板和内部工具，让模型驱动的产品变得清晰、精致且好用。',
+          note: 'UI 系统、交互设计、产品叙事',
+        },
+        {
+          title: 'RAG 和知识系统',
+          body: '检索链路、向量策略、双语搜索，以及面向团队知识和支持的问答体验。',
+          note: '搜索、向量、检索质量、可观测性',
+        },
+        {
+          title: '前端架构',
+          body: '路由驱动的应用结构、可复用内容模型，以及在内容增长时仍然好维护的组件系统。',
+          note: 'Next.js、React、TypeScript、MDX',
+        },
+      ],
     },
     signals: {
       eyebrow: 'AI 系统',

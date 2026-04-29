@@ -25,6 +25,12 @@ export function BlogBrowser({ locale, content, posts }: BlogBrowserProps) {
       : 'Try another keyword or switch the tag filter back to All.';
 
   const tags = useMemo(() => [allLabel, ...Array.from(new Set(posts.map((post) => post.tag)))], [allLabel, posts]);
+  const tagCounts = useMemo(() => {
+    return tags.map((tag) => ({
+      tag,
+      count: tag === allLabel ? posts.length : posts.filter((post) => post.tag === tag).length,
+    }));
+  }, [allLabel, posts, tags]);
 
   const visiblePosts = useMemo(() => {
     const loweredQuery = query.trim().toLowerCase();
@@ -63,6 +69,21 @@ export function BlogBrowser({ locale, content, posts }: BlogBrowserProps) {
             <strong>{visiblePosts.length}</strong>
             <span>{locale === 'zh' ? '当前结果' : 'results'}</span>
           </span>
+        </div>
+        <div className="taxonomy-strip">
+          <div>
+            <p className="section-heading__eyebrow">{content.blogTaxonomy.eyebrow}</p>
+            <strong>{content.blogTaxonomy.title}</strong>
+            <p className="muted compact">{content.blogTaxonomy.lead}</p>
+          </div>
+          <div className="taxonomy-strip__tags" aria-label={content.blogTaxonomy.readingPathLabel}>
+            {tagCounts.map(({ tag, count }) => (
+              <span key={tag} className="taxonomy-pill">
+                <strong>{tag}</strong>
+                <small>{count}</small>
+              </span>
+            ))}
+          </div>
         </div>
         <div className="filter-bar">
           <input className="search-input" type="search" placeholder={placeholder} value={query} onChange={(event) => setQuery(event.target.value)} />

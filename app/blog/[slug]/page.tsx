@@ -62,6 +62,11 @@ export default async function BlogDetailRoute({
 
   if (!post) notFound();
 
+  const seriesPosts = posts
+    .filter((item) => item.slug !== post.slug && item.tag === post.tag)
+    .sort((left, right) => left.order - right.order)
+    .slice(0, 3);
+
   const relatedPosts = posts
     .filter((item) => item.slug !== post.slug)
     .sort((left, right) => {
@@ -92,7 +97,7 @@ export default async function BlogDetailRoute({
           },
         }}
       />
-      <BlogDetailPage locale={locale} content={content} post={post} relatedPosts={relatedPosts} />
+      <BlogDetailPage locale={locale} content={content} post={post} seriesPosts={seriesPosts} relatedPosts={relatedPosts} />
     </>
   );
 }

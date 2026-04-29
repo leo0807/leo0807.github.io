@@ -15,6 +15,7 @@ type BlogDetailPageProps = {
   locale: Locale;
   content: SiteContent;
   post: BlogDocument;
+  seriesPosts: BlogPost[];
   relatedPosts: BlogPost[];
 };
 
@@ -47,7 +48,7 @@ export function BlogIndexPage({ locale, content, posts }: BlogIndexPageProps) {
   );
 }
 
-export function BlogDetailPage({ locale, content, post, relatedPosts }: BlogDetailPageProps) {
+export function BlogDetailPage({ locale, content, post, seriesPosts, relatedPosts }: BlogDetailPageProps) {
   return (
     <main className="subpage-shell">
       <section className="blog-detail__layout">
@@ -77,6 +78,24 @@ export function BlogDetailPage({ locale, content, post, relatedPosts }: BlogDeta
         </article>
 
         <aside className="blog-detail__rail">
+          <section className="surface detail-rail-card">
+            <span className="label">{content.blogTaxonomy.seriesLabel}</span>
+            <p>{content.blogTaxonomy.lead}</p>
+            <div className="series-list">
+              {seriesPosts.length ? (
+                seriesPosts.map((item) => (
+                  <Link key={item.slug} className="series-card" href={localizedPath(locale, `/blog/${item.slug}/`)}>
+                    <span className="project-tag">{item.tag}</span>
+                    <strong>{item.title}</strong>
+                    <p>{item.summary}</p>
+                  </Link>
+                ))
+              ) : (
+                <p className="muted">{content.blogTaxonomy.readingPathLabel}</p>
+              )}
+            </div>
+          </section>
+
           <section className="surface detail-rail-card">
             <span className="label">{content.blogDetail.overview}</span>
             <div className="detail-rail-card__stack">

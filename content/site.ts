@@ -122,6 +122,13 @@ export type SiteContent = {
     lead: string;
     action: string;
   };
+  blogTaxonomy: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    seriesLabel: string;
+    readingPathLabel: string;
+  };
   blogDetail: {
     overview: string;
     date: string;
@@ -435,6 +442,13 @@ const siteContent: Record<Locale, SiteContent> = {
         'Blog posts use MDX, so you can write long-form notes, technical breakdowns, and bilingual articles without changing the app structure.',
       action: 'Read all posts',
     },
+    blogTaxonomy: {
+      eyebrow: 'Reading Paths',
+      title: 'Follow a theme instead of reading posts in isolation.',
+      lead: 'The blog is organized around tags and series, so related notes stay easy to discover as the archive grows.',
+      seriesLabel: 'Series',
+      readingPathLabel: 'Reading path',
+    },
     blogDetail: {
       overview: 'A short reading guide that keeps the post compact without stripping away depth.',
       date: 'Published',
@@ -679,6 +693,13 @@ const siteContent: Record<Locale, SiteContent> = {
       lead:
         '博客内容采用 MDX 编写，你可以很自然地补技术笔记、实现拆解和双语文章，而不需要改动整体架构。',
       action: '查看全部文章',
+    },
+    blogTaxonomy: {
+      eyebrow: '阅读路径',
+      title: '按主题来读，而不是把文章拆开看。',
+      lead: '博客按标签和系列组织，内容增长后也能很容易继续顺着主题阅读。',
+      seriesLabel: '系列',
+      readingPathLabel: '阅读路径',
     },
     blogDetail: {
       overview: '一段简短的阅读导览，让文章有深度但不拖沓。',

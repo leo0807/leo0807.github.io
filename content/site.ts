@@ -156,6 +156,11 @@ export type SiteContent = {
     primaryHref: string;
     secondaryLabel: string;
     secondaryHref: string;
+    steps: Array<{
+      title: string;
+      body: string;
+    }>;
+    footer: string;
   };
   music: {
     eyebrow: string;
@@ -464,6 +469,21 @@ const siteContent: Record<Locale, SiteContent> = {
       primaryHref: 'https://www.linkedin.com/in/junxu-zhang-38bb04185/',
       secondaryLabel: 'WeChat',
       secondaryHref: 'https://weixin.qq.com/',
+      steps: [
+        {
+          title: 'Share the shape of the problem',
+          body: 'A short note about your product, team, and what you want to improve is enough to start.',
+        },
+        {
+          title: 'Pick a channel',
+          body: 'LinkedIn works best for structured requests. WeChat is better if you want a quick back-and-forth.',
+        },
+        {
+          title: 'Attach context',
+          body: 'If you have screenshots, links, or a brief, send them along so I can respond with less friction.',
+        },
+      ],
+      footer: 'Fastest response: LinkedIn. Best async path: WeChat.',
     },
     music: {
       eyebrow: 'Soundtrack',
@@ -694,6 +714,21 @@ const siteContent: Record<Locale, SiteContent> = {
       primaryHref: 'https://www.linkedin.com/in/junxu-zhang-38bb04185/',
       secondaryLabel: '微信',
       secondaryHref: 'https://weixin.qq.com/',
+      steps: [
+        {
+          title: '先说清问题形状',
+          body: '简单说明你的产品、团队，以及你想改进的地方，就足够开始。',
+        },
+        {
+          title: '选一个沟通渠道',
+          body: '如果是结构化需求，领英更合适；如果想快速来回沟通，微信更方便。',
+        },
+        {
+          title: '附上上下文',
+          body: '如果你有截图、链接或简短 brief，一起发过来，我能更快给出回应。',
+        },
+      ],
+      footer: '最快回复：领英。最适合异步沟通：微信。',
     },
     music: {
       eyebrow: '背景音乐',

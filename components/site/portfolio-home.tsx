@@ -435,6 +435,15 @@ export function PortfolioHome({
         <section className="surface contact-card contact-card--cta">
           <SectionHeading eyebrow={content.contactCta.eyebrow} title={content.contactCta.title} />
           <p className="muted">{content.contactCta.lead}</p>
+          <div className="contact-steps">
+            {content.contactCta.steps.map((step, index) => (
+              <article key={step.title} className="contact-step">
+                <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </article>
+            ))}
+          </div>
           <div className="button-row">
             <a className="button button-primary" href={content.contactCta.primaryHref} target="_blank" rel="noreferrer">
               {content.contactCta.primaryLabel}
@@ -446,6 +455,7 @@ export function PortfolioHome({
               {content.blogIndex.action}
             </Link>
           </div>
+          <p className="contact-cta__footer">{content.contactCta.footer}</p>
         </section>
 
         <section id="contact" className="surface contact-card">

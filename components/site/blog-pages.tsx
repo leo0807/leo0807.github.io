@@ -3,6 +3,8 @@ import type { BlogDocument, BlogPost } from '@/content/blogs';
 import type { SiteContent } from '@/content/site';
 import type { Locale } from '@/lib/i18n';
 import { localizedPath } from '@/lib/i18n';
+import { BlogOutline } from '@/components/site/blog-outline';
+import { BlogReadingProgress } from '@/components/site/blog-reading-progress';
 import { SectionHeading } from '@/components/site/section-heading';
 
 type BlogIndexPageProps = {
@@ -53,6 +55,7 @@ export function BlogDetailPage({ locale, content, post, seriesPosts, relatedPost
     <main className="subpage-shell">
       <section className="blog-detail__layout">
         <article className="surface project-detail blog-detail">
+          <BlogReadingProgress />
           <div className="project-detail__media">
             <img src={post.cover} alt={post.title} loading="eager" decoding="async" />
           </div>
@@ -95,6 +98,8 @@ export function BlogDetailPage({ locale, content, post, seriesPosts, relatedPost
               )}
             </div>
           </section>
+
+          <BlogOutline headings={post.headings} copy={content.blogDetail} />
 
           <section className="surface detail-rail-card">
             <span className="label">{content.blogDetail.overview}</span>

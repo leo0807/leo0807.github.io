@@ -2415,6 +2415,25 @@ html[data-theme='day'] .blog-detail__overview {
   line-height: 1.72;
 }
 
+.blog-progress {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  height: 3px;
+  margin-bottom: 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.blog-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+}
+
 .project-mdx {
   display: grid;
   gap: 18px;
@@ -2430,6 +2449,41 @@ html[data-theme='day'] .blog-detail__overview {
     "Avenir Next Condensed",
     "Segoe UI",
     sans-serif;
+}
+
+.project-mdx h2,
+.project-mdx h3 {
+  scroll-margin-top: 120px;
+}
+
+.project-mdx h3 {
+  margin: 0;
+  font-size: 1.06rem;
+  font-family:
+    "Space Grotesk",
+    "Avenir Next Condensed",
+    "Segoe UI",
+    sans-serif;
+}
+
+.project-mdx h2:hover .mdx-heading__anchor,
+.project-mdx h3:hover .mdx-heading__anchor {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.mdx-heading__anchor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2em;
+  margin-right: 0.4em;
+  color: var(--accent-soft);
+  opacity: 0.32;
+  transform: translateX(-4px);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
 }
 
 .project-mdx p {
@@ -2448,6 +2502,36 @@ html[data-theme='day'] .blog-detail__overview {
 
 .project-mdx a {
   color: var(--cool);
+}
+
+.outline-list {
+  display: grid;
+  gap: 8px;
+}
+
+.outline-link {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.outline-link--h3 {
+  margin-left: 14px;
+  padding-left: 14px;
+  opacity: 0.88;
+}
+
+.outline-link span {
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+html[data-theme='day'] .outline-link {
+  border-color: rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .project-detail__media img {

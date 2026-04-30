@@ -145,6 +145,8 @@ export type SiteContent = {
     readMore: string;
     related: string;
     relatedLead: string;
+    outline: string;
+    outlineLead: string;
   };
   projectDetail: {
     overview: string;
@@ -474,6 +476,8 @@ const siteContent: Record<Locale, SiteContent> = {
       readMore: 'Read more',
       related: 'Continue reading',
       relatedLead: 'If the topic resonates, these other posts expand the same design and engineering direction.',
+      outline: 'Outline',
+      outlineLead: 'Jump to the key sections in this article.',
     },
     projectDetail: {
       overview: 'A quick look at the role, focus, and metrics behind the build.',
@@ -735,6 +739,8 @@ const siteContent: Record<Locale, SiteContent> = {
       readMore: '继续阅读',
       related: '继续阅读',
       relatedLead: '如果这个主题对你有用，可以继续看下面这些同方向的文章。',
+      outline: '目录',
+      outlineLead: '直接跳到这篇文章的关键段落。',
     },
     projectDetail: {
       overview: '先看职责、关注点和关键指标，再进入完整案例。',

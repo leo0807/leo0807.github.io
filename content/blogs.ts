@@ -3,6 +3,7 @@ import path from 'node:path';
 import type { ReactNode } from 'react';
 import { cache } from 'react';
 import { compileMDX } from 'next-mdx-remote/rsc';
+import { MdxH2, MdxH3 } from '@/components/site/mdx-heading';
 import type { Locale } from '@/lib/i18n';
 
 export type BlogFrontmatter = {
@@ -18,12 +19,19 @@ export type BlogFrontmatter = {
   featured?: boolean;
 };
 
+export type BlogHeading = {
+  id: string;
+  level: 2 | 3;
+  title: string;
+};
+
 export type BlogPost = BlogFrontmatter & {
   locale: Locale;
 };
 
 export type BlogDocument = BlogPost & {
   content: ReactNode;
+  headings: BlogHeading[];
 };
 
 const blogRoot = path.join(process.cwd(), 'content', 'blogs');
@@ -36,19 +44,54 @@ async function readBlogSource(locale: Locale, slug: string) {
   return fs.readFile(path.join(getLocaleDir(locale), `${slug}.mdx`), 'utf8');
 }
 
+function slugifyHeading(title: string) {
+  return title
+    .trim()
+    .toLowerCase()
+    .replace(/['"]/g, '')
+    .replace(/[^a-z0-9\u4e00-\u9fff]+/gu, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function extractHeadings(source: string): BlogHeading[] {
+  const headings: BlogHeading[] = [];
+  const seen = new Map<string, number>();
+  const headingPattern = /^(#{2,3})\s+(.+)$/gm;
+  let match: RegExpExecArray | null;
+
+  while ((match = headingPattern.exec(source))) {
+    const level = match[1].length as 2 | 3;
+    const title = match[2].trim();
+    const baseId = slugifyHeading(title) || `section-${headings.length + 1}`;
+    const count = (seen.get(baseId) ?? 0) + 1;
+    seen.set(baseId, count);
+    const id = count === 1 ? baseId : `${baseId}-${count}`;
+
+    headings.push({ id, level, title });
+  }
+
+  return headings;
+}
+
 const loadBlogDocument = cache(async (locale: Locale, slug: string): Promise<BlogDocument | null> => {
   try {
     const source = await readBlogSource(locale, slug);
+    const headings = extractHeadings(source);
     const { content, frontmatter } = await compileMDX<BlogFrontmatter>({
       source,
       options: {
         parseFrontmatter: true,
+      },
+      components: {
+        h2: MdxH2,
+        h3: MdxH3,
       },
     });
 
     return {
       ...frontmatter,
       content,
+      headings,
       locale,
     };
   } catch {

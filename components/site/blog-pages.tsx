@@ -6,6 +6,7 @@ import { localizedPath } from '@/lib/i18n';
 import { BlogOutline } from '@/components/site/blog-outline';
 import { BlogReadingProgress } from '@/components/site/blog-reading-progress';
 import { SectionHeading } from '@/components/site/section-heading';
+import { VisitorContext } from '@/components/site/visitor-context';
 
 type BlogIndexPageProps = {
   locale: Locale;
@@ -100,6 +101,8 @@ export function BlogDetailPage({ locale, content, post, seriesPosts, relatedPost
           </section>
 
           <BlogOutline headings={post.headings} copy={content.blogDetail} />
+
+          <VisitorContext copy={content.blogDetail} />
 
           <section className="surface detail-rail-card">
             <span className="label">{content.blogDetail.overview}</span>

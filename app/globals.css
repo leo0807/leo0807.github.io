@@ -2529,7 +2529,37 @@ html[data-theme='day'] .blog-detail__overview {
   line-height: 1.35;
 }
 
+.visitor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.visitor-metric {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.visitor-metric strong {
+  font-size: 0.92rem;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.visitor-metric .label {
+  color: var(--accent-soft);
+}
+
 html[data-theme='day'] .outline-link {
+  border-color: rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+html[data-theme='day'] .visitor-metric {
   border-color: rgba(15, 23, 42, 0.08);
   background: rgba(255, 255, 255, 0.6);
 }

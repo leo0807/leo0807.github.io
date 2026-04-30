@@ -147,6 +147,13 @@ export type SiteContent = {
     relatedLead: string;
     outline: string;
     outlineLead: string;
+    visitor: string;
+    visitorLead: string;
+    browserLocale: string;
+    timeZone: string;
+    localTime: string;
+    region: string;
+    privacyNote: string;
   };
   projectDetail: {
     overview: string;
@@ -478,6 +485,13 @@ const siteContent: Record<Locale, SiteContent> = {
       relatedLead: 'If the topic resonates, these other posts expand the same design and engineering direction.',
       outline: 'Outline',
       outlineLead: 'Jump to the key sections in this article.',
+      visitor: 'Visitor context',
+      visitorLead: 'Anonymous browser signals only. No IP collection, no geolocation lookup.',
+      browserLocale: 'Browser locale',
+      timeZone: 'Time zone',
+      localTime: 'Local time',
+      region: 'Approx region',
+      privacyNote: 'Derived from the browser clock and locale, not from IP.',
     },
     projectDetail: {
       overview: 'A quick look at the role, focus, and metrics behind the build.',
@@ -741,6 +755,13 @@ const siteContent: Record<Locale, SiteContent> = {
       relatedLead: '如果这个主题对你有用，可以继续看下面这些同方向的文章。',
       outline: '目录',
       outlineLead: '直接跳到这篇文章的关键段落。',
+      visitor: '访客上下文',
+      visitorLead: '只展示匿名浏览器信号，不采集 IP，也不做地理定位。',
+      browserLocale: '浏览器语言',
+      timeZone: '时区',
+      localTime: '本地时间',
+      region: '大致区域',
+      privacyNote: '基于浏览器时钟和语言推断，不来自 IP。',
     },
     projectDetail: {
       overview: '先看职责、关注点和关键指标，再进入完整案例。',

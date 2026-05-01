@@ -84,56 +84,71 @@ export function BlogDetailPage({ locale, content, post, seriesPosts, relatedPost
         <aside className="blog-detail__rail">
           <VisitorContext copy={content.blogDetail} />
 
-          <section className="surface detail-rail-card">
-            <span className="label">{content.blogTaxonomy.seriesLabel}</span>
-            <p>{content.blogTaxonomy.lead}</p>
-            <div className="series-list">
-              {seriesPosts.length ? (
-                seriesPosts.map((item) => (
-                  <Link key={item.slug} className="series-card" href={localizedPath(locale, `/blog/${item.slug}/`)}>
-                    <span className="project-tag">{item.tag}</span>
-                    <strong>{item.title}</strong>
-                    <p>{item.summary}</p>
-                  </Link>
-                ))
-              ) : (
-                <p className="muted">{content.blogTaxonomy.readingPathLabel}</p>
-              )}
+          <details className="surface detail-rail-card rail-disclosure">
+            <summary className="rail-disclosure__summary">
+              <span className="label">{content.blogTaxonomy.seriesLabel}</span>
+              <span className="rail-disclosure__hint">{content.blogTaxonomy.lead}</span>
+            </summary>
+            <div className="rail-disclosure__body">
+              <div className="series-list">
+                {seriesPosts.length ? (
+                  seriesPosts.map((item) => (
+                    <Link key={item.slug} className="series-card" href={localizedPath(locale, `/blog/${item.slug}/`)}>
+                      <span className="project-tag">{item.tag}</span>
+                      <strong>{item.title}</strong>
+                      <p>{item.summary}</p>
+                    </Link>
+                  ))
+                ) : (
+                  <p className="muted">{content.blogTaxonomy.readingPathLabel}</p>
+                )}
+              </div>
             </div>
-          </section>
+          </details>
 
           <BlogOutline headings={post.headings} copy={content.blogDetail} />
 
-          <section className="surface detail-rail-card">
-            <span className="label">{content.blogDetail.overview}</span>
-            <div className="detail-rail-card__stack">
-              <div>
-                <span className="label">{content.blogDetail.date}</span>
-                <strong>{post.date}</strong>
-              </div>
-              <div>
-                <span className="label">{content.blogDetail.reading}</span>
-                <strong>{post.readingTime}</strong>
+          <details className="surface detail-rail-card rail-disclosure">
+            <summary className="rail-disclosure__summary">
+              <span className="label">{content.blogDetail.overview}</span>
+              <span className="rail-disclosure__hint">
+                {post.date} · {post.readingTime}
+              </span>
+            </summary>
+            <div className="rail-disclosure__body">
+              <div className="detail-rail-card__stack">
+                <div>
+                  <span className="label">{content.blogDetail.date}</span>
+                  <strong>{post.date}</strong>
+                </div>
+                <div>
+                  <span className="label">{content.blogDetail.reading}</span>
+                  <strong>{post.readingTime}</strong>
+                </div>
               </div>
             </div>
-          </section>
+          </details>
 
-          <section className="surface detail-rail-card">
-            <span className="label">{content.blogDetail.related}</span>
-            <p>{content.blogDetail.relatedLead}</p>
-            <div className="related-list">
-              {relatedPosts.map((item) => (
-                <Link key={item.slug} className="related-card" href={localizedPath(locale, `/blog/${item.slug}/`)}>
-                  <img src={item.cover} alt={item.title} loading="lazy" decoding="async" />
-                  <div>
-                    <span className="project-tag">{item.tag}</span>
-                    <strong>{item.title}</strong>
-                    <p>{item.summary}</p>
-                  </div>
-                </Link>
-              ))}
+          <details className="surface detail-rail-card rail-disclosure">
+            <summary className="rail-disclosure__summary">
+              <span className="label">{content.blogDetail.related}</span>
+              <span className="rail-disclosure__hint">{content.blogDetail.relatedLead}</span>
+            </summary>
+            <div className="rail-disclosure__body">
+              <div className="related-list">
+                {relatedPosts.map((item) => (
+                  <Link key={item.slug} className="related-card" href={localizedPath(locale, `/blog/${item.slug}/`)}>
+                    <img src={item.cover} alt={item.title} loading="lazy" decoding="async" />
+                    <div>
+                      <span className="project-tag">{item.tag}</span>
+                      <strong>{item.title}</strong>
+                      <p>{item.summary}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </section>
+          </details>
         </aside>
       </section>
     </main>

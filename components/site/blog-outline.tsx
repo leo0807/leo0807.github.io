@@ -13,16 +13,20 @@ export function BlogOutline({ headings, copy }: BlogOutlineProps) {
   }
 
   return (
-    <section className="surface detail-rail-card">
-      <span className="label">{copy.outline}</span>
-      <p>{copy.outlineLead}</p>
-      <div className="outline-list">
-        {headings.map((heading) => (
-          <Link key={heading.id} className={`outline-link outline-link--h${heading.level}`} href={`#${heading.id}`}>
-            <span>{heading.title}</span>
-          </Link>
-        ))}
+    <details className="surface detail-rail-card rail-disclosure" open>
+      <summary className="rail-disclosure__summary">
+        <span className="label">{copy.outline}</span>
+        <span className="rail-disclosure__hint">{copy.outlineLead}</span>
+      </summary>
+      <div className="rail-disclosure__body">
+        <div className="outline-list">
+          {headings.map((heading) => (
+            <Link key={heading.id} className={`outline-link outline-link--h${heading.level}`} href={`#${heading.id}`}>
+              <span>{heading.title}</span>
+            </Link>
+          ))}
+        </div>
       </div>
-    </section>
+    </details>
   );
 }

@@ -124,48 +124,58 @@ export function ProjectDetailPage({ locale, content, project, relatedProjects }:
         </article>
 
         <aside className="project-detail__rail">
-          <section className="surface detail-rail-card">
-            <span className="label">{content.projectTaxonomy.caseLabel}</span>
-            <p>{content.projectTaxonomy.lead}</p>
-            <div className="detail-rail-card__stack">
-              <div>
-                <span className="label">{content.projectDetail.role}</span>
-                <strong>{project.role}</strong>
+          <details className="surface detail-rail-card rail-disclosure" open>
+            <summary className="rail-disclosure__summary">
+              <span className="label">{content.projectTaxonomy.caseLabel}</span>
+              <span className="rail-disclosure__hint">{content.projectTaxonomy.lead}</span>
+            </summary>
+            <div className="rail-disclosure__body">
+              <div className="detail-rail-card__stack">
+                <div>
+                  <span className="label">{content.projectDetail.role}</span>
+                  <strong>{project.role}</strong>
+                </div>
+                <div>
+                  <span className="label">{content.projectDetail.focus}</span>
+                  <strong>{project.focus}</strong>
+                </div>
+                <div>
+                  <span className="label">{content.projectTaxonomy.metricsLabel}</span>
+                  <strong>
+                    {project.metrics?.length ?? 0} {locale === 'zh' ? '项指标' : 'metrics'}
+                  </strong>
+                </div>
               </div>
-              <div>
-                <span className="label">{content.projectDetail.focus}</span>
-                <strong>{project.focus}</strong>
-              </div>
-              <div>
-                <span className="label">{content.projectTaxonomy.metricsLabel}</span>
-                <strong>{project.metrics?.length ?? 0} {locale === 'zh' ? '项指标' : 'metrics'}</strong>
+              <div className="pill-grid pill-grid--compact">
+                {project.tech.slice(0, 4).map((item) => (
+                  <span key={item} className="pill">
+                    {item}
+                  </span>
+                ))}
               </div>
             </div>
-            <div className="pill-grid pill-grid--compact">
-              {project.tech.slice(0, 4).map((item) => (
-                <span key={item} className="pill">
-                  {item}
-                </span>
-              ))}
-            </div>
-          </section>
+          </details>
 
-          <section className="surface detail-rail-card">
-            <span className="label">{content.projectDetail.related}</span>
-            <p>{content.projectDetail.relatedLead}</p>
-            <div className="related-list">
-              {(sameTagProjects.length ? sameTagProjects : relatedProjects).map((item) => (
-                <Link key={item.slug} className="related-card" href={localizedPath(locale, `/projects/${item.slug}/`)}>
-                  <img src={item.image} alt={item.title} loading="lazy" decoding="async" />
-                  <div>
-                    <span className="project-tag">{item.tag}</span>
-                    <strong>{item.title}</strong>
-                    <p>{item.summary}</p>
-                  </div>
-                </Link>
-              ))}
+          <details className="surface detail-rail-card rail-disclosure">
+            <summary className="rail-disclosure__summary">
+              <span className="label">{content.projectDetail.related}</span>
+              <span className="rail-disclosure__hint">{content.projectDetail.relatedLead}</span>
+            </summary>
+            <div className="rail-disclosure__body">
+              <div className="related-list">
+                {(sameTagProjects.length ? sameTagProjects : relatedProjects).map((item) => (
+                  <Link key={item.slug} className="related-card" href={localizedPath(locale, `/projects/${item.slug}/`)}>
+                    <img src={item.image} alt={item.title} loading="lazy" decoding="async" />
+                    <div>
+                      <span className="project-tag">{item.tag}</span>
+                      <strong>{item.title}</strong>
+                      <p>{item.summary}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </section>
+          </details>
         </aside>
       </section>
     </main>

@@ -85,6 +85,8 @@ export type SiteContent = {
       title: string;
       summary: string;
       items: string[];
+      focus: string;
+      examples: string[];
     }>;
   };
   services: {
@@ -450,31 +452,43 @@ const siteContent: Record<Locale, SiteContent> = {
           title: 'Frontend systems',
           summary: 'The core delivery layer for routes, UI state, and maintainable components.',
           items: ['Next.js App Router', 'React 19', 'TypeScript', 'Static export'],
+          focus: 'Route composition, reusable UI surfaces, page state, responsive layering',
+          examples: ['home shell', 'project cards', 'localized paths', 'detail layouts'],
         },
         {
           title: 'Backend systems',
           summary: 'The service layer where APIs, data access, and application logic stay clean.',
-          items: ['Node.js', 'FastAPI', 'REST APIs', 'PostgreSQL', 'Redis'],
+          items: ['Node.js', 'FastAPI', 'REST APIs', 'GraphQL', 'PostgreSQL', 'Redis', 'Auth flows', 'Background jobs'],
+          focus: 'API design, data modeling, service boundaries, async workflows, and secure access patterns',
+          examples: ['route handlers', 'content loaders', 'retrieval APIs', 'task queues', 'cache layers'],
         },
         {
           title: 'LLM systems',
           summary: 'The application layer for retrieval, orchestration, and model-aware workflows.',
-          items: ['LLM Applications', 'RAG', 'LangGraph', 'Model Routing', 'Observability'],
+          items: ['LLM Applications', 'RAG', 'LangGraph', 'Model Routing', 'Prompt Engineering', 'Tool Calling', 'Streaming SSE', 'Observability'],
+          focus: 'Prompt flow, retrieval quality, tool routing, tracing, evaluation, and iteration loops',
+          examples: ['hybrid retrieval', 'agent orchestration', 'evaluation loops', 'trace review', 'schema steering'],
         },
         {
           title: '3D + motion',
           summary: 'The visual layer that makes the portfolio feel more like a designed surface.',
           items: ['Three.js / React Three Fiber', 'R3F Postprocessing', 'Pointer-driven scenes'],
+          focus: 'Spatial layout, pointer response, atmosphere, and motion pacing',
+          examples: ['hero scene', 'room studio', 'postprocessing', 'camera drift'],
         },
         {
           title: 'Content + SEO',
           summary: 'The architecture that keeps writing, metadata, and bilingual routes scalable.',
           items: ['MDX Content Pipeline', 'Bilingual Routing', 'JSON-LD SEO', 'Structured Content'],
+          focus: 'Article structure, metadata, discoverability, and locale-aware content',
+          examples: ['MDX posts', 'open graph', 'sitemaps', 'canonical links'],
         },
         {
           title: 'Delivery + ops',
           summary: 'The part that keeps the portfolio fast, deployable, and easy to maintain.',
           items: ['GitHub Actions Deploy', 'Optimized Assets', 'Observability mindset'],
+          focus: 'Release flow, asset discipline, performance checks, and maintenance',
+          examples: ['Pages deploy', 'asset compression', 'build checks', 'archive hygiene'],
         },
       ],
     },
@@ -813,31 +827,43 @@ const siteContent: Record<Locale, SiteContent> = {
           title: '前端系统',
           summary: '负责路由、状态和可维护组件结构的核心交付层。',
           items: ['Next.js App Router', 'React 19', 'TypeScript', '静态导出'],
+          focus: '路由组合、可复用 UI、页面状态、响应式层次',
+          examples: ['首页骨架', '项目卡片', '本地化路径', '详情布局'],
         },
         {
           title: '后端系统',
           summary: '负责 API、数据访问和业务逻辑的服务层。',
-          items: ['Node.js', 'FastAPI', 'REST API', 'PostgreSQL', 'Redis'],
+          items: ['Node.js', 'FastAPI', 'REST API', 'GraphQL', 'PostgreSQL', 'Redis', 'Auth flows', '后台任务'],
+          focus: '接口设计、数据建模、服务边界、异步流程和安全访问模式',
+          examples: ['路由处理', '内容加载', '检索 API', '任务队列', '缓存层'],
         },
         {
           title: 'LLM 系统',
           summary: '负责检索、编排和模型感知工作流的应用层。',
-          items: ['LLM 应用', 'RAG', 'LangGraph', '模型路由', '可观测性'],
+          items: ['LLM 应用', 'RAG', 'LangGraph', '模型路由', '提示工程', '工具调用', '流式 SSE', '可观测性'],
+          focus: '提示流、检索质量、工具路由、追踪、评估和迭代闭环',
+          examples: ['混合检索', '智能体编排', '评估循环', 'Trace 复盘', 'Schema 约束'],
         },
         {
           title: '3D 与动效',
           summary: '让作品集更像一个被精心设计过的可视化界面。',
           items: ['Three.js / React Three Fiber', 'R3F 后处理', '指针驱动场景'],
+          focus: '空间布局、指针响应、氛围和节奏',
+          examples: ['Hero 场景', '房间工作室', '后处理', '镜头漂移'],
         },
         {
           title: '内容与 SEO',
           summary: '负责写作、元数据和中英双语路由的可扩展结构。',
           items: ['MDX 内容管线', '双语路由', 'JSON-LD SEO', '结构化内容'],
+          focus: '文章结构、元数据、可发现性和语言感知内容',
+          examples: ['MDX 文章', 'OG 图', '站点地图', '规范链接'],
         },
         {
           title: '交付与运维',
           summary: '保持站点速度、部署和维护成本都在可控范围内。',
           items: ['GitHub Actions 发布', '资源优化', '可观测性思维'],
+          focus: '发布流程、资源纪律、性能检查和维护',
+          examples: ['Pages 部署', '资源压缩', '构建检查', '内容归档'],
         },
       ],
     },

@@ -111,10 +111,9 @@ export function PortfolioHome({
 
   const radarPoints = skillsRadarGroups.map((group, index) => {
     const angle = (Math.PI * 2 * index) / Math.max(skillsRadarGroups.length, 1) - Math.PI / 2;
-    const radius = 72 + index * 8;
-    const x = 100 + Math.cos(angle) * radius;
-    const y = 100 + Math.sin(angle) * radius;
-    return { ...group, angle, radius, x, y };
+    const depth = 46 + (group.items.length * 3) + Math.min(group.focus.length / 16, 12);
+    const radius = 62 + index * 4 + Math.min(group.examples.length * 2, 12);
+    return { ...group, angle, radius, depth };
   });
 
   useEffect(() => {
@@ -481,6 +480,10 @@ export function PortfolioHome({
                   ))}
                   <circle cx="100" cy="100" r="18" className="skills-radar-core" />
                 </svg>
+                <div className="skills-radar-summary">
+                  <span className="label">{locale === 'zh' ? '解读' : 'Reading the radar'}</span>
+                  <p>{locale === 'zh' ? '中心图形强调你最近最强的交付方向：前端、后端和 LLM 应用是相互连通的，而不是彼此孤立。' : 'The center geometry shows that frontend delivery, backend services, and LLM work reinforce each other instead of sitting in separate lanes.'}</p>
+                </div>
               </div>
             </article>
             {skillsRadarGroups.map((group, index) => (
@@ -488,12 +491,29 @@ export function PortfolioHome({
                 <span className="signal-index">{String(index + 2).padStart(2, '0')}</span>
                 <h3>{group.title}</h3>
                 <p>{group.summary}</p>
-                <div className="pill-grid pill-grid--compact">
-                  {group.items.map((item) => (
-                    <span key={item} className="pill">
-                      {item}
-                    </span>
-                  ))}
+                <div className="skills-radar-card__focus">
+                  <span className="label">{locale === 'zh' ? '工作方式' : 'How it shows up'}</span>
+                  <p>{group.focus}</p>
+                </div>
+                <div className="skills-radar-card__list">
+                  <span className="label">{locale === 'zh' ? '常见产出' : 'Typical outputs'}</span>
+                  <div className="pill-grid pill-grid--compact">
+                    {group.examples.map((item) => (
+                      <span key={item} className="pill">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="skills-radar-card__list">
+                  <span className="label">{locale === 'zh' ? '相关技能' : 'Related skills'}</span>
+                  <div className="pill-grid pill-grid--compact">
+                    {group.items.map((item) => (
+                      <span key={item} className="pill">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </article>
             ))}

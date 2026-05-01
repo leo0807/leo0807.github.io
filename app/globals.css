@@ -2529,38 +2529,51 @@ html[data-theme='day'] .blog-detail__overview {
   line-height: 1.35;
 }
 
-.visitor-grid {
+.detail-rail-card--compact {
+  gap: 12px;
+  padding: 16px;
+  border-color: rgba(143, 194, 255, 0.14);
+  box-shadow: 0 18px 50px rgba(76, 123, 255, 0.1);
+}
+
+.visitor-copy {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.visitor-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
 }
 
 .visitor-metric {
-  display: grid;
-  gap: 6px;
-  padding: 12px 14px;
-  border-radius: 16px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.03);
 }
 
-.visitor-metric:first-child {
-  grid-column: 1 / -1;
-}
-
 .visitor-metric strong {
-  font-size: 0.92rem;
+  flex: 1;
+  min-width: 0;
+  font-size: 0.86rem;
   line-height: 1.35;
+  text-align: right;
   word-break: break-word;
 }
 
-.visitor-metric .label {
+.visitor-metric span {
+  flex: 0 0 auto;
   color: var(--accent-soft);
-}
-
-.detail-rail-card--highlight {
-  border-color: rgba(143, 194, 255, 0.22);
-  box-shadow: 0 28px 80px rgba(76, 123, 255, 0.16);
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 html[data-theme='day'] .outline-link {
@@ -2571,6 +2584,11 @@ html[data-theme='day'] .outline-link {
 html[data-theme='day'] .visitor-metric {
   border-color: rgba(15, 23, 42, 0.08);
   background: rgba(255, 255, 255, 0.6);
+}
+
+html[data-theme='day'] .detail-rail-card--compact {
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
 }
 
 .project-detail__media img {

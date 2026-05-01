@@ -50,24 +50,24 @@ export function VisitorContext({ copy }: VisitorContextProps) {
   }
 
   return (
-    <section className="surface detail-rail-card detail-rail-card--highlight">
+    <section className="surface detail-rail-card detail-rail-card--compact">
       <span className="label">{copy.visitor}</span>
-      <p>{copy.visitorLead}</p>
-      <div className="visitor-grid">
+      <p className="visitor-copy">{copy.visitorLead}</p>
+      <div className="visitor-list">
         <div className="visitor-metric">
-          <span className="label">{copy.browserLocale}</span>
+          <span>{copy.browserLocale}</span>
           <strong>{signals.browserLocale}</strong>
         </div>
         <div className="visitor-metric">
-          <span className="label">{copy.timeZone}</span>
+          <span>{copy.timeZone}</span>
           <strong>{signals.timeZone}</strong>
         </div>
         <div className="visitor-metric">
-          <span className="label">{copy.localTime}</span>
+          <span>{copy.localTime}</span>
           <strong>{signals.localTime}</strong>
         </div>
         <div className="visitor-metric">
-          <span className="label">{copy.region}</span>
+          <span>{copy.region}</span>
           <strong>{signals.region}</strong>
         </div>
       </div>

@@ -270,6 +270,7 @@ html[data-theme='day'] .theme-toggle {
 
 html[data-theme='day'] .button-secondary,
 html[data-theme='day'] .mode-chip,
+html[data-theme='day'] .section-nav,
 html[data-theme='day'] .project-card,
 html[data-theme='day'] .blog-card,
 html[data-theme='day'] .blog-strip__card,
@@ -282,6 +283,9 @@ html[data-theme='day'] .detail-rail-card,
 html[data-theme='day'] .series-card,
 html[data-theme='day'] .related-card,
 html[data-theme='day'] .taxonomy-pill,
+html[data-theme='day'] .project-card__meta-item,
+html[data-theme='day'] .project-card__chip,
+html[data-theme='day'] .blog-card__chip,
 html[data-theme='day'] .project-detail__overview,
 html[data-theme='day'] .blog-detail__overview {
   border-color: rgba(15, 23, 42, 0.08);
@@ -293,6 +297,81 @@ html[data-theme='day'] .blog-detail__overview {
   padding-top: 6px;
   display: grid;
   gap: 22px;
+}
+
+.section-nav {
+  display: grid;
+  gap: 16px;
+  padding: 20px 22px;
+  border-radius: 30px;
+  position: sticky;
+  top: 14px;
+  z-index: 70;
+  margin-bottom: 2px;
+}
+
+.section-nav__copy {
+  display: grid;
+  gap: 8px;
+  max-width: 72ch;
+}
+
+.section-nav__copy h2 {
+  margin: 0;
+  font-size: clamp(1.25rem, 2.2vw, 1.85rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  font-family:
+    "Space Grotesk",
+    "Avenir Next Condensed",
+    "Segoe UI",
+    sans-serif;
+}
+
+.section-nav__rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.section-nav__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.section-nav__chip:hover {
+  transform: translateY(-1px);
+  border-color: rgba(143, 194, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.section-nav__chip--active {
+  border-color: rgba(143, 194, 255, 0.42);
+  background: linear-gradient(135deg, rgba(125, 134, 255, 0.22), rgba(87, 217, 255, 0.12));
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
+}
+
+.section-nav__chip-index {
+  color: var(--cool);
+  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+}
+
+.section-nav__chip strong {
+  font-size: 0.86rem;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 
 .theme-toggle {
@@ -1541,6 +1620,11 @@ html[data-theme='day'] .blog-detail__overview {
   height: 100%;
 }
 
+.blog-card__link:hover .blog-card__copy,
+.blog-card__link:focus-visible .blog-card__copy {
+  transform: translateY(-2px);
+}
+
 .blog-card img {
   width: 100%;
   aspect-ratio: 16 / 10;
@@ -1551,6 +1635,11 @@ html[data-theme='day'] .blog-detail__overview {
 .blog-strip__card {
   display: grid;
   gap: 10px;
+}
+
+.blog-card__copy {
+  padding: 4px 0 4px;
+  transition: transform 180ms ease;
 }
 
 .blog-card__copy h2,
@@ -1569,6 +1658,19 @@ html[data-theme='day'] .blog-detail__overview {
   margin: 0;
   color: var(--muted);
   line-height: 1.75;
+}
+
+.blog-card__eyebrow {
+  color: var(--cool);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+}
+
+.blog-card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .blog-card__meta,
@@ -1703,6 +1805,13 @@ html[data-theme='day'] .blog-detail__overview {
   transform-style: preserve-3d;
 }
 
+.project-card__frame {
+  display: grid;
+  gap: 0;
+  height: 100%;
+  align-content: start;
+}
+
 .project-card::before {
   content: '';
   position: absolute;
@@ -1738,6 +1847,55 @@ html[data-theme='day'] .blog-detail__overview {
 .project-card__copy {
   padding-top: 18px;
   transform: translateZ(18px);
+}
+
+.project-card__meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.project-card__meta-item {
+  display: grid;
+  gap: 4px;
+  padding: 12px 12px 10px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.project-card__meta-item strong {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.project-card__meta-item small {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.66rem;
+}
+
+.project-card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.project-card__chip,
+.blog-card__chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
 }
 
 .project-card:hover img,
@@ -3181,6 +3339,25 @@ html[data-locale='zh'] .topbar-links {
     padding-top: 16px;
   }
 
+  .section-nav {
+    position: relative;
+    top: auto;
+    padding: 16px;
+    border-radius: 24px;
+  }
+
+  .section-nav__rail {
+    gap: 8px;
+  }
+
+  .section-nav__chip {
+    padding: 9px 12px;
+  }
+
+  .section-nav__chip strong {
+    font-size: 0.8rem;
+  }
+
   .topbar {
     flex-wrap: wrap;
     align-items: center;
@@ -3258,6 +3435,10 @@ html[data-locale='zh'] .topbar-links {
   .skills-radar-card,
   .metric-card--home {
     padding: 20px;
+  }
+
+  .project-card__meta {
+    grid-template-columns: 1fr;
   }
 
   .skills-radar-card--diagram {

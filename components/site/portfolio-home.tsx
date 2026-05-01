@@ -49,7 +49,27 @@ export function PortfolioHome({
   const [resumePreview, setResumePreview] = useState<'english' | 'chinese' | null>(null);
   const [presentationMode, setPresentationMode] = useState<'editorial' | 'viz' | 'terminal'>('editorial');
   const [roomIndex, setRoomIndex] = useState(1);
+  const [activeSection, setActiveSection] = useState('hero-intro');
   const vizProjects = safeFeaturedProjects.slice(0, 3);
+
+  const sectionLinks = useMemo(
+    () => [
+      { id: 'hero-intro', label: locale === 'zh' ? '首屏' : 'Hero' },
+      { id: 'showcase', label: locale === 'zh' ? '展示' : 'Showcase' },
+      { id: 'about', label: locale === 'zh' ? '简介' : 'About' },
+      { id: 'testimonials', label: locale === 'zh' ? '推荐语' : 'Testimonials' },
+      { id: 'metrics', label: locale === 'zh' ? '指标' : 'Metrics' },
+      { id: 'timeline', label: locale === 'zh' ? '时间线' : 'Timeline' },
+      { id: 'now', label: locale === 'zh' ? 'Now' : 'Now' },
+      { id: 'skills', label: locale === 'zh' ? '技能' : 'Skills' },
+      { id: 'services', label: locale === 'zh' ? '服务' : 'Services' },
+      { id: 'signals', label: locale === 'zh' ? '信号' : 'Signals' },
+      { id: 'blog', label: locale === 'zh' ? '博客' : 'Blog' },
+      { id: 'featured', label: locale === 'zh' ? '项目' : 'Projects' },
+      { id: 'contact', label: locale === 'zh' ? '联系' : 'Contact' },
+    ],
+    [locale],
+  );
 
   const activeProject = useMemo(() => {
     return projects.find((project) => project.slug === activeSlug) ?? null;
@@ -127,6 +147,34 @@ export function PortfolioHome({
     };
   }, [resumePreview]);
 
+  useEffect(() => {
+    const observedSections = sectionLinks
+      .map((section) => document.getElementById(section.id))
+      .filter((element): element is HTMLElement => Boolean(element));
+
+    if (!observedSections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((left, right) => right.intersectionRatio - left.intersectionRatio)[0];
+
+        if (visibleEntry?.target.id) {
+          setActiveSection(visibleEntry.target.id);
+        }
+      },
+      {
+        rootMargin: '-18% 0px -58% 0px',
+        threshold: [0.15, 0.25, 0.5, 0.75],
+      },
+    );
+
+    observedSections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, [sectionLinks]);
+
   const resumePreviewSrc = resumePreview === 'english' ? '/pdf/english.PDF' : '/pdf/chinese.pdf';
 
   return (
@@ -139,7 +187,7 @@ export function PortfolioHome({
         onRoomIndexChange={setRoomIndex}
       />
       <div className="content-shell">
-        <header className="hero-stack">
+        <header id="hero" className="hero-stack" data-home-section="hero">
           <nav className="topbar surface topbar--mode">
             <Link className="brand" href={localizedPath(locale, '/')}>
               {siteConfig.name}
@@ -156,7 +204,35 @@ export function PortfolioHome({
             </div>
           </nav>
 
-          <section className="hero-grid">
+          <section className="surface section-nav">
+            <div className="section-nav__copy">
+              <p className="eyebrow">{locale === 'zh' ? '页面导航' : 'Page navigator'}</p>
+              <h2>{locale === 'zh' ? '快速跳转到关键章节' : 'Jump directly to key sections'}</h2>
+              <p className="muted">
+                {locale === 'zh'
+                  ? '这条导航会跟随你的浏览进度高亮当前章节，也能让整页更像一个被精心编辑过的作品集。'
+                  : 'This navigator highlights the current section as you scroll and keeps the page feeling intentionally composed.'}
+              </p>
+            </div>
+            <div className="section-nav__rail" role="navigation" aria-label={locale === 'zh' ? '页面章节导航' : 'Page sections'}>
+              {sectionLinks.map((section, index) => {
+                const isActive = activeSection === section.id;
+                return (
+                  <a
+                    key={section.id}
+                    className={`section-nav__chip${isActive ? ' section-nav__chip--active' : ''}`}
+                    href={`#${section.id}`}
+                    aria-current={isActive ? 'location' : undefined}
+                  >
+                    <span className="section-nav__chip-index">{String(index + 1).padStart(2, '0')}</span>
+                    <strong>{section.label}</strong>
+                  </a>
+                );
+              })}
+            </div>
+          </section>
+
+          <section id="hero-intro" className="hero-grid" data-home-section="hero-intro">
             <div className="surface hero-copy">
               <p className="eyebrow">{content.hero.eyebrow}</p>
               <h1>
@@ -187,7 +263,7 @@ export function PortfolioHome({
             </aside>
           </section>
 
-          <section className="surface presentation-bar">
+          <section id="presentation" className="surface presentation-bar" data-home-section="presentation">
             <div className="presentation-bar__copy">
               <p className="eyebrow">{content.presentation.eyebrow}</p>
               <h2>{content.presentation.title}</h2>
@@ -270,7 +346,7 @@ export function PortfolioHome({
             <p className="presentation-bar__hint">{content.presentation.hint}</p>
           </section>
 
-          <section className="surface room-stage">
+          <section id="studio" className="surface room-stage" data-home-section="studio">
             <div className="room-stage__copy">
               <p className="eyebrow">{locale === 'zh' ? '多房间工作室' : 'Multi-room studio'}</p>
               <h2>{roomLabels[roomIndex] ?? roomLabels[1]}</h2>
@@ -313,7 +389,7 @@ export function PortfolioHome({
           </section>
         </header>
 
-        <section className="projects-block">
+        <section id="showcase" className="projects-block" data-home-section="showcase">
           <SectionHeading eyebrow={content.showcase.eyebrow} title={content.showcase.title} />
           <p className="muted compact">{content.showcase.lead}</p>
           <div className="showcase-grid">
@@ -355,7 +431,7 @@ export function PortfolioHome({
         </section>
 
         <section className="two-column">
-          <article className="surface about-card">
+          <article id="about" className="surface about-card" data-home-section="about">
             <SectionHeading eyebrow={content.about.eyebrow} title={content.about.title} />
             <div className="about-layout">
               <img src={siteConfig.aboutImage} alt="Original portfolio portrait" loading="lazy" decoding="async" />
@@ -379,7 +455,7 @@ export function PortfolioHome({
           </article>
         </section>
 
-        <section className="projects-block">
+        <section id="testimonials" className="projects-block" data-home-section="testimonials">
           <SectionHeading eyebrow={content.testimonials.eyebrow} title={content.testimonials.title} />
           <p className="muted compact">{content.testimonials.lead}</p>
           <div className="testimonial-grid">
@@ -397,7 +473,7 @@ export function PortfolioHome({
           </div>
         </section>
 
-        <section className="projects-block">
+        <section id="metrics" className="projects-block" data-home-section="metrics">
           <SectionHeading eyebrow={content.caseStudyMetrics.eyebrow} title={content.caseStudyMetrics.title} />
           <p className="muted compact">{content.caseStudyMetrics.lead}</p>
           <div className="metric-grid metric-grid--home">
@@ -411,7 +487,7 @@ export function PortfolioHome({
           </div>
         </section>
 
-        <section className="projects-block">
+        <section id="timeline" className="projects-block" data-home-section="timeline">
           <SectionHeading eyebrow={content.timeline.eyebrow} title={content.timeline.title} />
           <p className="muted compact">{content.timeline.lead}</p>
           <div className="timeline-grid">
@@ -425,7 +501,7 @@ export function PortfolioHome({
           </div>
         </section>
 
-        <section className="projects-block">
+        <section id="now" className="projects-block" data-home-section="now">
           <SectionHeading eyebrow={content.now.eyebrow} title={content.now.title} />
           <p className="muted compact">{content.now.lead}</p>
           <div className="now-grid">
@@ -440,7 +516,7 @@ export function PortfolioHome({
           </div>
         </section>
 
-        <section className="projects-block">
+        <section id="skills" className="projects-block" data-home-section="skills">
           <SectionHeading eyebrow={content.skillsRadar.eyebrow} title={content.skillsRadar.title} />
           <p className="muted compact">{content.skillsRadar.lead}</p>
           <div className="skills-radar-grid">
@@ -520,7 +596,7 @@ export function PortfolioHome({
           </div>
         </section>
 
-        <section className="projects-block">
+        <section id="services" className="projects-block" data-home-section="services">
           <SectionHeading
             eyebrow={content.services.eyebrow}
             title={content.services.title}
@@ -538,7 +614,7 @@ export function PortfolioHome({
           </div>
         </section>
 
-        <section className="projects-block">
+        <section id="signals" className="projects-block" data-home-section="signals">
           <SectionHeading eyebrow={content.signals.eyebrow} title={content.signals.title} />
           <p className="muted compact">{content.signals.lead}</p>
           <div className="signal-grid">
@@ -552,7 +628,7 @@ export function PortfolioHome({
           </div>
         </section>
 
-        <section className="projects-block">
+        <section id="blog" className="projects-block" data-home-section="blog">
           <SectionHeading
             eyebrow={content.blogIndex.eyebrow}
             title={content.blogIndex.title}
@@ -577,7 +653,7 @@ export function PortfolioHome({
           </div>
         </section>
 
-        <section className="projects-block">
+        <section id="featured" className="projects-block" data-home-section="featured">
           <SectionHeading
             eyebrow={content.featured.eyebrow}
             title={content.featured.title}
@@ -602,7 +678,7 @@ export function PortfolioHome({
           </div>
         </section>
 
-        <section className="surface contact-card contact-card--cta">
+        <section id="contact-cta" className="surface contact-card contact-card--cta" data-home-section="contact-cta">
           <SectionHeading eyebrow={content.contactCta.eyebrow} title={content.contactCta.title} />
           <p className="muted">{content.contactCta.lead}</p>
           <div className="contact-steps">
@@ -628,7 +704,7 @@ export function PortfolioHome({
           <p className="contact-cta__footer">{content.contactCta.footer}</p>
         </section>
 
-        <section id="contact" className="surface contact-card">
+        <section id="contact" className="surface contact-card" data-home-section="contact">
           <SectionHeading eyebrow={content.contact.eyebrow} title={content.contact.title} />
           <p className="muted">{content.contact.lead}</p>
           <div className="contact-grid">

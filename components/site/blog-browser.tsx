@@ -109,8 +109,15 @@ export function BlogBrowser({ locale, content, posts }: BlogBrowserProps) {
                 <img src={post.cover} alt={post.title} loading="lazy" decoding="async" />
                 <div className="blog-card__copy">
                   <span className="project-tag">{post.tag}</span>
+                  <span className="blog-card__eyebrow">
+                    {locale === 'zh' ? '继续阅读' : 'Continue reading'}
+                  </span>
                   <h2>{post.title}</h2>
                   <p>{post.summary}</p>
+                  <div className="blog-card__chips" aria-label={locale === 'zh' ? '阅读信息' : 'Reading information'}>
+                    <span className="blog-card__chip">{post.date}</span>
+                    <span className="blog-card__chip">{post.readingTime}</span>
+                  </div>
                   <div className="blog-card__meta">
                     <span>{post.date}</span>
                     <span>{post.readingTime}</span>

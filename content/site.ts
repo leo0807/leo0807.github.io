@@ -302,8 +302,15 @@ const sharedStrengths = [
   'Next.js App Router',
   'React 19',
   'TypeScript',
+  'Node.js / APIs',
+  'Python / FastAPI',
+  'PostgreSQL / Redis',
   'Three.js / React Three Fiber',
   'R3F Postprocessing',
+  'LLM Applications',
+  'RAG',
+  'LangGraph',
+  'Model Routing',
   'MDX Content Pipeline',
   'Bilingual Routing',
   'Static Export',
@@ -437,12 +444,22 @@ const siteContent: Record<Locale, SiteContent> = {
       eyebrow: 'Skills Radar',
       title: 'The stack grouped by how I actually use it.',
       lead:
-        'Instead of a flat list, this layout groups the portfolio by the kinds of problems each tool solves.',
+        'Instead of a flat list, this layout groups the portfolio by the kinds of problems each tool solves, from frontend surfaces to backend services and LLM orchestration.',
       groups: [
         {
           title: 'Frontend systems',
           summary: 'The core delivery layer for routes, UI state, and maintainable components.',
           items: ['Next.js App Router', 'React 19', 'TypeScript', 'Static export'],
+        },
+        {
+          title: 'Backend systems',
+          summary: 'The service layer where APIs, data access, and application logic stay clean.',
+          items: ['Node.js', 'FastAPI', 'REST APIs', 'PostgreSQL', 'Redis'],
+        },
+        {
+          title: 'LLM systems',
+          summary: 'The application layer for retrieval, orchestration, and model-aware workflows.',
+          items: ['LLM Applications', 'RAG', 'LangGraph', 'Model Routing', 'Observability'],
         },
         {
           title: '3D + motion',
@@ -790,12 +807,22 @@ const siteContent: Record<Locale, SiteContent> = {
       eyebrow: '技能雷达',
       title: '把技术栈按使用方式重新分组。',
       lead:
-        '这样能更直观地看出你在前端、3D、内容和交付上的能力分布。',
+        '这样能更直观地看出你在前端、后端、LLM、3D、内容和交付上的能力分布。',
       groups: [
         {
           title: '前端系统',
           summary: '负责路由、状态和可维护组件结构的核心交付层。',
           items: ['Next.js App Router', 'React 19', 'TypeScript', '静态导出'],
+        },
+        {
+          title: '后端系统',
+          summary: '负责 API、数据访问和业务逻辑的服务层。',
+          items: ['Node.js', 'FastAPI', 'REST API', 'PostgreSQL', 'Redis'],
+        },
+        {
+          title: 'LLM 系统',
+          summary: '负责检索、编排和模型感知工作流的应用层。',
+          items: ['LLM 应用', 'RAG', 'LangGraph', '模型路由', '可观测性'],
         },
         {
           title: '3D 与动效',

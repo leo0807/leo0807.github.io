@@ -148,6 +148,27 @@ export function PortfolioHome({
   }, [resumePreview]);
 
   useEffect(() => {
+    let frame = 0;
+
+    const handleMove = (event: PointerEvent) => {
+      cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const x = (event.clientX / Math.max(window.innerWidth, 1)) * 100;
+        const y = (event.clientY / Math.max(window.innerHeight, 1)) * 100;
+        document.documentElement.style.setProperty('--pointer-x', `${x.toFixed(2)}%`);
+        document.documentElement.style.setProperty('--pointer-y', `${y.toFixed(2)}%`);
+      });
+    };
+
+    window.addEventListener('pointermove', handleMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('pointermove', handleMove);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  useEffect(() => {
     const observedSections = sectionLinks
       .map((section) => document.getElementById(section.id))
       .filter((element): element is HTMLElement => Boolean(element));

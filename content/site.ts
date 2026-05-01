@@ -36,6 +36,22 @@ export type SiteContent = {
     title: string;
     paragraphs: [string, string];
   };
+  testimonials: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    cards: Array<{
+      quote: string;
+      name: string;
+      role: string;
+      context: string;
+    }>;
+  };
+  caseStudyMetrics: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+  };
   timeline: {
     eyebrow: string;
     title: string;
@@ -50,6 +66,26 @@ export type SiteContent = {
     eyebrow: string;
     title: string;
     lead: string;
+  };
+  now: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    cards: Array<{
+      title: string;
+      body: string;
+      note: string;
+    }>;
+  };
+  skillsRadar: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    groups: Array<{
+      title: string;
+      summary: string;
+      items: string[];
+    }>;
   };
   services: {
     eyebrow: string;
@@ -314,6 +350,38 @@ const siteContent: Record<Locale, SiteContent> = {
         'The result is a portfolio that works as both a polished landing page and a maintainable codebase for future case studies, writing, and AI showcases.',
       ],
     },
+    testimonials: {
+      eyebrow: 'Testimonials',
+      title: 'A place to pin real proof from collaborators, clients, or leads.',
+      lead:
+        'This section is wired in as a ready-made testimonial rail. Drop in a few short quotes once you have them, and the homepage immediately gains another layer of trust.',
+      cards: [
+        {
+          quote: 'Add a short quote from a manager or lead here.',
+          name: 'Reference 01',
+          role: 'Manager / Lead',
+          context: 'Use this slot for a concise note about ownership, reliability, or taste.',
+        },
+        {
+          quote: 'Add a short quote from a teammate or collaborator here.',
+          name: 'Reference 02',
+          role: 'Teammate / Collaborator',
+          context: 'Use this slot for communication, iteration speed, or product sense.',
+        },
+        {
+          quote: 'Add a short quote from a client or stakeholder here.',
+          name: 'Reference 03',
+          role: 'Client / Stakeholder',
+          context: 'Use this slot for delivery quality, clarity, or measurable impact.',
+        },
+      ],
+    },
+    caseStudyMetrics: {
+      eyebrow: 'Case Study Metrics',
+      title: 'A few quick numbers that make the portfolio feel measurable.',
+      lead:
+        'These values are derived from the content archive so they stay truthful as the site grows.',
+    },
     timeline: {
       eyebrow: 'Timeline',
       title: 'A compact career story that explains how the work evolved.',
@@ -341,6 +409,57 @@ const siteContent: Record<Locale, SiteContent> = {
       title: 'Architecture chosen for growth, inference, and shipping.',
       lead:
         'App Router for structure, static export for easy deployment, React Three Fiber for 3D presentation, MDX for content, and typed content objects for future project additions.',
+    },
+    now: {
+      eyebrow: 'Now',
+      title: 'What I am focusing on at the moment.',
+      lead:
+        'This small live-status section helps the homepage feel active instead of archived.',
+      cards: [
+        {
+          title: 'Portfolio system',
+          body: 'Refining the homepage modules, detail rails, and bilingual content structure so the site stays easy to extend.',
+          note: 'Homepage, content model, GitHub Pages flow',
+        },
+        {
+          title: 'AI product surfaces',
+          body: 'Thinking through how LLM-powered products can feel sharper, clearer, and more premium in their interface layer.',
+          note: 'Interaction design, product polish, visual hierarchy',
+        },
+        {
+          title: 'Writing + case studies',
+          body: 'Continuing to turn work into structured notes and project narratives rather than isolated screenshots.',
+          note: 'MDX posts, project writeups, bilingual content',
+        },
+      ],
+    },
+    skillsRadar: {
+      eyebrow: 'Skills Radar',
+      title: 'The stack grouped by how I actually use it.',
+      lead:
+        'Instead of a flat list, this layout groups the portfolio by the kinds of problems each tool solves.',
+      groups: [
+        {
+          title: 'Frontend systems',
+          summary: 'The core delivery layer for routes, UI state, and maintainable components.',
+          items: ['Next.js App Router', 'React 19', 'TypeScript', 'Static export'],
+        },
+        {
+          title: '3D + motion',
+          summary: 'The visual layer that makes the portfolio feel more like a designed surface.',
+          items: ['Three.js / React Three Fiber', 'R3F Postprocessing', 'Pointer-driven scenes'],
+        },
+        {
+          title: 'Content + SEO',
+          summary: 'The architecture that keeps writing, metadata, and bilingual routes scalable.',
+          items: ['MDX Content Pipeline', 'Bilingual Routing', 'JSON-LD SEO', 'Structured Content'],
+        },
+        {
+          title: 'Delivery + ops',
+          summary: 'The part that keeps the portfolio fast, deployable, and easy to maintain.',
+          items: ['GitHub Actions Deploy', 'Optimized Assets', 'Observability mindset'],
+        },
+      ],
     },
     services: {
       eyebrow: 'Services',
@@ -584,6 +703,38 @@ const siteContent: Record<Locale, SiteContent> = {
         '现在这个作品集既能作为一个完成度更高的首页，也能作为以后继续扩展案例、写作和 AI 项目展示的稳定代码底座。',
       ],
     },
+    testimonials: {
+      eyebrow: '推荐语',
+      title: '先把真实推荐语的容器搭好，后面直接填进去就行。',
+      lead:
+        '这部分先做成可替换的引用区。等你有真实同事、客户或主管的短评后，直接替换文案就能提升可信度。',
+      cards: [
+        {
+          quote: '这里放一条来自主管的简短推荐语。',
+          name: '推荐语位 01',
+          role: '主管 / 领导',
+          context: '可以补充责任心、交付质量或判断力。',
+        },
+        {
+          quote: '这里放一条来自同事的简短推荐语。',
+          name: '推荐语位 02',
+          role: '同事 / 协作者',
+          context: '可以补充协作速度、沟通效率或审美品味。',
+        },
+        {
+          quote: '这里放一条来自客户或 stakeholder 的简短推荐语。',
+          name: '推荐语位 03',
+          role: '客户 / 利益相关方',
+          context: '可以补充交付体验、清晰度或实际影响。',
+        },
+      ],
+    },
+    caseStudyMetrics: {
+      eyebrow: '项目指标',
+      title: '几组可以快速读懂作品集密度的数字。',
+      lead:
+        '这些指标会随着项目和文章增长而自动变化，适合作为首页的快速信号。',
+    },
     timeline: {
       eyebrow: '时间线',
       title: '一条能讲清成长路径的职业脉络。',
@@ -611,6 +762,57 @@ const siteContent: Record<Locale, SiteContent> = {
       title: '这套架构追求的是成长性、推理能力和交付效率。',
       lead:
         '用 App Router 做结构组织，用静态导出适配 GitHub Pages，用 React Three Fiber 承载 3D 表现，用 MDX 和类型化内容对象为后续新增项目留好接口。',
+    },
+    now: {
+      eyebrow: 'Now',
+      title: '我最近在持续推进的事情。',
+      lead:
+        '这个小模块会让首页看起来更像一个正在演进的工作台，而不是静态海报。',
+      cards: [
+        {
+          title: '作品集系统',
+          body: '继续打磨首页模块、详情页和双语内容结构，让这个站更容易维护和扩展。',
+          note: '首页、内容模型、GitHub Pages 发布链路',
+        },
+        {
+          title: 'AI 产品界面',
+          body: '思考 LLM 驱动产品的界面层如何更清晰、更高级，也更像一个成熟的产品。',
+          note: '交互设计、产品打磨、视觉层级',
+        },
+        {
+          title: '写作和案例',
+          body: '继续把项目经验整理成更完整的案例和文章，而不是只留在截图和列表里。',
+          note: 'MDX 文章、项目复盘、中英双语内容',
+        },
+      ],
+    },
+    skillsRadar: {
+      eyebrow: '技能雷达',
+      title: '把技术栈按使用方式重新分组。',
+      lead:
+        '这样能更直观地看出你在前端、3D、内容和交付上的能力分布。',
+      groups: [
+        {
+          title: '前端系统',
+          summary: '负责路由、状态和可维护组件结构的核心交付层。',
+          items: ['Next.js App Router', 'React 19', 'TypeScript', '静态导出'],
+        },
+        {
+          title: '3D 与动效',
+          summary: '让作品集更像一个被精心设计过的可视化界面。',
+          items: ['Three.js / React Three Fiber', 'R3F 后处理', '指针驱动场景'],
+        },
+        {
+          title: '内容与 SEO',
+          summary: '负责写作、元数据和中英双语路由的可扩展结构。',
+          items: ['MDX 内容管线', '双语路由', 'JSON-LD SEO', '结构化内容'],
+        },
+        {
+          title: '交付与运维',
+          summary: '保持站点速度、部署和维护成本都在可控范围内。',
+          items: ['GitHub Actions 发布', '资源优化', '可观测性思维'],
+        },
+      ],
     },
     services: {
       eyebrow: '服务',

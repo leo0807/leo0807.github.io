@@ -1277,11 +1277,79 @@ html[data-theme='day'] .blog-detail__overview {
   margin-top: 18px;
 }
 
+.metric-grid--home {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .timeline-card,
 .metric-card {
   display: grid;
   gap: 10px;
   padding: 22px;
+}
+
+.testimonial-grid,
+.now-grid,
+.skills-radar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.testimonial-card,
+.now-card,
+.skills-radar-card {
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+}
+
+.testimonial-card blockquote {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.testimonial-card__meta {
+  display: grid;
+  gap: 4px;
+}
+
+.testimonial-card__meta strong,
+.now-card h3,
+.skills-radar-card h3 {
+  margin: 0;
+  font-size: 1.16rem;
+  font-family:
+    "Space Grotesk",
+    "Avenir Next Condensed",
+    "Segoe UI",
+    sans-serif;
+}
+
+.testimonial-card__meta span,
+.testimonial-card__meta p,
+.now-card p,
+.skills-radar-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.72;
+}
+
+.testimonial-card__meta p,
+.now-card__note {
+  font-size: 0.84rem;
+}
+
+.now-card__note {
+  color: var(--accent-soft);
+  letter-spacing: 0.02em;
+}
+
+.skills-radar-card .pill-grid--compact {
+  margin-top: 4px;
 }
 
 .timeline-card h3,
@@ -1298,6 +1366,10 @@ html[data-theme='day'] .blog-detail__overview {
 .metric-card strong {
   font-size: 1.9rem;
   line-height: 1;
+}
+
+.metric-card--home strong {
+  font-size: 2.1rem;
 }
 
 .timeline-card p,
@@ -2944,6 +3016,9 @@ html[data-locale='zh'] .topbar-links {
   .showcase-grid,
   .timeline-grid,
   .metric-grid,
+  .testimonial-grid,
+  .now-grid,
+  .skills-radar-grid,
   .signal-grid,
   .project-grid,
   .contact-grid,
@@ -2964,6 +3039,12 @@ html[data-locale='zh'] .topbar-links {
 
   .timeline-grid,
   .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .testimonial-grid,
+  .now-grid,
+  .skills-radar-grid {
     grid-template-columns: 1fr;
   }
 
@@ -3063,6 +3144,13 @@ html[data-locale='zh'] .topbar-links {
 
   .detail-rail-card {
     padding: 18px;
+  }
+
+  .testimonial-card,
+  .now-card,
+  .skills-radar-card,
+  .metric-card--home {
+    padding: 20px;
   }
 
   .hero-copy h1 {

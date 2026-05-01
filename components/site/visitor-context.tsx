@@ -50,7 +50,7 @@ export function VisitorContext({ copy }: VisitorContextProps) {
   }
 
   return (
-    <section className="surface detail-rail-card">
+    <section className="surface detail-rail-card detail-rail-card--highlight">
       <span className="label">{copy.visitor}</span>
       <p>{copy.visitorLead}</p>
       <div className="visitor-grid">

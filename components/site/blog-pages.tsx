@@ -82,6 +82,8 @@ export function BlogDetailPage({ locale, content, post, seriesPosts, relatedPost
         </article>
 
         <aside className="blog-detail__rail">
+          <VisitorContext copy={content.blogDetail} />
+
           <section className="surface detail-rail-card">
             <span className="label">{content.blogTaxonomy.seriesLabel}</span>
             <p>{content.blogTaxonomy.lead}</p>
@@ -101,8 +103,6 @@ export function BlogDetailPage({ locale, content, post, seriesPosts, relatedPost
           </section>
 
           <BlogOutline headings={post.headings} copy={content.blogDetail} />
-
-          <VisitorContext copy={content.blogDetail} />
 
           <section className="surface detail-rail-card">
             <span className="label">{content.blogDetail.overview}</span>

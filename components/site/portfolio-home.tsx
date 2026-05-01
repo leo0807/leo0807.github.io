@@ -54,14 +54,17 @@ export function PortfolioHome({
   const activeProject = useMemo(() => {
     return projects.find((project) => project.slug === activeSlug) ?? null;
   }, [activeSlug, projects]);
+
   const terminalText = terminalLines
     .map((line, index) => `${String(index + 1).padStart(2, '0')}  ${line}`)
     .join('\n');
+
   const editorialTelemetry = {
     label: 'Cover focus',
     title: activeProject?.title ?? siteConfig.name,
     body: activeProject?.summary ?? content.hero.currentFocusBody,
   };
+
   const vizTelemetry = {
     label: 'Live metrics',
     stats: [
@@ -71,11 +74,13 @@ export function PortfolioHome({
     ],
     note: 'Click a project chip to retune the scene and surface a different case study.',
   };
+
   const terminalTelemetry = {
     label: 'Session log',
     title: 'portfolio@local',
     lines: ['mode=terminal', `project=${activeProject?.slug ?? 'none'}`, `tracks=${siteConfig.tracks.length}`, `posts=${safeFeaturedBlogPosts.length}`],
   };
+
   const caseStudyMetricCards = [
     {
       label: locale === 'zh' ? '项目总数' : 'Projects shipped',
@@ -104,6 +109,14 @@ export function PortfolioHome({
     },
   ];
 
+  const radarPoints = skillsRadarGroups.map((group, index) => {
+    const angle = (Math.PI * 2 * index) / Math.max(skillsRadarGroups.length, 1) - Math.PI / 2;
+    const radius = 72 + index * 8;
+    const x = 100 + Math.cos(angle) * radius;
+    const y = 100 + Math.sin(angle) * radius;
+    return { ...group, angle, radius, x, y };
+  });
+
   useEffect(() => {
     if (!resumePreview) return;
 
@@ -118,7 +131,7 @@ export function PortfolioHome({
   const resumePreviewSrc = resumePreview === 'english' ? '/pdf/english.PDF' : '/pdf/chinese.pdf';
 
   return (
-      <main className={`page-shell page-shell--${presentationMode}`} data-presentation={presentationMode}>
+    <main className={`page-shell page-shell--${presentationMode}`} data-presentation={presentationMode}>
       <HeroScene
         projects={featuredProjects}
         activeProject={activeProject}
@@ -175,11 +188,11 @@ export function PortfolioHome({
             </aside>
           </section>
 
-        <section className="surface presentation-bar">
-          <div className="presentation-bar__copy">
-            <p className="eyebrow">{content.presentation.eyebrow}</p>
-            <h2>{content.presentation.title}</h2>
-            <p className="muted">{content.presentation.lead}</p>
+          <section className="surface presentation-bar">
+            <div className="presentation-bar__copy">
+              <p className="eyebrow">{content.presentation.eyebrow}</p>
+              <h2>{content.presentation.title}</h2>
+              <p className="muted">{content.presentation.lead}</p>
             </div>
             <div className="presentation-bar__controls" role="tablist" aria-label={content.presentation.eyebrow}>
               {presentationModes.map((mode) => (
@@ -257,199 +270,267 @@ export function PortfolioHome({
             </div>
             <p className="presentation-bar__hint">{content.presentation.hint}</p>
           </section>
-        <section className="surface room-stage">
-          <div className="room-stage__copy">
-            <p className="eyebrow">{locale === 'zh' ? '多房间工作室' : 'Multi-room studio'}</p>
-            <h2>{roomLabels[roomIndex] ?? roomLabels[1]}</h2>
-            <p className="muted">
-              {locale === 'zh'
-                ? '这个 3D 头像现在直接放在首页的可见区域里，而不是背景层。'
-                : 'This 3D avatar now lives in a visible homepage panel instead of the background layer.'}
-            </p>
-          </div>
-          <div className="room-stage__viewer">
-            <RoomStudioStage
-              displayMode={presentationMode}
-              roomIndex={roomIndex}
-              onRoomIndexChange={setRoomIndex}
-            />
-          </div>
-        </section>
 
-        <section className="surface room-dock">
-          <div className="room-dock__copy">
-            <p className="eyebrow">{locale === 'zh' ? '多房间工作室' : 'Multi-room studio'}</p>
-            <h2>{roomLabels[roomIndex] ?? roomLabels[1]}</h2>
-            <p className="muted">
-              {locale === 'zh'
-                ? '这是 3D 头像的可见控制条。点击下面的按钮，或按 ← / → 和 1 / 2 / 3 在房间之间切换。'
-                : 'A visible control strip for the 3D avatar. Use the buttons below or press ← / → and 1 / 2 / 3 to move through the rooms.'}
-            </p>
-          </div>
-          <div className="room-dock__controls" role="tablist" aria-label="Room switcher">
-            {roomLabels.map((label, index) => (
-              <button
-                key={label}
-                type="button"
-                role="tab"
-                aria-selected={roomIndex === index}
-                className={`room-chip${roomIndex === index ? ' room-chip--active' : ''}`}
-                onClick={() => setRoomIndex(index)}
-              >
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <strong>{label}</strong>
-              </button>
-            ))}
-          </div>
-        </section>
-      </header>
+          <section className="surface room-stage">
+            <div className="room-stage__copy">
+              <p className="eyebrow">{locale === 'zh' ? '多房间工作室' : 'Multi-room studio'}</p>
+              <h2>{roomLabels[roomIndex] ?? roomLabels[1]}</h2>
+              <p className="muted">
+                {locale === 'zh'
+                  ? '这个 3D 头像现在直接放在首页的可见区域里，而不是背景层。'
+                  : 'This 3D avatar now lives in a visible homepage panel instead of the background layer.'}
+              </p>
+            </div>
+            <div className="room-stage__viewer">
+              <RoomStudioStage displayMode={presentationMode} roomIndex={roomIndex} onRoomIndexChange={setRoomIndex} />
+            </div>
+          </section>
 
-      <section className="projects-block">
-        <SectionHeading eyebrow={content.showcase.eyebrow} title={content.showcase.title} />
-        <p className="muted compact">{content.showcase.lead}</p>
-        <div className="showcase-grid">
-          <article className="surface showcase-card showcase-card--editorial">
-            <span className="signal-index">{content.showcase.editorial.label}</span>
-            <h3>{content.showcase.editorial.title}</h3>
-            <p>{content.showcase.editorial.body}</p>
-            <blockquote>{content.showcase.editorial.quote}</blockquote>
-          </article>
-
-          <article className="surface showcase-card showcase-card--viz">
-            <span className="signal-index">{content.showcase.viz.label}</span>
-            <h3>{content.showcase.viz.title}</h3>
-            <p>{content.showcase.viz.body}</p>
-            <div className="viz-stats">
-              {showcaseVizStats.map((stat, index) => (
-                <div key={stat.label} className="viz-stat">
-                  <span className="viz-stat__label">{stat.label}</span>
-                  <strong>{stat.value}</strong>
-                  <span className={`viz-stat__bar viz-stat__bar--${index + 1}`} aria-hidden="true" />
-                </div>
+          <section className="surface room-dock">
+            <div className="room-dock__copy">
+              <p className="eyebrow">{locale === 'zh' ? '多房间工作室' : 'Multi-room studio'}</p>
+              <h2>{roomLabels[roomIndex] ?? roomLabels[1]}</h2>
+              <p className="muted">
+                {locale === 'zh'
+                  ? '这是 3D 头像的可见控制条。点击下面的按钮，或按 ← / → 和 1 / 2 / 3 在房间之间切换。'
+                  : 'A visible control strip for the 3D avatar. Use the buttons below or press ← / → and 1 / 2 / 3 to move through the rooms.'}
+              </p>
+            </div>
+            <div className="room-dock__controls" role="tablist" aria-label="Room switcher">
+              {roomLabels.map((label, index) => (
+                <button
+                  key={label}
+                  type="button"
+                  role="tab"
+                  aria-selected={roomIndex === index}
+                  className={`room-chip${roomIndex === index ? ' room-chip--active' : ''}`}
+                  onClick={() => setRoomIndex(index)}
+                >
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <strong>{label}</strong>
+                </button>
               ))}
             </div>
-          </article>
+          </section>
+        </header>
 
-          <article className="surface showcase-card showcase-card--terminal">
-            <span className="signal-index">{content.showcase.terminal.label}</span>
-            <h3>{content.showcase.terminal.title}</h3>
-            <div className="terminal-panel">
-              <div className="terminal-panel__bar" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </div>
-              <pre>{terminalText}</pre>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section className="two-column">
-        <article className="surface about-card">
-          <SectionHeading eyebrow={content.about.eyebrow} title={content.about.title} />
-          <div className="about-layout">
-            <img src={siteConfig.aboutImage} alt="Original portfolio portrait" loading="lazy" decoding="async" />
-            <div>
-              <p>{content.about.paragraphs[0]}</p>
-              <p>{content.about.paragraphs[1]}</p>
-            </div>
-          </div>
-        </article>
-
-        <article id="stack" className="surface stack-card">
-          <SectionHeading eyebrow={content.stack.eyebrow} title={content.stack.title} />
-          <div className="pill-grid">
-            {safeStrengths.map((item) => (
-              <span key={item} className="pill">
-                {item}
-              </span>
-            ))}
-          </div>
-          <p className="muted">{content.stack.lead}</p>
-        </article>
-      </section>
-
-      <section className="projects-block">
-        <SectionHeading eyebrow={content.testimonials.eyebrow} title={content.testimonials.title} />
-        <p className="muted compact">{content.testimonials.lead}</p>
-        <div className="testimonial-grid">
-          {testimonialCards.map((card) => (
-            <article key={card.name} className="surface testimonial-card">
-              <blockquote>{card.quote}</blockquote>
-              <div className="testimonial-card__meta">
-                <strong>{card.name}</strong>
-                <span>{card.role}</span>
-                <p>{card.context}</p>
-              </div>
+        <section className="projects-block">
+          <SectionHeading eyebrow={content.showcase.eyebrow} title={content.showcase.title} />
+          <p className="muted compact">{content.showcase.lead}</p>
+          <div className="showcase-grid">
+            <article className="surface showcase-card showcase-card--editorial">
+              <span className="signal-index">{content.showcase.editorial.label}</span>
+              <h3>{content.showcase.editorial.title}</h3>
+              <p>{content.showcase.editorial.body}</p>
+              <blockquote>{content.showcase.editorial.quote}</blockquote>
             </article>
-          ))}
-        </div>
-      </section>
 
-      <section className="projects-block">
-        <SectionHeading eyebrow={content.caseStudyMetrics.eyebrow} title={content.caseStudyMetrics.title} />
-        <p className="muted compact">{content.caseStudyMetrics.lead}</p>
-        <div className="metric-grid metric-grid--home">
-          {caseStudyMetricCards.map((metric) => (
-            <article key={metric.label} className="surface metric-card metric-card--home">
-              <span className="label">{metric.label}</span>
-              <strong>{metric.value}</strong>
-              <p>{metric.detail}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="projects-block">
-        <SectionHeading eyebrow={content.timeline.eyebrow} title={content.timeline.title} />
-        <p className="muted compact">{content.timeline.lead}</p>
-        <div className="timeline-grid">
-          {safeTimelineItems.map((item) => (
-            <article key={item.period + item.title} className="surface timeline-card">
-              <span className="signal-index">{item.period}</span>
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="projects-block">
-        <SectionHeading eyebrow={content.now.eyebrow} title={content.now.title} />
-        <p className="muted compact">{content.now.lead}</p>
-        <div className="now-grid">
-          {nowCards.map((card, index) => (
-            <article key={card.title} className="surface now-card">
-              <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
-              <h3>{card.title}</h3>
-              <p>{card.body}</p>
-              <span className="now-card__note">{card.note}</span>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="projects-block">
-        <SectionHeading eyebrow={content.skillsRadar.eyebrow} title={content.skillsRadar.title} />
-        <p className="muted compact">{content.skillsRadar.lead}</p>
-        <div className="skills-radar-grid">
-          {skillsRadarGroups.map((group, index) => (
-            <article key={group.title} className="surface skills-radar-card">
-              <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
-              <h3>{group.title}</h3>
-              <p>{group.summary}</p>
-              <div className="pill-grid pill-grid--compact">
-                {group.items.map((item) => (
-                  <span key={item} className="pill">
-                    {item}
-                  </span>
+            <article className="surface showcase-card showcase-card--viz">
+              <span className="signal-index">{content.showcase.viz.label}</span>
+              <h3>{content.showcase.viz.title}</h3>
+              <p>{content.showcase.viz.body}</p>
+              <div className="viz-stats">
+                {showcaseVizStats.map((stat, index) => (
+                  <div key={stat.label} className="viz-stat">
+                    <span className="viz-stat__label">{stat.label}</span>
+                    <strong>{stat.value}</strong>
+                    <span className={`viz-stat__bar viz-stat__bar--${index + 1}`} aria-hidden="true" />
+                  </div>
                 ))}
               </div>
             </article>
-          ))}
-        </div>
-      </section>
+
+            <article className="surface showcase-card showcase-card--terminal">
+              <span className="signal-index">{content.showcase.terminal.label}</span>
+              <h3>{content.showcase.terminal.title}</h3>
+              <div className="terminal-panel">
+                <div className="terminal-panel__bar" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <pre>{terminalText}</pre>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section className="two-column">
+          <article className="surface about-card">
+            <SectionHeading eyebrow={content.about.eyebrow} title={content.about.title} />
+            <div className="about-layout">
+              <img src={siteConfig.aboutImage} alt="Original portfolio portrait" loading="lazy" decoding="async" />
+              <div>
+                <p>{content.about.paragraphs[0]}</p>
+                <p>{content.about.paragraphs[1]}</p>
+              </div>
+            </div>
+          </article>
+
+          <article id="stack" className="surface stack-card">
+            <SectionHeading eyebrow={content.stack.eyebrow} title={content.stack.title} />
+            <div className="pill-grid">
+              {safeStrengths.map((item) => (
+                <span key={item} className="pill">
+                  {item}
+                </span>
+              ))}
+            </div>
+            <p className="muted">{content.stack.lead}</p>
+          </article>
+        </section>
+
+        <section className="projects-block">
+          <SectionHeading eyebrow={content.testimonials.eyebrow} title={content.testimonials.title} />
+          <p className="muted compact">{content.testimonials.lead}</p>
+          <div className="testimonial-grid">
+            {testimonialCards.map((card, index) => (
+              <article key={card.name} className="surface testimonial-card testimonial-card--featured">
+                <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
+                <blockquote>{card.quote}</blockquote>
+                <div className="testimonial-card__meta">
+                  <strong>{card.name}</strong>
+                  <span>{card.role}</span>
+                  <p>{card.context}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="projects-block">
+          <SectionHeading eyebrow={content.caseStudyMetrics.eyebrow} title={content.caseStudyMetrics.title} />
+          <p className="muted compact">{content.caseStudyMetrics.lead}</p>
+          <div className="metric-grid metric-grid--home">
+            {caseStudyMetricCards.map((metric) => (
+              <article key={metric.label} className="surface metric-card metric-card--home">
+                <span className="label">{metric.label}</span>
+                <strong>{metric.value}</strong>
+                <p>{metric.detail}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="projects-block">
+          <SectionHeading eyebrow={content.timeline.eyebrow} title={content.timeline.title} />
+          <p className="muted compact">{content.timeline.lead}</p>
+          <div className="timeline-grid">
+            {safeTimelineItems.map((item) => (
+              <article key={item.period + item.title} className="surface timeline-card">
+                <span className="signal-index">{item.period}</span>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="projects-block">
+          <SectionHeading eyebrow={content.now.eyebrow} title={content.now.title} />
+          <p className="muted compact">{content.now.lead}</p>
+          <div className="now-grid">
+            {nowCards.map((card, index) => (
+              <article key={card.title} className="surface now-card">
+                <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
+                <h3>{card.title}</h3>
+                <p>{card.body}</p>
+                <span className="now-card__note">{card.note}</span>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="projects-block">
+          <SectionHeading eyebrow={content.skillsRadar.eyebrow} title={content.skillsRadar.title} />
+          <p className="muted compact">{content.skillsRadar.lead}</p>
+          <div className="skills-radar-grid">
+            <article className="surface skills-radar-card skills-radar-card--diagram">
+              <span className="signal-index">01</span>
+              <h3>{locale === 'zh' ? '技能分布图' : 'Skill distribution'}</h3>
+              <p>{locale === 'zh' ? '从问题类型看你的能力分布，而不是把技术栈简单堆叠。' : 'A visual map of how the stack clusters around real work types instead of a flat list.'}</p>
+              <div className="skills-radar-graphic" aria-label={content.skillsRadar.title}>
+                <svg viewBox="0 0 200 200" role="img" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="radar-fill" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.36" />
+                      <stop offset="100%" stopColor="var(--accent-soft)" stopOpacity="0.12" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="100" cy="100" r="66" className="skills-radar-ring" />
+                  <circle cx="100" cy="100" r="46" className="skills-radar-ring skills-radar-ring--inner" />
+                  <polygon
+                    className="skills-radar-polygon"
+                    points={radarPoints
+                      .map((point) => `${100 + Math.cos(point.angle) * (44 + point.items.length * 6)},${100 + Math.sin(point.angle) * (44 + point.items.length * 6)}`)
+                      .join(' ')}
+                  />
+                  {radarPoints.map((point, index) => (
+                    <g key={point.title}>
+                      <line x1="100" y1="100" x2={100 + Math.cos(point.angle) * 72} y2={100 + Math.sin(point.angle) * 72} className="skills-radar-spoke" />
+                      <circle cx={100 + Math.cos(point.angle) * 72} cy={100 + Math.sin(point.angle) * 72} r="5" className="skills-radar-node" />
+                      <text
+                        x={100 + Math.cos(point.angle) * 88}
+                        y={100 + Math.sin(point.angle) * 88}
+                        textAnchor={Math.cos(point.angle) > 0.2 ? 'start' : Math.cos(point.angle) < -0.2 ? 'end' : 'middle'}
+                        className={`skills-radar-label skills-radar-label--${index + 1}`}
+                      >
+                        {point.title}
+                      </text>
+                    </g>
+                  ))}
+                  <circle cx="100" cy="100" r="18" className="skills-radar-core" />
+                </svg>
+              </div>
+            </article>
+            {skillsRadarGroups.map((group, index) => (
+              <article key={group.title} className="surface skills-radar-card">
+                <span className="signal-index">{String(index + 2).padStart(2, '0')}</span>
+                <h3>{group.title}</h3>
+                <p>{group.summary}</p>
+                <div className="pill-grid pill-grid--compact">
+                  {group.items.map((item) => (
+                    <span key={item} className="pill">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="projects-block">
+          <SectionHeading
+            eyebrow={content.services.eyebrow}
+            title={content.services.title}
+          />
+          <p className="muted compact">{content.services.lead}</p>
+          <div className="service-grid">
+            {serviceCards.map((service, index) => (
+              <article key={service.title} className="surface service-card">
+                <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
+                <h3>{service.title}</h3>
+                <p>{service.body}</p>
+                <span className="service-card__note">{service.note}</span>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="projects-block">
+          <SectionHeading eyebrow={content.signals.eyebrow} title={content.signals.title} />
+          <p className="muted compact">{content.signals.lead}</p>
+          <div className="signal-grid">
+            {safeSignalCards.map((signal, index) => (
+              <article key={signal.title} className={`surface signal-card signal-card--${index + 1}`}>
+                <span className="signal-index">{String(index + 1).padStart(2, '0')}</span>
+                <h3>{signal.title}</h3>
+                <p>{signal.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
 
         <section className="projects-block">
           <SectionHeading

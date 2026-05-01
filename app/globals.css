@@ -1305,11 +1305,28 @@ html[data-theme='day'] .blog-detail__overview {
   padding: 22px;
 }
 
+.testimonial-card--featured {
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial-card--featured::before {
+  content: '“';
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  color: var(--accent-soft);
+  opacity: 0.12;
+  font-size: 4.8rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
 .testimonial-card blockquote {
   margin: 0;
   color: var(--text);
-  font-size: 1.05rem;
-  line-height: 1.75;
+  font-size: 1.03rem;
+  line-height: 1.78;
 }
 
 .testimonial-card__meta {
@@ -1350,6 +1367,63 @@ html[data-theme='day'] .blog-detail__overview {
 
 .skills-radar-card .pill-grid--compact {
   margin-top: 4px;
+}
+
+.skills-radar-card--diagram {
+  grid-row: span 2;
+}
+
+.skills-radar-graphic {
+  padding: 10px 0 0;
+}
+
+.skills-radar-graphic svg {
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  display: block;
+  overflow: visible;
+}
+
+.skills-radar-ring {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1;
+}
+
+.skills-radar-ring--inner {
+  stroke-dasharray: 3 5;
+}
+
+.skills-radar-spoke {
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 1;
+}
+
+.skills-radar-node {
+  fill: var(--accent-soft);
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 2;
+}
+
+.skills-radar-polygon {
+  fill: url(#radar-fill);
+  stroke: var(--accent);
+  stroke-width: 1.6;
+}
+
+.skills-radar-core {
+  fill: rgba(255, 255, 255, 0.12);
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 1;
+}
+
+.skills-radar-label {
+  fill: var(--muted);
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .timeline-card h3,
@@ -3151,6 +3225,14 @@ html[data-locale='zh'] .topbar-links {
   .skills-radar-card,
   .metric-card--home {
     padding: 20px;
+  }
+
+  .skills-radar-card--diagram {
+    grid-row: auto;
+  }
+
+  .skills-radar-graphic svg {
+    max-width: 320px;
   }
 
   .hero-copy h1 {

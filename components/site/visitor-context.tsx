@@ -50,28 +50,33 @@ export function VisitorContext({ copy }: VisitorContextProps) {
   }
 
   return (
-    <section className="surface detail-rail-card detail-rail-card--compact">
-      <span className="label">{copy.visitor}</span>
-      <p className="visitor-copy">{copy.visitorLead}</p>
-      <div className="visitor-list">
-        <div className="visitor-metric">
-          <span>{copy.browserLocale}</span>
-          <strong>{signals.browserLocale}</strong>
+    <details className="surface detail-rail-card detail-rail-card--compact visitor-context">
+      <summary className="visitor-summary">
+        <span className="label">{copy.visitor}</span>
+        <span className="visitor-summary__hint">{copy.visitorLead}</span>
+      </summary>
+
+      <div className="visitor-context__body">
+        <div className="visitor-list">
+          <div className="visitor-metric">
+            <span>{copy.browserLocale}</span>
+            <strong>{signals.browserLocale}</strong>
+          </div>
+          <div className="visitor-metric">
+            <span>{copy.timeZone}</span>
+            <strong>{signals.timeZone}</strong>
+          </div>
+          <div className="visitor-metric">
+            <span>{copy.localTime}</span>
+            <strong>{signals.localTime}</strong>
+          </div>
+          <div className="visitor-metric">
+            <span>{copy.region}</span>
+            <strong>{signals.region}</strong>
+          </div>
         </div>
-        <div className="visitor-metric">
-          <span>{copy.timeZone}</span>
-          <strong>{signals.timeZone}</strong>
-        </div>
-        <div className="visitor-metric">
-          <span>{copy.localTime}</span>
-          <strong>{signals.localTime}</strong>
-        </div>
-        <div className="visitor-metric">
-          <span>{copy.region}</span>
-          <strong>{signals.region}</strong>
-        </div>
+        <p className="muted compact">{copy.privacyNote}</p>
       </div>
-      <p className="muted compact">{copy.privacyNote}</p>
-    </section>
+    </details>
   );
 }
